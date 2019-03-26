@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import FullMap from './components/Map/Map.js';
 
 class App extends Component {
   render() {
@@ -13,13 +14,14 @@ class App extends Component {
           </p>
           <a
             className="App-link"
-            href="https://reactjs.org"
+            href="https://www.perkinswill.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Learn React
+            Perkins+Will
           </a>
         </header>
+        <FullMap/>
       </div>
     );
   }
