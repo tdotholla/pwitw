@@ -3,6 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import Marker from "./Marker";
 
 // const AnyReactComponent = ({ text }) => <div>{text}</div>;
+let Workstations
 
 const MapOptions = {
   clickableIcons: false,
@@ -193,41 +194,20 @@ const MapOptions = {
 
 const request = require("request");
 // const fetch = require("fetch");
-const dbOptions = { method: 'GET',
+const dbOptions = { 
+  method: 'GET',
   url: 'https://pdubdb-705a.restdb.io/rest/workstations',
   headers: 
    { 
     'cache-control': 'no-cache',
-    'x-apikey': 'da592a53b3733d3235cfbd17c028e5d4b9593',
-    'Accept': '*',
-    // 'Access-Control-Request-Method': "DELETE",
-    // 'Access-Control-Request-Headers': "origin, x-requested-with",
-    // 'Access-Control-Allow-Headers': 'Access-Control-Allow-Origin',
-    // 'Access-Control-Allow-Origin': "*"
-    // 'Origin': https://foo.bar.org
+    'x-apikey': '5c9a8400df5d634f46ecaf52',
    } 
  };
 
-// request(dbOptions, function (error, response, body) {
-//   if (error) throw new Error(error);
-//   console.log(body);
-// });
-fetch('https://pdubdb-705a.restdb.io/rest/workstations', {
-  mode: "no-cors",
-  cache: "no-cache",
-  headers: {'x-apikey': 'da592a53b3733d3235cfbd17c028e5d4b9593'}
-})
-.then(function(response) {
-  // console.log(response.json())
-  return response.body
-})
-.then(function(myJson){
-  // console.log(JSON.stringify(myJson))
-})
-.catch(function(error) {
-  console.log(error)
-})
-
+request(dbOptions, function (error, response, body) {
+  if (error) throw new Error(error);
+  Workstations = body;
+});
 
 class FullMap extends Component {
   static defaultProps = {
@@ -237,6 +217,10 @@ class FullMap extends Component {
     },
     zoom: 5
   };
+  constructor(props) {
+    super(props);
+    this.state={workstations: Workstations}
+  }
 
   render() {
     return (
@@ -252,6 +236,10 @@ class FullMap extends Component {
           defaultZoom={this.props.zoom}
           options={MapOptions}
         >
+        {console.log(this.state)}
+        {Workstations && Workstations.map(ws => {
+          console.log(ws)
+        })}
           <Marker
             lat={38.9065495}
             lng={-77.0518192}
