@@ -10,7 +10,7 @@ import FullMap from './components/Map/Map.js';
 class App extends Component {
   render() {
     return (
-      <MuiThemeProvider theme={muiTheme}>
+      <MuiThemeProvider theme={null}>
         <div className="App">
           <header className="App-header">
             <img src={logo} className="App-logo" alt="logo" />

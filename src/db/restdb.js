@@ -12,7 +12,7 @@ const dbOptions = {
    } 
  };
 
-export function stationsFetchAll() = {
+export function stationsFetchAll() {
 	request(dbOptions, function (error, response, body) {
 	  if (error) throw new Error(error);
 	  console.log(body)

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-import Marker from "./Marker";
+import { connect } from "react-redux";
 
+import * as ACTIONS from "./../../actions/actionConstants";
+import Marker from "./Marker";
+// import { getAllWorkstations } from "./../../actions/actionConstants"
 // const AnyReactComponent = ({ text }) => <div>{text}</div>;
 let Workstations
 
@@ -192,23 +195,6 @@ const MapOptions = {
       }]
 }
 
-const request = require("request");
-// const fetch = require("fetch");
-const dbOptions = { 
-  method: 'GET',
-  url: 'https://pdubdb-705a.restdb.io/rest/workstations',
-  headers: 
-   { 
-    'cache-control': 'no-cache',
-    'x-apikey': '5c9a8400df5d634f46ecaf52',
-   } 
- };
-
-request(dbOptions, function (error, response, body) {
-  if (error) throw new Error(error);
-  Workstations = body;
-});
-
 class FullMap extends Component {
   static defaultProps = {
     center: {
@@ -219,10 +205,14 @@ class FullMap extends Component {
   };
   constructor(props) {
     super(props);
-    this.state={workstations: Workstations}
   }
 
+  componentDidMount() {
+    console.log(this.props)
+    this.props.getAllWorkstations();
+  }
   render() {
+    const {props} = this;
     return (
       // Important! Always set the container height explicitly
       <div className="App-map" >
@@ -232,14 +222,15 @@ class FullMap extends Component {
             language: "en",
             region: "us"
           }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          defaultCenter={props.center}
+          defaultZoom={props.zoom}
           options={MapOptions}
         >
-        {console.log(this.state)}
-        {Workstations && Workstations.map(ws => {
-          console.log(ws)
-        })}
+        {
+        //   props.state.stations && props.state.stations.map(function(ws) {
+        //   console.log(ws)
+        // })
+        }
           <Marker
             lat={38.9065495}
             lng={-77.0518192}
@@ -251,4 +242,21 @@ class FullMap extends Component {
   }
 }
 
-export default FullMap;
+//Redux
+function mapStateToProps(state) {
+  return {
+    state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    getAllWorkstations: () => dispatch({ type: ACTIONS.GET_ALL_WORKSTATIONS }),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(FullMap);

@@ -17,8 +17,8 @@ function* stationsFetchWatcherSaga() {
 }
 
 function* stationsFetchSaga() {
-  yield put({ type: ACTIONS.STATIONS_FETCH_START });
-  // console.log('running venues saga...')
+  yield put({ type: ACTIONS.STATIONS_API_START });
+  // console.log('running stations saga...')
   try {
     const stations = yield call(stationsFetchAll);
     yield put({ type: ACTIONS.STATIONS_API_RESULT, payload: stations });
