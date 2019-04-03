@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import GoogleMapReact from 'google-map-react';
+import { GoogleMap, LoadScript, MarkerClusterer, Marker  } from '@react-google-maps/api'
 import { connect } from "react-redux";
 
 import * as ACTIONS from "./../../actions/actionConstants";
-import Marker from "./Marker";
 // import { getAllWorkstations } from "./../../actions/actionConstants"
 // const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -212,35 +211,47 @@ class FullMap extends Component {
     const {props} = this;
     return (
       // Important! Always set the container height explicitly
-      <div className="App-map" >
-        <GoogleMapReact
-          bootstrapURLKeys={{
-            key: "AIzaSyCa7QqTqLMM66gRtaW9KPFPdfkXgFAG8pA",          
-            language: "en",
-            region: "us"
-          }}
-          defaultCenter={props.center}
-          defaultZoom={props.zoom}
+      <LoadScript
+        id="script-loader"
+        googleMapsApiKey="AIzaSyCa7QqTqLMM66gRtaW9KPFPdfkXgFAG8pA"
+        language="en"
+        region="us"
+      >
+        <GoogleMap
+          mapContainerClassName="App-map"
+          center={props.center}
+          zoom={props.zoom}
           options={MapOptions}
         >
-        {
-        props.state.stations.all && props.state.stations.all.map(function(ws) {
-            let loc = ws.location.split(',');
-
-            console.log(ws)
-            return (
-              (ws.location) && (<Marker
-                key={ws._id}
-                lat={loc[0]}
-                lng={loc[1]}
-                text={`${ws.hostname}-${ws.username}`}
-                hover={props.hoverKey === ws._id}
-              />
-          ))
-          })
+        
+          {
+// <MarkerClusterer imagePath="https://www.respectfulrevolution.org/sites/all/themes/curiouser_respect/graphics/key4.png">
+            // (clusterer) => 
+            ( props.state.stations.all ) && props.state.stations.all.map(function(ws) {
+              let loc = ws.location.split(',');
+              let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
+              let image ={
+                url: "https://cdn0.iconfinder.com/data/icons/gloss-basic-icons-by-momentum/32/pin-red.png",
+                
+              }
+              return (
+                (ws.location) && (
+                  <Marker
+                    className="App-marker"
+                    key={ws._id}
+                    position={locObj}
+                    // clusterer={clusterer}
+                    icon={image}
+                    title={`${ws.hostname}-${ws.username}`}
+                  />
+                )
+              )
+            })
+        // </MarkerClusterer>
         }
-        </GoogleMapReact>
-      </div>
+        
+        </GoogleMap>
+      </LoadScript>
     );
   }
 }
