@@ -1,6 +1,3 @@
-import store from "../store";
-import * as ACTIONS from "./../actions/actionConstants";
-
 const request = require("request");
 const dbOptions = { 
   method: 'GET',
@@ -12,10 +9,15 @@ const dbOptions = {
    } 
  };
 
-export function stationsFetchAll() {
-	request(dbOptions, function (error, response, body) {
-	  if (error) throw new Error(error);
-	  console.log(body)
-	  return body;
-	});
+export const stationsFetchAll = () => {
+  return new Promise(function(resolve,reject){
+  	request(dbOptions, function (error, response, body) {
+  	  if (error) return reject(error)
+      try {
+    	  resolve(JSON.parse(body));
+      } catch(e) {
+        reject(e)
+      }
+  	});
+  })
 }

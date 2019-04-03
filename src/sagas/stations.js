@@ -13,7 +13,7 @@ import * as ACTIONS from "../actions/actionConstants";
 import { stationsFetchAll } from "../db/restdb";
 
 function* stationsFetchWatcherSaga() {
-  yield takeLatest(ACTIONS.STATIONS_API_REQUEST, stationsFetchSaga);
+  yield takeLatest(ACTIONS.GET_ALL_WORKSTATIONS, stationsFetchSaga);
 }
 
 function* stationsFetchSaga() {

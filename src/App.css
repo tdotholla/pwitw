@@ -24,8 +24,13 @@
 }
 
 .App-marker {
-  /*color: #61dafb;*/
-  /*border: 1px solid red;*/
+  color: #61dafb;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  user-select: none;
+  transform: translate(-50%; -50%);
 }
 
 .App-map {

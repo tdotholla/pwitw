@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import GoogleMapReact from 'google-map-react';
 import { connect } from "react-redux";
 
@@ -6,7 +7,6 @@ import * as ACTIONS from "./../../actions/actionConstants";
 import Marker from "./Marker";
 // import { getAllWorkstations } from "./../../actions/actionConstants"
 // const AnyReactComponent = ({ text }) => <div>{text}</div>;
-let Workstations
 
 const MapOptions = {
   clickableIcons: false,
@@ -196,6 +196,7 @@ const MapOptions = {
 }
 
 class FullMap extends Component {
+
   static defaultProps = {
     center: {
       "lat": 38.9065495,
@@ -203,12 +204,8 @@ class FullMap extends Component {
     },
     zoom: 5
   };
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
-    console.log(this.props)
     this.props.getAllWorkstations();
   }
   render() {
@@ -227,21 +224,30 @@ class FullMap extends Component {
           options={MapOptions}
         >
         {
-        //   props.state.stations && props.state.stations.map(function(ws) {
-        //   console.log(ws)
-        // })
+        props.state.stations.all && props.state.stations.all.map(function(ws) {
+            let loc = ws.location.split(',');
+
+            console.log(ws)
+            return (
+              (ws.ip && ws.ip.length > 0) && (<Marker
+                key={ws._id}
+                lat={loc[0]}
+                lng={loc[1]}
+                text={`${ws.hostname}-${ws.email}`}
+                hover={props.hoverKey === ws._id}
+              />
+          ))
+          })
         }
-          <Marker
-            lat={38.9065495}
-            lng={-77.0518192}
-            text="My Marker"
-          />
         </GoogleMapReact>
       </div>
     );
   }
 }
 
+FullMap.propTypes = {
+  hoverKey: PropTypes.string
+}
 //Redux
 function mapStateToProps(state) {
   return {

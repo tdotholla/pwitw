@@ -28,7 +28,7 @@ const INITIAL_STATE = {
   stations: {},
 };
 const INITIAL_STATE2 = {
-  stations: {byId: {}, allids: []},
+  stations: {},
 }
 
 //Create Store
