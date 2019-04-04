@@ -52,7 +52,8 @@ const StationWindow = ({...props}) => {
   let {stations, position} = props;
   let loc = position.split(',');
   let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
-  return stations.map(station => (<InfoWindow
+  return stations.map(station => {
+    return (<div
         position={locObj}
         options={{
           pixelOffset: {height:-30,width:0}
@@ -66,8 +67,9 @@ const StationWindow = ({...props}) => {
           {station.username}<br />
           {station._changed}</p>
         </div>
-      </InfoWindow>
-      ))
+      </div>
+      )
+    });
   }
 
 class FullMap extends Component {
@@ -324,7 +326,9 @@ class FullMap extends Component {
           options={options}
         >{
           state.stations.all && (<div>
-            {showInfoWindow && markerData && (<StationWindow position={markerData.location} stations={[markerData]}/>)}
+            {
+              // showInfoWindow && markerData && (<StationWindow position={markerData.location} stations={[markerData]}/>)
+          }
             <MarkerClusterer 
             imagePath={`${process.env.PUBLIC_URL}/images/m`} 
             styles={clusterStyles}
@@ -348,6 +352,7 @@ class FullMap extends Component {
                         onMouseOver={(e) => handleMouseOverMarker(e, ws)}
                         onMouseOut={handleMouseExitMarker}
                       >
+                      showInfoWindow && <StationWindow position={ws.location} stations={[ws]}/>
                       </Marker>
                       )
                     )
