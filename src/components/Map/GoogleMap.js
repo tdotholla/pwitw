@@ -50,13 +50,15 @@ const clusterStyles= [{
 
 const StationWindow = ({...props}) => {
   let {stations, position} = props;
+  let loc = position.split(',');
+  let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
   return stations.map(station => (<InfoWindow
-        position={position}
+        position={locObj}
         options={{
           pixelOffset: {height:-30,width:0}
         }}
         style={{padding:0}}
-        visible={!!station._id}
+        key={station._id}
         >
         <div className="App-infowindow">
           <h3>{station.hostname}</h3>
@@ -72,7 +74,7 @@ class FullMap extends Component {
   state = {
     showInfoWindow: null,
     browserLocation: false,
-    data: {}
+    markerData: {}
   };
 
   static defaultProps = {
@@ -276,7 +278,7 @@ class FullMap extends Component {
       navigator.geolocation.getCurrentPosition((pos) => {
         const coords = pos.coords;
         this.setState({
-          currentLocation: {
+          browserLocation: {
             lat: coords.latitude,
             lng: coords.longitude
           }
@@ -286,10 +288,9 @@ class FullMap extends Component {
   }
 
   handleMouseOverMarker = (e, data) => {
-    console.log(e, data)
     this.setState({
       showInfoWindow: true,
-      data: data
+      markerData: data
     })
   }
   handleMouseOverCluster = (cluster) => {
@@ -305,7 +306,7 @@ class FullMap extends Component {
 
   render() {
     const {center, zoom, options, state} = this.props;
-    const {showInfoWindow} = this.state;
+    const {showInfoWindow, markerData, browserLocation} = this.state;
     const {handleMouseExitMarker, handleMouseOverMarker, handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly
@@ -318,17 +319,17 @@ class FullMap extends Component {
       >
         <GoogleMap
           mapContainerClassName="App-map"
-          center={center}
+          center={browserLocation || center}
           zoom={zoom}
           options={options}
         >{
-          state.stations.all && (<MarkerClusterer 
+          state.stations.all && (<div>
+            {showInfoWindow && markerData && (<StationWindow position={markerData.location} stations={[markerData]}/>)}
+            <MarkerClusterer 
             imagePath={`${process.env.PUBLIC_URL}/images/m`} 
             styles={clusterStyles}
             onMouseOver={handleMouseOverCluster} >{
-              // showInfoWindow && (<StationWindow position={this.position} stations={this.stations}/>)}
-              // {
-                (clusterer) => { 
+              (clusterer) => { 
                 return state.stations.all.map((ws) => {
                   let loc = ws.location.split(',');
                   let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
@@ -352,7 +353,8 @@ class FullMap extends Component {
                     )
                   })
               }
-              }</MarkerClusterer> )
+              }</MarkerClusterer>
+              </div> )
             }</GoogleMap>
       </LoadScript>
     );

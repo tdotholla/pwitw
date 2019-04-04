@@ -864,10 +864,10 @@
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
 
-"@react-google-maps/api@^1.2.0-alpha.11":
-  version "1.2.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.2.0-alpha.11.tgz#bb9361415e6c50aec4b4b8655aa078881605bc0e"
-  integrity sha512-5a4N6NLYn/auW7fwAwIYVouPmC8l66Jodow8cfrgKHl40dxnJHxoP0rJ4RaTTcUprg5yNIcl5jBwKTEE6cXgJg==
+"@react-google-maps/api@^1.2.0-alpha.14":
+  version "1.2.0-alpha.14"
+  resolved "https://registry.yarnpkg.com/@react-google-maps/api/-/api-1.2.0-alpha.14.tgz#58e15fcf1dc3c3a4ed7156ab0f636d5bb07d04ed"
+  integrity sha512-+GVC2fH/DznAWGmW/auychltR+0CJmF2IpGjTV9E8xjHHZoqfRigNVBIIl1kaHL725BsdhDWxzQL2iJRuBTHGw==
   dependencies:
     "@react-google-maps/marker-clusterer" "1.2.0-alpha.9"
     "@types/googlemaps" "3.30.19"
