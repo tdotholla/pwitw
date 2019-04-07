@@ -242,7 +242,7 @@ class FullMap extends Component {
 
 
   render() {
-    const {center, zoom, options, state, getInfoWindow, mapLoaded} = this.props;
+    const {center, zoom, options, state, getInfoWindow, mapLoaded, GMap} = this.props;
     const {showInfoWindow, marker, markerData, browserLocation} = this.state;
     const {handleMouseOverCluster} = this;
     return (
@@ -256,30 +256,23 @@ class FullMap extends Component {
         <GoogleMap
           onLoad={map => {
             const bounds = new window.google.maps.LatLngBounds();
+            // map.fitBounds(bounds);
+            this.setState({map: map})
             mapLoaded(map)
           }}
           mapContainerClassName="App-map"
           center={browserLocation || center}
           zoom={zoom}
           options={options}
-        >{
-          state.stations.all && (<div>
-            {
-              // showInfoWindow && markerData && (<StationWindow position={markerData.location} stations={[markerData]}/>)
-          }
-            <MarkerClusterer 
-            imagePath={`localhost:3000/images/m`} 
-            >{
-              (clusterer) => { 
-                return state.stations.all && state.stations.all.map((ws) => {
-                  let loc = ws.location.split(',');
-                  let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
-                  return ws.location && <MyMarker data={ws} clusterer={clusterer}/>
-                  })
-              }
-              }</MarkerClusterer>
-              </div> )
-            }</GoogleMap>
+        >
+          <div>{
+            GMap && state.stations.all &&  state.stations.all.map((ws) => {
+              let loc = ws.location.split(',');
+              let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
+              return ws.location && <MyMarker data={ws}/>
+            })
+          }</div> 
+        </GoogleMap>
       </LoadScript>
     );
   }
@@ -292,7 +285,7 @@ FullMap.propTypes = {
 function mapStateToProps(state) {
   return {
     state,
-    GMap: state.map.Gmap
+    GMap: state.map.GMap
   };
 }
 

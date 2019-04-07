@@ -5,7 +5,7 @@ import { MuiThemeProvider, withTheme } from "@material-ui/core";
 
 import logo from './logo.svg';
 import './App.css';
-import FullMap from './components/Map/GoogleMap.js';
+import FullMap from './components/Map/GoogleMap0.js';
 
 class App extends Component {
   render() {
