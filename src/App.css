@@ -39,12 +39,9 @@
 }
 
 .App-infowindow {
-  display: absolute;
-  top: 0;
-  left: 0;
-  height: 150px;
+  /*height: 150px;*/
   width: 150px;
-  color: rgba(255,0,0,1);
+  color: #000;
   padding: 0;
 }
 

@@ -4,25 +4,6 @@ import { InfoWindow, Marker} from '@react-google-maps/api'
 import { connect } from "react-redux";
 import * as ACTIONS from "./../../actions/actionConstants";
 
-const StationWindow = ({...props}) => {
-  let {data, position, marker} = props;
-  return <InfoWindow
-        position={position}
-        options={{
-          pixelOffset: {height:-30,width:0}
-        }}
-        style={{padding:0}}
-        key={data._id}
-        >
-        <div className="App-infowindow">
-          <h3>{data.hostname}</h3>
-          <p>{data.ip_local}<br />
-          {data.username}<br />
-          {data._changed}</p>
-        </div>
-      </InfoWindow>
-  }
-
 class MyMarker extends React.Component {
   static propTypes = {
     position: PropTypes.string,
@@ -32,19 +13,16 @@ class MyMarker extends React.Component {
     super(props);
   }
   handleMouseOverMarker = (e, data) => {
-    this.props.getInfoWindow({showInfoWindow: true, markerData: data})
+    this.props.getInfoWindow(data)
   }
 
   handleMouseExitMarker = () => {
-    this.props.hideInfoWindow({
-      showInfoWindow: false,
-      markerData: null
-    });
+    this.props.hideInfoWindow();
   }
   
   render() {
     const { handleMouseExitMarker, handleMouseOverMarker } = this;
-    let {data, clusterer, setMarker } = this.props;
+    let {data, clusterer, markerData } = this.props;
     let loc = data.location.split(',');
     let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
     let image ={
@@ -61,9 +39,8 @@ class MyMarker extends React.Component {
         icon={image}
         title={`${data.hostname}-${data.username}`}
         onMouseOver={(m) => handleMouseOverMarker(m,data)}
-        onMouseOut={() => handleMouseExitMarker}
+        onMouseOut={() => handleMouseExitMarker()}
       />
-      {true && (<StationWindow position={locObj} data={data}/>)}
       </div>
     )
   }
@@ -73,7 +50,7 @@ class MyMarker extends React.Component {
 function mapStateToProps(state) {
   return {
     state,
-    marker: state.map.marker
+    markerData: state.map.showInfoWindow
   };
 }
 
@@ -81,8 +58,8 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     getAllWorkstations: () => dispatch({ type: ACTIONS.STATIONS_API_REQUEST }),
-    getInfoWindow: (data) => dispatch({ type: ACTIONS.SHOW_INFOWINDOW, data }),
-    hideInfoWindow: () => dispatch({type: ACTIONS.HIDE_INFOWINDOW})
+    getInfoWindow: (data) => dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data }),
+    hideInfoWindow: () => dispatch({type: ACTIONS.SHOW_INFOWINDOW, payload: false})
   };
 }
 

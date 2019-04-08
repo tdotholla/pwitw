@@ -9,16 +9,19 @@ function MapReducer(state = INITIAL_STATE, action) {
   const { payload, type, error } = action;
   switch (type) {
     case ACTIONS.SHOW_INFOWINDOW: {
-      return { ...state, 'status': "FETCHING"};
-    }
-    case ACTIONS.HIDE_INFOWINDOW: {
-      // console.log(payload)
-      return { ...state, 'status': null };
+      return { ...state, 
+        'showInfoWindow': payload
+      };
     }
     case ACTIONS.MAP_LOADED: {
       // console.log(error)
       return { ...state, 
         'GMap': payload 
+      };
+    }
+    case ACTIONS.SET_BROWSER_LOCATION: {
+      return {...state, 
+        'browserLoc': payload
       };
     }
     default:
