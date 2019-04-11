@@ -10,7 +10,10 @@ import m4 from "./images/m4.png";
 import m5 from "./images/m5.png";
 import markerPin from "./images/pin-red.png";
 import * as ACTIONS from "./../../actions/actionConstants";
+
 import MyMarker from './myMarker'
+import CenterButton from './CenterButton'
+
 // import { getAllWorkstations } from "./../../actions/actionConstants"
 // const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
@@ -67,7 +70,6 @@ const StationWindow = (props) => {
       <div className="App-infowindow">
         <h3>{data.hostname}</h3>
         <p>{isHome ? '@Home' : data.ip_public}<br />
-        User: {data.username}<br />
         Last Connection: {distanceInWords(new Date(data._changed), new Date())}</p>
       </div>
     </InfoWindow>
@@ -280,10 +282,8 @@ class FullMap extends Component {
       navigator.geolocation.getCurrentPosition((pos) => {
         const coords = pos.coords;
         this.props.setBrowserLocation({
-          browserLocation: {
-            lat: coords.latitude,
-            lng: coords.longitude
-          }
+          lat: coords.latitude,
+          lng: coords.longitude
         })
       })
     }
@@ -297,7 +297,7 @@ class FullMap extends Component {
 
 
   render() {
-    const { center, zoom, options } = this.props
+    let { center, zoom, options } = this.props
     const { getInfoWindow, mapLoaded, markerData, PCs, GMap, browserLoc } = this.props;
     const { handleMouseOverCluster} = this;
     return (
