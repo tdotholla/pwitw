@@ -299,7 +299,7 @@ class FullMap extends Component {
 
   render() {
     let { center, zoom, options } = this.props
-    const { getInfoWindow, mapLoaded, markerData, PCs, GMap, browserLoc } = this.props;
+    const { getInfoWindow, mapLoaded, markerData, stations, GMap, browserLoc } = this.props;
     const { handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly
@@ -319,24 +319,25 @@ class FullMap extends Component {
           center={browserLoc || center}
           zoom={zoom}
           options={options}
-        >{
-          PCs && (<div>
-            {
-              // showInfoWindow && markerData && (<StationWindow position={markerData.location} stations={[markerData]}/>)
-          }
-            <MarkerClusterer 
-            imagePath={`localhost:3000/images/m`} 
-            styles={clusterStyles}
-            >{
-              (clusterer) => PCs.map((ws) => {
-                  return ws.location && <MyMarker key={ws._id} data={ws} clusterer={clusterer}/>
-                  })
-              }</MarkerClusterer>
-              {markerData && (<StationWindow position={markerData.location} data={markerData}/>)}
-              </div> )
-            }</GoogleMap>
+          >{ stations && (
+            <div> 
+              <MarkerClusterer 
+              imagePath={`localhost:3000/images/m`} 
+              styles={clusterStyles}
+              >{
+                (clusterer) => stations.map((ws) => {
+                    return ws.location && <MyMarker key={ws._id} data={ws} clusterer={clusterer}/>
+                    })
+                }
+              </MarkerClusterer> {
+                markerData && (<StationWindow position={markerData.location} data={markerData}/>)
+              }
+            <StatsList data={stations} />
+            </div> )
+            }
+        </GoogleMap>
       </LoadScript>
-      <StatsList data={PCs} />
+      
       </div>
     );
   }
@@ -349,7 +350,7 @@ FullMap.propTypes = {
 function mapStateToProps(state) {
   return {
     state,
-    PCs: state.stations.all,
+    stations: state.stations.all,
     GMap: state.map.Gmap,
     browserLoc: state.map.browserLoc,
     markerData: state.map.showInfoWindow
