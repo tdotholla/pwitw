@@ -12,6 +12,7 @@ import markerPin from "./images/pin-red.png";
 import * as ACTIONS from "./../../actions/actionConstants";
 
 import MyMarker from './myMarker'
+import StatsList from './StatsList'
 import CenterButton from './CenterButton'
 
 // import { getAllWorkstations } from "./../../actions/actionConstants"
@@ -303,6 +304,7 @@ class FullMap extends Component {
     return (
       // Important! Always set the container height explicitly
       //set via app-map classname
+      <div>
       <LoadScript
         id="script-loader"
         googleMapsApiKey="AIzaSyCa7QqTqLMM66gRtaW9KPFPdfkXgFAG8pA"
@@ -334,6 +336,8 @@ class FullMap extends Component {
               </div> )
             }</GoogleMap>
       </LoadScript>
+      <StatsList data={PCs} />
+      </div>
     );
   }
 }
