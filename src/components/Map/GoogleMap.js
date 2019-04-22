@@ -89,7 +89,7 @@ class FullMap extends Component {
     zoom: 5,
     options: {
       clickableIcons: false,
-      disableDefaultUI: true,
+      disableDefaultUI: false,
       fullscreenControl: false,  
       mapTypeControl: false,
       scaleControl: false,

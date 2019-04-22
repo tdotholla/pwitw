@@ -1,6 +1,16 @@
  import React, { Component } from 'react';
- 
- export class CenterButton extends Component {
+ import * as ACTIONS from "./../../actions/actionConstants";
+
+
+const targetClient = function(map,pos) {
+  // SET CENTER, 
+  // ZOOM TO CERTAIN LEVEL
+    map.instance.panTo(pos);
+    // google.maps.event.trigger(map, 'resize');
+    map.instance.setZoom(12);
+};
+
+ class CenterButton extends Component {
  	render() {
  		return (
  			<div>
@@ -18,12 +28,3 @@
  		);
  	}
  }
-
-
-targetClient = function(map,pos) {
-  // SET CENTER, 
-  // ZOOM TO CERTAIN LEVEL
-    map.instance.panTo(pos);
-    google.maps.event.trigger(map, 'resize');
-    map.instance.setZoom(12);
-};
