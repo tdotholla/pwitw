@@ -3,9 +3,7 @@ import {
   call,
   put,
   fork,
-  takeLatest,
-  takeEvery, 
-  select
+  takeLatest
 } from "redux-saga/effects";
 //Actions
 import * as ACTIONS from "../actions/actionConstants";

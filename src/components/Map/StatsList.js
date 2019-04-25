@@ -1,34 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from "react-redux";
 import classNames from 'classnames';
 import {distanceInWords} from "date-fns"
 
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
-
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExploreIcon from '@material-ui/icons/Explore';
 
-import * as ACTIONS from "./../../actions/actionConstants";
+import { isHome } from "../../functions";
+// import * as ACTIONS from "./../../actions/actionConstants";
 
 const drawerWidth = 240;
 
@@ -73,11 +63,17 @@ const styles = theme => ({
     flexGrow: 1,
     padding: 0,
   },
+  warning: {
+    color: '#f00'
+  },
+  safe: {
+    color: '#0b0'
+  }
 });
 
 class StatsList extends React.Component {
 	static propTypes = {
-		name: PropTypes.string,
+		data: PropTypes.array,
 	};
 
 	constructor(props) {
@@ -96,14 +92,14 @@ class StatsList extends React.Component {
   };
 
 	render() {
-    const { classes, theme, data } = this.props;
+    const { classes, data } = this.props;
     let sortable_by_logon = []
     data.map((ws) => {
-      sortable_by_logon.push([ws.hostname, new Date(ws._changed)])
+      return sortable_by_logon.push( [ws.hostname, new Date(ws._changed), ws.ip_local] )
     })
     sortable_by_logon = sortable_by_logon.sort((a,b) => b[1]- a[1])
     const not_in_office = Object.values(data).filter(val => val['ip_local'].split('.')[1] !== '117' )
-
+    const headers = ["Last Logon", "Hostname", "Location"]
 		return (
 			<div>
         <Drawer
@@ -130,11 +126,16 @@ class StatsList extends React.Component {
                     <Typography className={classes.heading}><ScheduleIcon fontSize="small"/> STATS </Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
-                    <table>
+                    <table >
                       <tbody>
-                        <tr><th>Last Logon</th><th>Hostname</th></tr>
+                        <tr>{headers.map((title)=> <th key={title}>{title}</th> )}
+                        </tr>
                         {sortable_by_logon.map((ws) => (
-                          <tr key={ws[0]}><td>{distanceInWords(new Date(ws[1]), new Date())}</td><td>{ws[0]}</td></tr>
+                          <tr key={ws[0]}>
+                            <td>{distanceInWords(new Date(ws[1]), new Date())}</td>
+                            <td>{ws[0]}</td>
+                            <td>{isHome(ws[2]) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</td>
+                          </tr>
                           )
                         )}
                       </tbody>
@@ -142,10 +143,12 @@ class StatsList extends React.Component {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </ListItem>
+                        <Divider />
+{/*
               <ListItem disableGutters>
                 <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}><ScheduleIcon fontSize="small"/> STATS </Typography>
+                    <Typography className={classes.heading}><ExploreIcon fontSize="small"/> Outside of LAN </Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                   <table>
@@ -160,7 +163,8 @@ class StatsList extends React.Component {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
               </ListItem>
-          </List>
+*/
+}          </List>
           <Divider />
         </Drawer>
 			</div>

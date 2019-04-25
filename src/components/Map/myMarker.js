@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { InfoWindow, Marker} from '@react-google-maps/api'
+import { Marker} from '@react-google-maps/api'
 import { connect } from "react-redux";
 import * as ACTIONS from "./../../actions/actionConstants";
 
@@ -9,9 +9,6 @@ class MyMarker extends React.Component {
     position: PropTypes.string,
   };
 
-  constructor(props) {
-    super(props);
-  }
   handleMouseOverMarker = (e, data) => {
     this.props.getInfoWindow(data)
   }
@@ -22,7 +19,7 @@ class MyMarker extends React.Component {
   
   render() {
     const { handleMouseExitMarker, handleMouseOverMarker } = this;
-    let {data, clusterer, markerData } = this.props;
+    let { data, clusterer } = this.props;
     let loc = data.location.split(',');
     let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
     let image ={
@@ -47,13 +44,6 @@ class MyMarker extends React.Component {
 }
 
 //Redux
-function mapStateToProps(state) {
-  return {
-    state,
-    markerData: state.map.showInfoWindow
-  };
-}
-
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
@@ -64,6 +54,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(MyMarker)

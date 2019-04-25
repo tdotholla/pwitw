@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 };
 
 function MapReducer(state = INITIAL_STATE, action) {
-  const { payload, type, error } = action;
+  const { payload, type } = action;
   switch (type) {
     case ACTIONS.SHOW_INFOWINDOW: {
       return { ...state, 

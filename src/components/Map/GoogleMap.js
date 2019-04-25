@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow } from '@react-google-maps/api'
 import { connect } from "react-redux";
 import {distanceInWords} from "date-fns"
+
+import { isHome } from "../../functions";
 import m1 from "./images/m1.png";
 import m2 from "./images/m2.png";
 import m3 from "./images/m3.png";
 import m4 from "./images/m4.png";
 import m5 from "./images/m5.png";
-import markerPin from "./images/pin-red.png";
 import * as ACTIONS from "./../../actions/actionConstants";
 
 import MyMarker from './myMarker'
@@ -56,11 +56,12 @@ const clusterStyles= [
     textSize: 11
   }
 ]
+
 const StationWindow = (props) => {
-  let {data, position, marker} = props;
+  let { data, position } = props;
   let loc = position.split(',');
   let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
-  let isHome = (data.ip_local.split('.')[1] === "117")
+
   return ( 
     <InfoWindow
       position={locObj}
@@ -70,7 +71,7 @@ const StationWindow = (props) => {
       >
       <div className="App-infowindow">
         <h3>{data.hostname}</h3>
-        <p>{isHome ? '@Home' : data.ip_public}<br />
+        <p><strong>{isHome(data.ip_local) ? '@Home' : data.ip_public} </strong><br />
         Last Connection: {distanceInWords(new Date(data._changed), new Date())}</p>
       </div>
     </InfoWindow>
@@ -78,9 +79,6 @@ const StationWindow = (props) => {
   }
 
 class FullMap extends Component {
-  constructor(props) {
-    super(props)
-  }
 
   static defaultProps = {
     center: {
@@ -278,7 +276,9 @@ class FullMap extends Component {
 
   componentDidMount() {
     //calls from db and stores in state.stations
+    // window.setInterval(this.props.getAllWorkstations, 60000);
     this.props.getAllWorkstations();
+    
     if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((pos) => {
         const coords = pos.coords;
@@ -299,8 +299,8 @@ class FullMap extends Component {
 
   render() {
     let { center, zoom, options } = this.props
-    const { getInfoWindow, mapLoaded, markerData, stations, GMap, browserLoc } = this.props;
-    const { handleMouseOverCluster} = this;
+    const { mapLoaded, markerData, stations, browserLoc } = this.props;
+    // const { handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly
       //set via app-map classname
@@ -312,7 +312,7 @@ class FullMap extends Component {
         region="us" >
         <GoogleMap
           onLoad={map => {
-            const bounds = new window.google.maps.LatLngBounds();
+            // const bounds = new window.google.maps.LatLngBounds();
             mapLoaded(map)
           }}
           mapContainerClassName="App-map"
@@ -335,6 +335,7 @@ class FullMap extends Component {
             <StatsList data={stations} />
             </div> )
             }
+        <CenterButton />
         </GoogleMap>
       </LoadScript>
       
@@ -343,9 +344,6 @@ class FullMap extends Component {
   }
 }
 
-FullMap.propTypes = {
-  // hoverKey: PropTypes.string
-}
 //Redux
 function mapStateToProps(state) {
   return {
