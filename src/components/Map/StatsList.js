@@ -228,7 +228,7 @@ class StatsTable extends React.Component {
 		this.state = {
 	    open: false,
       order: 'desc',
-      orderBy: 'hostname',
+      orderBy: '_changed',
       selected: [],
       page: 0,
       rowsPerPage: 10
