@@ -299,7 +299,7 @@ class FullMap extends Component {
 
   render() {
     let { center, zoom, options } = this.props
-    const { mapLoaded, markerData, stations, browserLoc } = this.props;
+    const { mapLoaded, markerData, stations, browserLoc, GMap } = this.props;
     // const { handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly
@@ -332,7 +332,7 @@ class FullMap extends Component {
               </MarkerClusterer> {
                 markerData && (<StationWindow position={markerData.location} data={markerData}/>)
               }
-            <StatsList data={stations} />
+            <StatsList data={stations} map={GMap} />
             </div> )
             }
         <CenterButton />

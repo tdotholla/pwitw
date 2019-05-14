@@ -31,3 +31,11 @@ export function stableSort(array, cmp) {
 export function getSorting(order, orderBy) {
   return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
 }
+
+export function panToMarker(map,pos) {
+  // SET CENTER, 
+  // ZOOM TO CERTAIN LEVEL
+  console.log(pos)
+    map.panTo(pos);
+    map.setZoom(11);
+};

@@ -6,13 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
-
-const targetClient = function(map,pos) {
-  // SET CENTER, 
-  // ZOOM TO CERTAIN LEVEL
-    map.panTo(pos);
-    map.setZoom(11);
-};
+import {panToMarker} from "../../functions";
 
 const styles = theme => ({
   root: {
@@ -28,7 +22,7 @@ class CenterButton extends Component {
 				<Fab 
 				tabIndex="2" 
 				aria-label="Locate"
-				onClick={() => targetClient(GMap, browserLoc)}>
+				onClick={() => panToMarker(GMap, browserLoc)}>
 					<MyLocationIcon />
 				</Fab>
 		  </Tooltip>

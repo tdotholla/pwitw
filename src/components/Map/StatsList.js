@@ -33,8 +33,13 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 
-import { isHome, desc, getSorting, stableSort } from "../../functions";
+import { isHome, desc, getSorting, stableSort, panToMarker} from "../../functions";
 // import * as ACTIONS from "./../../actions/actionConstants";
+
+
+import {
+  PieChart, Pie, Sector, Cell, LabelList
+} from 'recharts';
 
 const drawerWidth = 240;
 
@@ -176,6 +181,32 @@ class EnhancedTableHead extends React.Component {
   }
 }
 
+//want amount of ppl ount vs ppl in (inside chart)
+//want groups of logins (<8 hrs, <24, <1wk 1wk>)
+
+const MyGraph = props => {
+    const data01 = [
+    { name: 'WAN', value: 60 }, { name: 'LAN', value: 40 }
+  ];
+  const data02 = [
+    { name: 'Under 8 hrs', value: 5 },
+    { name: 'Under 24 hrs', value: 50 },
+    { name: 'Under 1 Week hrs', value: 35 },
+    { name: '1 Week & Over hrs', value: 10 },
+  ];
+  return (
+      <PieChart width={400} height={400}>
+        <Pie data={data01} dataKey="value" outerRadius={60} fill="#8884d8" />
+            <LabelList dataKey="uv" position="top" />
+
+        <Pie data={data02} dataKey="value" innerRadius={70} outerRadius={90} fill="#84ca9d" label />
+            <LabelList dataKey="uv" position="top" />
+
+      </PieChart>
+    );
+}
+
+
 let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
 
@@ -266,25 +297,32 @@ class StatsTable extends React.Component {
     this.setState({ selected: [] });
   };
 
-  handleClick = (event, id) => {
-    const { selected } = this.state;
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
+  handleClick = (event, map, data) => {
+    
+    // const { selected } = this.state;
+    // const selectedIndex = selected.indexOf(id);
+    // let newSelected = [];
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+    // if (selectedIndex === -1) {
+    //   newSelected = newSelected.concat(selected, id);
+    // } else if (selectedIndex === 0) {
+    //   newSelected = newSelected.concat(selected.slice(1));
+    // } else if (selectedIndex === selected.length - 1) {
+    //   newSelected = newSelected.concat(selected.slice(0, -1));
+    // } else if (selectedIndex > 0) {
+    //   newSelected = newSelected.concat(
+    //     selected.slice(0, selectedIndex),
+    //     selected.slice(selectedIndex + 1),
+    //   );
+    // }
 
-    this.setState({ selected: newSelected });
+    // this.setState({ selected: newSelected });
+   // console.log(data) 
+  let loc = data.location.split(',');
+  let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
+    // console.log(loc, locObj)
+    panToMarker(map, locObj)
+
   };
 
   handleChangePage = (event, page) => {
@@ -298,7 +336,7 @@ class StatsTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
 	render() {
-    const { classes, data} = this.props;
+    const { classes, data, map} = this.props;
     const {order, orderBy, selected, rowsPerPage, page } = this.state;
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -346,7 +384,7 @@ class StatsTable extends React.Component {
                   return (
                     <TableRow
                       hover
-                      onClick={event => this.handleClick(event, n.id)}
+                      onClick={event => this.handleClick(null, map, n)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -373,7 +411,7 @@ class StatsTable extends React.Component {
         </div>
 
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 33, 50]}
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
@@ -387,6 +425,7 @@ class StatsTable extends React.Component {
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
+        <MyGraph />
       </Drawer>
       </Paper>
     );

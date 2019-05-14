@@ -4,43 +4,36 @@ import { Marker} from '@react-google-maps/api'
 import { connect } from "react-redux";
 import * as ACTIONS from "./../../actions/actionConstants";
 
-class MyMarker extends React.Component {
-  static propTypes = {
-    position: PropTypes.string,
-  };
-
-  handleMouseOverMarker = (e, data) => {
-    this.props.getInfoWindow(data)
+function MyMarker(props) {
+  const handleMouseOverMarker = (e, data) => {
+    props.getInfoWindow(data)
   }
 
-  handleMouseExitMarker = () => {
-    this.props.hideInfoWindow();
+  const handleMouseExitMarker = () => {
+    props.hideInfoWindow();
   }
+  let { data, clusterer } = props;
+  let loc = data.location.split(',');
+  let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
+  let image ={
+    url: "https://cdn0.iconfinder.com/data/icons/gloss-basic-icons-by-momentum/32/pin-red.png",
+  }
+
+  return (
+    <div>
+    <Marker 
+      className="App-marker"
+      key={data._id}
+      position={locObj}
+      clusterer={clusterer}
+      icon={image}
+      title={`${data.hostname}-${data.username}`}
+      onMouseOver={(m) => handleMouseOverMarker(m,data)}
+      onMouseOut={() => handleMouseExitMarker()}
+    />
+    </div>
+  )
   
-  render() {
-    const { handleMouseExitMarker, handleMouseOverMarker } = this;
-    let { data, clusterer } = this.props;
-    let loc = data.location.split(',');
-    let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
-    let image ={
-      url: "https://cdn0.iconfinder.com/data/icons/gloss-basic-icons-by-momentum/32/pin-red.png",
-    }
-
-    return (
-      <div>
-      <Marker 
-        className="App-marker"
-        key={data._id}
-        position={locObj}
-        clusterer={clusterer}
-        icon={image}
-        title={`${data.hostname}-${data.username}`}
-        onMouseOver={(m) => handleMouseOverMarker(m,data)}
-        onMouseOut={() => handleMouseExitMarker()}
-      />
-      </div>
-    )
-  }
 }
 
 //Redux
