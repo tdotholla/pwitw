@@ -34,12 +34,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 
 import { isHome, desc, getSorting, stableSort, panToMarker} from "../../functions";
+import PiGraph from './PiGraph';
 // import * as ACTIONS from "./../../actions/actionConstants";
-
-
-import {
-  PieChart, Pie, Sector, Cell, LabelList
-} from 'recharts';
 
 const drawerWidth = 240;
 
@@ -181,32 +177,6 @@ class EnhancedTableHead extends React.Component {
   }
 }
 
-//want amount of ppl ount vs ppl in (inside chart)
-//want groups of logins (<8 hrs, <24, <1wk 1wk>)
-
-const MyGraph = props => {
-    const data01 = [
-    { name: 'WAN', value: 60 }, { name: 'LAN', value: 40 }
-  ];
-  const data02 = [
-    { name: 'Under 8 hrs', value: 5 },
-    { name: 'Under 24 hrs', value: 50 },
-    { name: 'Under 1 Week hrs', value: 35 },
-    { name: '1 Week & Over hrs', value: 10 },
-  ];
-  return (
-      <PieChart width={400} height={400}>
-        <Pie data={data01} dataKey="value" outerRadius={60} fill="#8884d8" />
-            <LabelList dataKey="uv" position="top" />
-
-        <Pie data={data02} dataKey="value" innerRadius={70} outerRadius={90} fill="#84ca9d" label />
-            <LabelList dataKey="uv" position="top" />
-
-      </PieChart>
-    );
-}
-
-
 let EnhancedTableToolbar = props => {
   const { numSelected, classes } = props;
 
@@ -345,8 +315,7 @@ class StatsTable extends React.Component {
       return sortable_by_logon.push( [ws.hostname, new Date(ws._changed), ws.ip_local] )
     })
     sortable_by_logon = sortable_by_logon.sort((a,b) => b[1]- a[1])
-    const not_in_office = Object.values(data).filter(val => val['ip_local'].split('.')[1] !== '117' )
-    
+   
     const headers = ["Last Logon", "Hostname", "Location"]
 		return (
       <Paper className={classes.root}>
@@ -425,7 +394,9 @@ class StatsTable extends React.Component {
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
-        <MyGraph />
+        <div>
+          <PiGraph data={data}/>
+        </div>
       </Drawer>
       </Paper>
     );
