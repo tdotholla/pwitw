@@ -75,9 +75,8 @@ const StationWindow = (props) => {
         Last Connection: {distanceInWords(new Date(data._changed), new Date())}</p>
       </div>
     </InfoWindow>
-    )
-  }
-
+  )
+}
 class FullMap extends Component {
 
   static defaultProps = {
@@ -276,7 +275,7 @@ class FullMap extends Component {
 
   componentDidMount() {
     //calls from db and stores in state.stations
-    // window.setInterval(this.props.getAllWorkstations, 60000);
+    window.setInterval(this.props.getAllWorkstations, 20000);
     this.props.getAllWorkstations();
     
     if (navigator && navigator.geolocation) {
@@ -335,15 +334,13 @@ class FullMap extends Component {
             <StatsList data={stations} map={GMap} />
             </div> )
             }
-        <CenterButton />
+          <CenterButton />
         </GoogleMap>
       </LoadScript>
-      
       </div>
     );
   }
 }
-
 //Redux
 function mapStateToProps(state) {
   return {
@@ -355,7 +352,6 @@ function mapStateToProps(state) {
 
   };
 }
-
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,

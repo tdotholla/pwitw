@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  PieChart, Pie, LabelList, Legend
-} from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, LabelList, Tooltip } from 'recharts';
 import { isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter } from "date-fns";
 import { isHome } from "../../functions";
 
@@ -24,22 +22,24 @@ let wasThisQuarter = data.filter( x => isThisQuarter(new Date(x._changed)) )
     { name: 'WAN', value: wans.length }, { name: 'LAN', value: lans.length }
   ];
   const data02 = [
-    { name: 'Was Today', value: wasToday.length },
-    { name: 'Was Yesterday', value: wasYesterday.length },
-    { name: 'Was This Week', value: wasThisWeek.length },
-    { name: 'Was This Month', value: wasThisMonth.length },
-    { name: 'Was This Quarter', value: wasThisQuarter.length },
+    { name: 'Last Logon: Today', value: wasToday.length },
+    { name: 'Last Logon: Yesterday', value: wasYesterday.length },
+    { name: 'Last Logon: This Week', value: wasThisWeek.length },
+    { name: 'Last Logon: This Month', value: wasThisMonth.length },
+    { name: 'Last Logon: This Quarter', value: wasThisQuarter.length },
   ];
 
   return (
+    <ResponsiveContainer >
       <PieChart width={200} height={200}>
-        <Legend />
-        <Pie data={data01} labeldataKey="value" cx={100} cy={100} outerRadius={60}  />
+        <Tooltip />
+        <Pie data={data01} dataKey="value" labeldataKey="value" cx={100} cy={100} outerRadius={60}  />
 
         <Pie data={data02} cx={100} cy={100} dataKey="value" innerRadius={65} outerRadius={75} label />
             <LabelList dataKey="uv" position="top" />
 
       </PieChart>
+      </ResponsiveContainer>
     );
 }
 
