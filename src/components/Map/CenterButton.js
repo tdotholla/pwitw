@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-// import * as ACTIONS from "./../../actions/actionConstants";
 import { connect } from "react-redux";
-import { withStyles } from '@material-ui/core/styles';
 
+import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
+
+import * as ACTIONS from "../../actions/actionConstants";
 import {panToMarker} from "../../functions";
 
 const styles = theme => ({
@@ -22,7 +23,17 @@ class CenterButton extends Component {
 				<Fab 
 				tabIndex="2" 
 				aria-label="Locate"
-				onClick={() => panToMarker(GMap, browserLoc)}>
+				onClick={() => {
+					panToMarker(GMap, browserLoc);
+					if (navigator && navigator.geolocation) {
+						navigator.geolocation.getCurrentPosition((pos) => {
+							const coords = pos.coords;
+							this.props.setBrowserLocation({
+								lat: coords.latitude,
+								lng: coords.longitude
+							})
+						})
+					}}}>
 					<MyLocationIcon />
 				</Fab>
 		  </Tooltip>
@@ -30,11 +41,15 @@ class CenterButton extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-  return {
-    state
-  };
-}
+const mapStateToProps = state => ({
+	state,
+	browserLoc: state.map.browserLoc
+});
+
+const mapDispatchToProps = dispatch => ({
+	dispatch,
+	setBrowserLocation: (loc) => dispatch({type:ACTIONS.SET_BROWSER_LOCATION, payload: loc}) 
+});
 
 export default connect(
   mapStateToProps,

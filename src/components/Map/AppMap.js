@@ -9,13 +9,11 @@ import m2 from "./images/m2.png";
 import m3 from "./images/m3.png";
 import m4 from "./images/m4.png";
 import m5 from "./images/m5.png";
-import * as ACTIONS from "./../../actions/actionConstants";
+import * as ACTIONS from "../../actions/actionConstants";
 
 import MyMarker from './myMarker'
-import StatsList from './StatsList'
 import CenterButton from './CenterButton'
 
-// import { getAllWorkstations } from "./../../actions/actionConstants"
 // const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const clusterStyles= [
@@ -77,8 +75,7 @@ const StationWindow = (props) => {
     </InfoWindow>
   )
 }
-class FullMap extends Component {
-
+class AppMap extends Component {
   static defaultProps = {
     center: {
       "lat": 38.9065495,
@@ -272,22 +269,6 @@ class FullMap extends Component {
           }]
     }
   };
-
-  componentDidMount() {
-    //calls from db and stores in state.stations
-    window.setInterval(this.props.getAllWorkstations, 20000);
-    this.props.getAllWorkstations();
-    
-    if (navigator && navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const coords = pos.coords;
-        this.props.setBrowserLocation({
-          lat: coords.latitude,
-          lng: coords.longitude
-        })
-      })
-    }
-  }
   
   handleMouseOverCluster = (cluster) => {
     this.setState({
@@ -295,10 +276,9 @@ class FullMap extends Component {
     })
   }
 
-
   render() {
     let { center, zoom, options } = this.props
-    const { mapLoaded, markerData, stations, browserLoc, GMap } = this.props;
+    const { mapLoaded, markerData, data, browserLoc } = this.props;
     // const { handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly
@@ -318,20 +298,19 @@ class FullMap extends Component {
           center={browserLoc || center}
           zoom={zoom}
           options={options}
-          >{ stations && (
+          >{ data && (
             <div> 
               <MarkerClusterer 
               imagePath={`localhost:3000/images/m`} 
               styles={clusterStyles}
               >{
-                (clusterer) => stations.map((ws) => {
+                (clusterer) => data.map((ws) => {
                     return ws.location && <MyMarker key={ws._id} data={ws} clusterer={clusterer}/>
                     })
                 }
               </MarkerClusterer> {
                 markerData && (<StationWindow position={markerData.location} data={markerData}/>)
               }
-            <StatsList data={stations} map={GMap} />
             </div> )
             }
           <CenterButton />
@@ -345,23 +324,17 @@ class FullMap extends Component {
 function mapStateToProps(state) {
   return {
     state,
-    stations: state.stations.all,
-    GMap: state.map.Gmap,
-    browserLoc: state.map.browserLoc,
     markerData: state.map.showInfoWindow
-
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    getAllWorkstations: () => dispatch({ type: ACTIONS.STATIONS_API_REQUEST }),
-    mapLoaded: (map) => dispatch({ type: ACTIONS.MAP_LOADED, payload: map }),
-    setBrowserLocation: (loc) => dispatch({type:ACTIONS.SET_BROWSER_LOCATION, payload: loc}) 
+    mapLoaded: (map) => dispatch({ type: ACTIONS.MAP_LOADED, payload: map })
   };
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FullMap);
+)(AppMap);

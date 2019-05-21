@@ -1,17 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {distanceInWords} from "date-fns"
+import { Flipper, Flipped } from "react-flip-toolkit";
 
 import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ListItem from '@material-ui/core/ListItem';
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -20,28 +13,45 @@ import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Toolbar from '@material-ui/core/Toolbar';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
-
-import ScheduleIcon from '@material-ui/icons/Schedule';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExploreIcon from '@material-ui/icons/Explore';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 
-import { isHome, desc, getSorting, stableSort, panToMarker} from "../../functions";
-import PiGraph from './PiGraph';
-// import * as ACTIONS from "./../../actions/actionConstants";
-
-const drawerWidth = 240;
+import { isHome, getSorting, stableSort, panToMarker} from "../../functions";
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    display: 'flex',
+  },
+  tableWrapper: {
+    overflowX: 'auto'
+  },
+  hide: {
+    display: 'none',
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    padding: 0,
+  },
+  warning: {
+    color: '#f00'
+  },
+  safe: {
+    color: '#0b0'
+  }
+})
 
 const toolbarStyles = theme => ({
   root: {
-    paddingRight: theme.spacing.unit,
+    padding: 0,
   },
   highlight:
     theme.palette.type === 'light'
@@ -64,68 +74,11 @@ const toolbarStyles = theme => ({
   },
 });
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    display: 'flex',
-  },
-  table: {
-
-  },
-  tableWrapper: {
-    overflowX: 'auto'
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    // width: theme.spacing.unit * 7 + 1,
-    // [theme.breakpoints.up('sm')]: {
-    //   width: theme.spacing.unit * 9 + 1,
-    // },
-  },
-  toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    padding: 0,
-  },
-  warning: {
-    color: '#f00'
-  },
-  safe: {
-    color: '#0b0'
-  }
-});
-
 const rows = [
   { id: '_changed', numeric: false, disablePadding: true, label: 'Last Logon (approx.)' },
   { id: 'hostname', numeric: false, disablePadding: true, label: 'Hostname' },
   { id: 'ip_local', numeric: false, disablePadding: true, label: 'Location (approx.)' },
-  { id: 'username', numeric: false, disablePadding: true, label: 'UserName' },
+  // { id: 'username', numeric: false, disablePadding: true, label: 'UserName' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -134,29 +87,21 @@ class EnhancedTableHead extends React.Component {
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+    const { order, orderBy } = this.props;
 
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox">
-            <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
-            />
-          </TableCell>
           {rows.map(
             row => (
               <TableCell
                 key={row.id}
-                align={row.numeric ? 'right' : 'left'}
-                padding={row.disablePadding ? 'none' : 'default'}
+                align="center"
                 sortDirection={orderBy === row.id ? order : false}
               >
                 <Tooltip
                   title="Sort"
-                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                  placement="bottom"
                   enterDelay={300}
                 >
                   <TableSortLabel
@@ -186,33 +131,9 @@ let EnhancedTableToolbar = props => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <div className={classes.title}>
-        {numSelected > 0 ? (
-          <Typography color="inherit" variant="subtitle1">
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography variant="h6" id="tableTitle">
-            Asset Tracking
-          </Typography>
-        )}
-      </div>
-      <div className={classes.spacer} />
-      <div className={classes.actions}>
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton aria-label="Filter list">
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </div>
+      <Typography variant="h6" id="tableTitle">
+        Asset Tracking
+      </Typography>
     </Toolbar>
   );
 };
@@ -220,14 +141,9 @@ let EnhancedTableToolbar = props => {
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 class StatsTable extends React.Component {
-	static propTypes = {
-		data: PropTypes.array,
-	};
-
 	constructor(props) {
 		super(props);
 		this.state = {
-	    open: false,
       order: 'desc',
       orderBy: '_changed',
       selected: [],
@@ -236,19 +152,12 @@ class StatsTable extends React.Component {
 	  };
 	}
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
-
   createSortHandler = property => event => {
     this.props.onRequestSort(event,property)
   };
 
   handleRequestSort = (event, property) => {
+    
     const orderBy = property;
     let order = 'desc';
 
@@ -268,31 +177,10 @@ class StatsTable extends React.Component {
   };
 
   handleClick = (event, map, data) => {
-    
-    // const { selected } = this.state;
-    // const selectedIndex = selected.indexOf(id);
-    // let newSelected = [];
-
-    // if (selectedIndex === -1) {
-    //   newSelected = newSelected.concat(selected, id);
-    // } else if (selectedIndex === 0) {
-    //   newSelected = newSelected.concat(selected.slice(1));
-    // } else if (selectedIndex === selected.length - 1) {
-    //   newSelected = newSelected.concat(selected.slice(0, -1));
-    // } else if (selectedIndex > 0) {
-    //   newSelected = newSelected.concat(
-    //     selected.slice(0, selectedIndex),
-    //     selected.slice(selectedIndex + 1),
-    //   );
-    // }
-
-    // this.setState({ selected: newSelected });
-   // console.log(data) 
-  let loc = data.location.split(',');
-  let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
-    // console.log(loc, locObj)
+    let loc = data.location.split(',');
+    let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
+    this.setState(state => ({selected:data._id}))
     panToMarker(map, locObj)
-
   };
 
   handleChangePage = (event, page) => {
@@ -317,40 +205,28 @@ class StatsTable extends React.Component {
     sortable_by_logon = sortable_by_logon.sort((a,b) => b[1]- a[1])
    
     const headers = ["Last Logon", "Hostname", "Location"]
+    const sortableData = stableSort(data, getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    console.log(typeof sortableData)
 		return (
-      <Paper className={classes.root}>
-      <Drawer
-          variant="permanent"
-          className={classNames(classes.drawer, {
-            [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open,
-          })}
-          classes={{
-            paper: classNames({
-              [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open,
-            }),
-          }}
-          open={this.state.open}
-        >
+      <div>
         <EnhancedTableToolbar numSelected={selected.length} />
-
         <div className={classes.tableWrapper}>
-          <Table className={classes.table} aria-labelledby="tableTitle">
+        <Flipper flipKey={data}>
+          <Table className={classes.table} aria-labelledby="tableTitle" padding="none"> 
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
             />
+            
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {sortableData
                 .map(n => {
-                  const isSelected = this.isSelected(n.id);
+                  const isSelected = this.isSelected(n._id);
                   return (
+                    <Flipped key={n._id} flipId={n._id} >
                     <TableRow
                       hover
                       onClick={event => this.handleClick(null, map, n)}
@@ -360,25 +236,23 @@ class StatsTable extends React.Component {
                       key={n.hostname}
                       selected={isSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
-                      <TableCell align="right">{n.hostname}</TableCell>
-                      <TableCell align="right">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</TableCell>
-                      <TableCell align="center">{n.username}</TableCell>
+                      <TableCell align="center" component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
+                      <TableCell align="center">{n.hostname}</TableCell>
+                      <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</TableCell>
+                      {/* <TableCell align="center">{n.username}</TableCell> */}
                     </TableRow>
+                    </Flipped>
                   );
                 })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
+                <TableRow style={{ height: 30 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
             </TableBody>
           </Table>
+        </Flipper>
         </div>
-
         <TablePagination
           rowsPerPageOptions={[10, 33, 50]}
           component="div"
@@ -394,11 +268,7 @@ class StatsTable extends React.Component {
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
         />
-        <div>
-          <PiGraph data={data}/>
-        </div>
-      </Drawer>
-      </Paper>
+      </div>
     );
 	}
 }

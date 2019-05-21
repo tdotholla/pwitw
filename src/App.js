@@ -1,32 +1,45 @@
 import React, { Component } from 'react';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { MuiThemeProvider, withTheme } from "@material-ui/core";
+import { MuiThemeProvider, createMuiTheme, withTheme } from "@material-ui/core/styles";
+import purple from '@material-ui/core/colors/purple';
+import blue from '@material-ui/core/colors/blue';
 
-import logo from './logo.svg';
+import * as ACTIONS from "./actions/actionConstants";
+
 import './App.css';
-import FullMap from './components/Map/GoogleMap.js';
+import AppDrawer from './components/Drawer/AppDrawer.js';
+import AppHeader from './components/Header/AppHeader.js';
+import AppMap from './components/Map/AppMap.js';
+
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+    secondary: blue,
+  },
+  status: {
+    danger: 'orange',
+  },
+  typography: {
+    // Tell Material-UI what's the font-size on the html element is.
+  },
+});
 
 class App extends Component {
+  componentDidMount() {
+
+    window.setInterval(this.props.getAllWorkstations, 5000); //gets stations every 5 seconds
+    this.props.getAllWorkstations();     //calls from db and stores in state.stations
+  }
   render() {
+    const { stations } = this.props;
     return (
-      <MuiThemeProvider theme={null}>
+      <MuiThemeProvider theme={theme}>
         <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Edit <code>src/App.js</code> and save to reload.
-            </p>
-            <a
-              className="App-link"
-              href="https://www.perkinswill.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Perkins+Will
-            </a>
-          </header>
-          <FullMap/>
+          <AppHeader />
+          {stations && <AppDrawer data={stations} /> }
+          {stations && <AppMap data={stations} /> }
         </div>
       </MuiThemeProvider>
     );
@@ -35,12 +48,13 @@ class App extends Component {
 
 //Connect
 const mapStateToProps = state => ({
-  // authUser: state.session.authUser,
-  data: null,
+  state,
+  stations: state.stations.all
 });
 
 const mapDispatchToProps = dispatch => ({
-  // init: () => dispatch({ type: "INIT", filter: "generateData" })
+  dispatch,
+  getAllWorkstations: () => dispatch({ type: ACTIONS.STATIONS_API_REQUEST })
 });
 
 export default compose(
