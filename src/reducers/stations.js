@@ -19,7 +19,7 @@ function StationsReducer(state = INITIAL_STATE, action) {
       // console.log(error)
       return { ...state, 
         'status': error || "SUCCESS", 
-        'all': payload 
+        'byId': payload 
       };
     }
     default:
@@ -29,6 +29,6 @@ function StationsReducer(state = INITIAL_STATE, action) {
 
 export default StationsReducer;
 
-export function getAllStations(state) {
-  return (state.stations.status === "SUCCESS") && state.stations.byId;
-}
+// export function getAllStations(state) {
+//   return (state.stations.status === "SUCCESS") && state.stations.byId;
+// }

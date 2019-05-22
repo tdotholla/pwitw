@@ -42,10 +42,12 @@ const styles = theme => ({
     padding: 0,
   },
   warning: {
-    color: '#f00'
+    color: '#ee3b0e',
+    fontWeight: 'bold'
   },
   safe: {
-    color: '#0b0'
+    color: '#37bad6',
+    fontWeight: 'bold'
   }
 })
 
@@ -57,7 +59,7 @@ const toolbarStyles = theme => ({
     theme.palette.type === 'light'
       ? {
           color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+          backgroundColor: lighten(theme.palette.secondary.light, 0.55),
         }
       : {
           color: theme.palette.text.primary,
@@ -150,15 +152,9 @@ class StatsTable extends React.Component {
 	  };
 	}
 
-  createSortHandler = property => event => {
-    this.props.onRequestSort(event,property)
-  };
-
   handleRequestSort = (event, property) => {
-    
     const orderBy = property;
     let order = 'desc';
-
     if (this.state.orderBy === property && this.state.order === 'desc') {
       order = 'asc';
     }
@@ -166,18 +162,18 @@ class StatsTable extends React.Component {
     this.setState({ order, orderBy });
   };
 
-  handleSelectAllClick = event => {
-    if (event.target.checked) {
-      this.setState(state => ({ selected: state.data.map(n => n.id) }));
-      return;
-    }
-    this.setState({ selected: [] });
-  };
+  // handleSelectAllClick = event => {
+  //   if (event.target.checked) {
+  //     this.setState(state => ({ selected: state.data.map(n => n.id) }));
+  //     return;
+  //   }
+  //   this.setState({ selected: [] });
+  // };
 
   handleClick = (event, map, data) => {
     let loc = data.location.split(',');
     let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
-    this.setState(state => ({selected:data._id}))
+    this.setState(state => ({selected:data.hostname}))
     panToMarker(map, locObj)
   };
 
@@ -192,70 +188,70 @@ class StatsTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
 	render() {
-    const { classes, data, map} = this.props;
+    let { classes, data, map} = this.props;
     const {order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
-
-    let sortable_by_logon = []
-    data.map((ws) => {
-      return sortable_by_logon.push( [ws.hostname, new Date(ws._changed), ws.ip_local] )
-    })
-    sortable_by_logon = sortable_by_logon.sort((a,b) => b[1]- a[1])
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.keys(data).length - page * rowsPerPage);
+    // data = Object.values(data)
+    let sortable_by_logon = Object.values(data).map((ws) => [ws.hostname, new Date(ws._changed), ws.ip_local] ).sort((a,b) => b[1]- a[1])
    
     const headers = ["Last Logon", "Hostname", "Location"]
-    const sortableData = stableSort(data, getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    const findByHost = (data, name) => {data.find(x=>(x.hostName == name)) }
-   console.log( sortableData.map(x => x._id).join(""))
+    const sortableData = stableSort(Object.values(data), getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
+    // const findByHost = (data, name) => {data.find(x=>(x.hostName == name)) }
+    const hosts = sortableData.map(x => x.hostname);
+    //  console.log( sortableData.map(x => x.hostname).join(" "))
 		return (
       <div>
         <EnhancedTableToolbar numSelected={selected.length} />
-        <div className={classes.tableWrapper}>
-        <Flipper flipKey={sortableData.map(x => x._id)} debug>
-          <Table className={classes.table} aria-labelledby="tableTitle" padding="none"> 
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
-            />
-            
-            <TableBody>
-              {sortableData
-                .map(n => {
-                  const isSelected = this.isSelected(n._id);
-                  return (
-                    <Flipped key={n._id} flipId={n._id} >
-                      <TableRow
-                        hover
-                        onClick={event => this.handleClick(null, map, n)}
-                        role="checkbox"
-                        aria-checked={isSelected}
-                        tabIndex={-1}
-                        key={n.hostname}
-                        selected={isSelected}
-                      >
-                        <TableCell align="center" component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
-                        <TableCell align="center">{n.hostname}</TableCell>
-                        <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</TableCell>
-                        {/* <TableCell align="center">{n.username}</TableCell> */}
-                      </TableRow>
-                    </Flipped>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 30 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </Flipper>
+        <div id="StatsListWrapper" className={classes.tableWrapper}>
+          <Flipper flipKey={this.state.orderBy}>
+            <Table className={classes.table} aria-labelledby="tableTitle" padding="none"> 
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={this.handleRequestSort}
+                rowCount={data.length}
+              />
+              
+              <TableBody>
+                {sortableData
+                  .map(n => {
+                    {/* console.log(Object.keys(n)) */}
+                    const isSelected = this.isSelected(n.hostname);
+                    return (
+                      <Flipped key={n._id} flipId={n._id} >
+                        <TableRow
+                          className="rowItem"
+                          hover
+                          onClick={event => this.handleClick(null, map, n)}
+                          role="checkbox"
+                          aria-checked={isSelected}
+                          tabIndex={-1}
+                          key={n.hostname}
+                          selected={isSelected}
+                        >
+                          <TableCell align="center" component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
+                          <TableCell align="center">{n.hostname}</TableCell>
+                          <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</TableCell>
+                          {/* <TableCell align="center">{n.username}</TableCell> */}
+                        </TableRow>
+                      </Flipped>
+                    );
+                  })}
+                {/*emptyRows > 0 && (
+                  <TableRow style={{ height: 30 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )*/}
+              </TableBody>
+            </Table>
+          </Flipper>
         </div>
         <TablePagination
           rowsPerPageOptions={[10, 33, 50]}
           component="div"
-          count={data.length}
+          count={Object.keys(data).length}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{

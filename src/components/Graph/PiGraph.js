@@ -10,8 +10,8 @@ import { isHome } from "../../functions";
 //want groups of logins (<8 hrs, <24, <1wk 1wk>)
 
 const PiGraph = props => {
-  const {data, drawerWidth} = props;
-  
+  let {data, drawerWidth} = props;
+  data = Object.values(data)
   let wans = data.filter( x => !isHome(x.ip_local) )
   let lans = data.filter( x => isHome(x.ip_local) )
   let wasToday = data.filter( x => isToday(new Date(x._changed)) )
@@ -30,24 +30,25 @@ const PiGraph = props => {
     { name: 'Last Logon: This Month', value: wasThisMonth.length },
     { name: 'Last Logon: This Quarter', value: wasThisQuarter.length },
   ];
-  const colors01 = ['#F20B39','#97D52A']
-  const colors02 = ['#66B032','#FF5500','#FFDB49','#FF8C00','#B31B1B']
+
+  const colors01 = ['#ee3b0e','#37bad6']
+  const colors02 = ['#eae6cd','#84bbb5','#518173','#c18336','#B31B1B']
 
   return (
-    <ResponsiveContainer height={drawerWidth} width="100%">
+    <ResponsiveContainer height={drawerWidth*(3/4)} width="100%">
       <PieChart height={drawerWidth} width={drawerWidth}>
         <Tooltip />
-        <Pie data={data01} cx="50%" cy="50%" dataKey="value" labeldataKey="value"  outerRadius={60}>
+        <Pie data={data01} cx="50%" cy="50%" dataKey="value" outerRadius="37%">
         {
           data01.map( (entry,index) => (
-            <Cell key={`cell-$index}`} fill={colors01[index]} />
+            <Cell key={`wedge-${index}`} fill={colors01[index]}/> 
           ))
         }
         </Pie>
-        <Pie data={data02} cx="50%" cy="50%" dataKey="value" innerRadius={65} outerRadius={75} label> 
+        <Pie data={data02} cx="50%" cy="50%" dataKey="value" innerRadius="40%" outerRadius="80%" label labelLine> 
         {
           data02.map( (entry,index) => (
-            <Cell key={`cell-$index}`} fill={colors02[index]} />
+            <Cell key={`sector-${index}`} fill={colors02[index]} />
           ))
         }
         </Pie>

@@ -33,7 +33,7 @@ class App extends Component {
     this.props.getAllWorkstations();     //calls from db and stores in state.stations
   }
   render() {
-    const { stations } = this.props;
+    const { stations, state } = this.props;
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
@@ -49,7 +49,7 @@ class App extends Component {
 //Connect
 const mapStateToProps = state => ({
   state,
-  stations: state.stations.all
+  stations: state.stations.byId
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -278,7 +278,8 @@ class AppMap extends Component {
 
   render() {
     let { center, zoom, options } = this.props
-    const { mapLoaded, markerData, data, browserLoc } = this.props;
+    let { mapLoaded, markerData, data, browserLoc } = this.props;
+    data = Object.values(data)
     // const { handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly

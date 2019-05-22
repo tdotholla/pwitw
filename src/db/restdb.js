@@ -14,7 +14,9 @@ export const stationsFetchAll = () => {
   	request(dbOptions, function (error, response, body) {
   	  if (error) return reject(error)
       try {
-    	  resolve(JSON.parse(body));
+        let rawArr = JSON.parse(body);
+        let collection = Object.assign({},...rawArr.map(n => ({[n.hostname]: n}) ))
+    	  resolve(collection);
       } catch(e) {
         reject(e)
       }
