@@ -1,6 +1,8 @@
 import React from 'react';
 import { ResponsiveContainer, Cell, PieChart, Pie, LabelList, Tooltip } from 'recharts';
 import { isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter } from "date-fns";
+import { Flipper, Flipped } from "react-flip-toolkit";
+
 import { isHome } from "../../functions";
 
 //want amount of ppl out vs ppl in (inside chart)
@@ -32,25 +34,25 @@ const PiGraph = props => {
   const colors02 = ['#66B032','#FF5500','#FFDB49','#FF8C00','#B31B1B']
 
   return (
-    <ResponsiveContainer height={250} width="100%">
-        <PieChart height={drawerWidth} width={drawerWidth}>
-          <Tooltip />
-          <Pie data={data01} cx={100} cy={100} dataKey="value" labeldataKey="value"  outerRadius={60}  >
-          {
-            data01.map( (entry,index) => (
-              <Cell key={`cell-$index}`} fill={colors01[index]} />
-            ))
-          }
-          </Pie>
-          <Pie data={data02} cx={100} cy={100} dataKey="value" innerRadius={65} outerRadius={75} label>
-          {
-            data02.map( (entry,index) => (
-              <Cell key={`cell-$index}`} fill={colors02[index]} />
-            ))
-          }
-          </Pie>
-          <LabelList dataKey="uv" position="top" />
-        </PieChart>
+    <ResponsiveContainer height={drawerWidth} width="100%">
+      <PieChart height={drawerWidth} width={drawerWidth}>
+        <Tooltip />
+        <Pie data={data01} cx="50%" cy="50%" dataKey="value" labeldataKey="value"  outerRadius={60}>
+        {
+          data01.map( (entry,index) => (
+            <Cell key={`cell-$index}`} fill={colors01[index]} />
+          ))
+        }
+        </Pie>
+        <Pie data={data02} cx="50%" cy="50%" dataKey="value" innerRadius={65} outerRadius={75} label> 
+        {
+          data02.map( (entry,index) => (
+            <Cell key={`cell-$index}`} fill={colors02[index]} />
+          ))
+        }
+        </Pie>
+        <LabelList dataKey="uv" position="top" />
+      </PieChart>
     </ResponsiveContainer>
   );
   

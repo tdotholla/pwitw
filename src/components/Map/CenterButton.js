@@ -24,16 +24,21 @@ class CenterButton extends Component {
 				tabIndex="2" 
 				aria-label="Locate"
 				onClick={() => {
-					panToMarker(GMap, browserLoc);
 					if (navigator && navigator.geolocation) {
 						navigator.geolocation.getCurrentPosition((pos) => {
 							const coords = pos.coords;
-							this.props.setBrowserLocation({
+							// this.props.setBrowserLocation({
+							// 	lat: coords.latitude,
+							// 	lng: coords.longitude
+							// })
+							panToMarker(GMap, {
 								lat: coords.latitude,
 								lng: coords.longitude
-							})
+							});
+							console.log(GMap, coords)
 						})
-					}}}>
+					}
+					}}>
 					<MyLocationIcon />
 				</Fab>
 		  </Tooltip>

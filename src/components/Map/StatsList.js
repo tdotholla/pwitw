@@ -22,7 +22,7 @@ const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
-    display: 'flex',
+    display: 'flex'
   },
   tableWrapper: {
     overflowX: 'auto'
@@ -127,9 +127,7 @@ let EnhancedTableToolbar = props => {
 
   return (
     <Toolbar
-      className={classNames(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
+      className={classNames(classes.root)}
     >
       <Typography variant="h6" id="tableTitle">
         Asset Tracking
@@ -206,12 +204,13 @@ class StatsTable extends React.Component {
    
     const headers = ["Last Logon", "Hostname", "Location"]
     const sortableData = stableSort(data, getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    console.log(typeof sortableData)
+    const findByHost = (data, name) => {data.find(x=>(x.hostName == name)) }
+   console.log( sortableData.map(x => x._id).join(""))
 		return (
       <div>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
-        <Flipper flipKey={data}>
+        <Flipper flipKey={sortableData.map(x => x._id)} debug>
           <Table className={classes.table} aria-labelledby="tableTitle" padding="none"> 
             <EnhancedTableHead
               numSelected={selected.length}
@@ -227,20 +226,20 @@ class StatsTable extends React.Component {
                   const isSelected = this.isSelected(n._id);
                   return (
                     <Flipped key={n._id} flipId={n._id} >
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(null, map, n)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n.hostname}
-                      selected={isSelected}
-                    >
-                      <TableCell align="center" component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
-                      <TableCell align="center">{n.hostname}</TableCell>
-                      <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</TableCell>
-                      {/* <TableCell align="center">{n.username}</TableCell> */}
-                    </TableRow>
+                      <TableRow
+                        hover
+                        onClick={event => this.handleClick(null, map, n)}
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n.hostname}
+                        selected={isSelected}
+                      >
+                        <TableCell align="center" component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
+                        <TableCell align="center">{n.hostname}</TableCell>
+                        <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</TableCell>
+                        {/* <TableCell align="center">{n.username}</TableCell> */}
+                      </TableRow>
                     </Flipped>
                   );
                 })}
