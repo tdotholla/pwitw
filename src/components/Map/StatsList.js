@@ -195,7 +195,8 @@ class StatsTable extends React.Component {
     let sortable_by_logon = Object.values(data).map((ws) => [ws.hostname, new Date(ws._changed), ws.ip_local] ).sort((a,b) => b[1]- a[1])
    
     const headers = ["Last Logon", "Hostname", "Location"]
-    const sortableData = stableSort(Object.values(data), getSorting(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    const sortableData = stableSort(Object.values(data), getSorting(order, orderBy))
+    // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
     // const findByHost = (data, name) => {data.find(x=>(x.hostName == name)) }
     const hosts = sortableData.map(x => x.hostname);

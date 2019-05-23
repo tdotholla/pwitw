@@ -9,6 +9,7 @@ import Divider from '@material-ui/core/Divider';
 
 import PiGraph from './../Graph/PiGraph';
 import StatsList from '../Map/StatsList';
+import AssetSearch from '../Assets/AssetSearch';
 
 const drawerWidth = 440;
 
@@ -47,6 +48,7 @@ class AppDrawer extends Component {
             >
                 <PiGraph data={data} drawerWidth={drawerWidth}/>
                 <Divider />
+                <AssetSearch data={data}/>
                 <StatsList data={data} drawerWidth={drawerWidth} map={GMap}/>
                 
                 
