@@ -40,13 +40,13 @@ const PiGraph = props => {
   const data02 = [
     { name: 'Pinged Today', value: wasToday.length },
     { name: 'Yesterday', value: wasYesterday.length },
-    { name: 'This Week', value: wasThisWeek.length },
-    { name: 'This Month', value: wasThisMonth.length },
-    { name: 'This Quarter', value: wasThisQuarter.length },
+    { name: 'This Week', value: wasThisWeek.length - wasYesterday.length - wasToday.length },
+    { name: 'This Month', value: wasThisMonth.length - wasThisWeek.length },
+    { name: 'Older...', value: wasThisQuarter.length - wasThisMonth.length },
   ];
 
   const colors01 = ['rgba(238, 59, 14, 0.8)','rgba(55, 186, 214, 0.8)']
-  const colors02 = ['rgba(234, 230, 205, .8)','rgba(132, 187, 181, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)']
+  const colors02 = ['rgba(215, 220, 205, 1)','rgba(132, 187, 181, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)']
 
 
   return (

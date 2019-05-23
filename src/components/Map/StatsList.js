@@ -202,8 +202,6 @@ class StatsTable extends React.Component {
     const hosts = sortableData.map(x => x.hostname);
     //  console.log( sortableData.map(x => x.hostname).join(" "))
 		return (
-      <div>
-        <EnhancedTableToolbar numSelected={selected.length} />
         <div id="StatsListWrapper" className={classes.tableWrapper}>
           <Flipper flipKey={this.state.orderBy}>
             <Table className={classes.table} aria-labelledby="tableTitle" padding="none"> 
@@ -221,7 +219,7 @@ class StatsTable extends React.Component {
                     {/* console.log(Object.keys(n)) */}
                     const isSelected = this.isSelected(n.hostname);
                     return (
-                      <Flipped key={n._id} flipId={n._id} >
+                      <Flipped key={n._id} flipId={n._id} spring="stiff" >
                         <TableRow
                           className="rowItem"
                           hover
@@ -234,37 +232,15 @@ class StatsTable extends React.Component {
                         >
                           <TableCell align="center" component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
                           <TableCell align="center">{n.hostname}</TableCell>
-                          <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>WAN</span>}</TableCell>
-                          {/* <TableCell align="center">{n.username}</TableCell> */}
+                          <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>{n.region ? n.region : "WAN"}</span>}</TableCell>
                         </TableRow>
                       </Flipped>
                     );
                   })}
-                {/*emptyRows > 0 && (
-                  <TableRow style={{ height: 30 * emptyRows }}>
-                    <TableCell colSpan={6} />
-                  </TableRow>
-                )*/}
               </TableBody>
             </Table>
           </Flipper>
         </div>
-        <TablePagination
-          rowsPerPageOptions={[10, 33, 50]}
-          component="div"
-          count={Object.keys(data).length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          backIconButtonProps={{
-            'aria-label': 'Previous Page',
-          }}
-          nextIconButtonProps={{
-            'aria-label': 'Next Page',
-          }}
-          onChangePage={this.handleChangePage}
-          onChangeRowsPerPage={this.handleChangeRowsPerPage}
-        />
-      </div>
     );
 	}
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow, HeatmapLayer } from '@react-google-maps/api'
 import { connect } from "react-redux";
 import {distanceInWords} from "date-fns"
 
@@ -13,8 +13,6 @@ import * as ACTIONS from "../../actions/actionConstants";
 
 import MyMarker from './myMarker'
 import CenterButton from './CenterButton'
-
-// const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const clusterStyles= [
   {
@@ -64,7 +62,7 @@ const StationWindow = (props) => {
     <InfoWindow
       position={locObj}
       options={{
-        pixelOffset: {height:-30,width:0}
+        pixelOffset: {height:-30,width:0},
       }}
       >
       <div className="App-infowindow">
@@ -75,7 +73,16 @@ const StationWindow = (props) => {
     </InfoWindow>
   )
 }
+
+const libraries = ["visualization"];
+
 class AppMap extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      map: null
+    }
+  }
   static defaultProps = {
     center: {
       "lat": 38.9065495,
@@ -280,19 +287,26 @@ class AppMap extends Component {
     let { center, zoom, options } = this.props
     let { mapLoaded, markerData, data, browserLoc } = this.props;
     data = Object.values(data)
-    // const { handleMouseOverCluster} = this;
+    let locArray = data.map(x => {
+      let locObjs = {"lat": parseFloat(x.location.split(",")[0]), "lng": parseFloat(x.location.split(",")[1]) }
+      return locObjs
+      } )
+      // const { handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly
       //set via app-map classname
-      <div>
+
       <LoadScript
-        id="script-loader"
-        googleMapsApiKey="AIzaSyCa7QqTqLMM66gRtaW9KPFPdfkXgFAG8pA"
-        language="en"
-        region="us" >
+      id="script-loader"
+      googleMapsApiKey="AIzaSyCa7QqTqLMM66gRtaW9KPFPdfkXgFAG8pA"
+      language="en"
+      region="us" 
+      libraries={libraries} 
+      >
         <GoogleMap
           onLoad={map => {
             // const bounds = new window.google.maps.LatLngBounds();
+            this.setState({map: map})
             mapLoaded(map)
           }}
           mapContainerClassName="App-map"
@@ -301,23 +315,25 @@ class AppMap extends Component {
           options={options}
           >{ data && (
             <div> 
+            
+            
               <MarkerClusterer 
-              imagePath={`localhost:3000/images/m`} 
               styles={clusterStyles}
+              onClick={(event) =>{console.log(event.getMarkers())}}
               >{
-                (clusterer) => data.map((ws) => {
-                    return ws.location && <MyMarker key={ws._id} data={ws} clusterer={clusterer}/>
-                    })
+                (clusterer) => data.map((ws) => <MyMarker key={ws._id} data={ws} clusterer={clusterer}/>)
                 }
-              </MarkerClusterer> {
+              </MarkerClusterer> 
+              {
                 markerData && (<StationWindow position={markerData.location} data={markerData}/>)
               }
             </div> )
             }
           <CenterButton />
+          {/* <HeatmapLayer map={this.state.map && this.state.map} data={data.map(x => {x.location})} /> */}
         </GoogleMap>
       </LoadScript>
-      </div>
+
     );
   }
 }
@@ -331,7 +347,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    mapLoaded: (map) => dispatch({ type: ACTIONS.MAP_LOADED, payload: map })
+    mapLoaded: (map) => dispatch({ type: ACTIONS.MAP_LOADED, payload: map }),
+    getInfoWindow: (data) => dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data }),
   };
 }
 

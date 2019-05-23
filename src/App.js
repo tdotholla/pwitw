@@ -7,7 +7,7 @@ import blue from '@material-ui/core/colors/blue';
 
 import * as ACTIONS from "./actions/actionConstants";
 
-import './App.css';
+import './App.scss';
 import AppDrawer from './components/Drawer/AppDrawer.js';
 import AppHeader from './components/Header/AppHeader.js';
 import AppMap from './components/Map/AppMap.js';

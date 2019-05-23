@@ -26,8 +26,10 @@ function MyMarker(props) {
       key={data._id}
       position={locObj}
       clusterer={clusterer}
+      data={data}
       icon={image}
       title={`${data.hostname}-${data.username}`}
+      customData={JSON.stringify(data)}
       onMouseOver={(m) => handleMouseOverMarker(m,data)}
       onMouseOut={() => handleMouseExitMarker()}
     />
