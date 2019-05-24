@@ -67,7 +67,7 @@ const StationWindow = (props) => {
       >
       <div className="App-infowindow">
         <h3>{data.hostname}</h3>
-        <p><strong>{isHome(data.ip_local) ? '@Home' : data.ip_public} </strong><br />
+        <p><strong>{isHome(data.ip_local) ? data.region : data.ip_public} </strong><br />
         Last Connection: {distanceInWords(new Date(data._changed), new Date())}</p>
       </div>
     </InfoWindow>

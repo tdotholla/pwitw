@@ -20,7 +20,12 @@ function StationsReducer(state = INITIAL_STATE, action) {
       return { ...state, 
         'status': error || "SUCCESS", 
         'byId': payload 
-      };
+      }
+    }
+    case ACTIONS.UPDATE_LIST: {
+      return { ...state,
+      'byId': payload
+      }
     }
     default:
       return state;

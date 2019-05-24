@@ -1,3 +1,39 @@
+
+//Constants
+$breakpoints: (phone: 640px, 
+               tablet: 768px, 
+               desktop: 1024px) !default;
+$media-expressions: (screen: "screen", 
+                     handheld: "handheld",
+                     retina2x: 
+                     ("(-webkit-min-device-pixel-ratio: 2)", 
+                     "(min-resolution: 192dpi)")) !default;
+$drawerWidth: 440px;                     
+//Mixins
+@mixin breakpoint($point) {
+  @if $point == desktop {
+    @media (min-width: 70em) { @content ; }
+ }
+  @else if $point == laptop {
+    @media (min-width: 64em) { @content ; }
+ }
+   @else if $point == tablet {
+    @media (min-width: 50em) { @content ; }
+ }
+  @else if $point == phablet {
+    @media (min-width: 37.5em)  { @content ; }
+ }
+ @else if $point == mobileonly {
+    @media (max-width: 37.5em)  { @content ; }
+
+ }
+}
+
+@include breakpoint(phablet) {
+  // $drawerWidth: 640px;
+}
+
+
 .App {
   text-align: center;
 }
@@ -32,15 +68,29 @@
   user-select: none;
   transform: translate(-50%, -50%);
 }
-$drawerWidth: 640px;
+
+.App-drawer {
+  // @include breakpoint(desktop) {
+  //   $drawerWidth: 440px;
+  // }
+  @include breakpoint(mobileonly) {
+    width: 240px;
+  }
+  padding: 0 3px;
+  width: $drawerWidth;
+}
+
 .App-map {
+  @include breakpoint(mobileonly) {
+    width: calc(100% - 240px);  
+  }
+  width: calc(100% - 440px);
   background-color: #61dafb;
   position: fixed !important;
   right: 0;
   bottom: 0;
   height: 95vh;
-  margin-left: $drawerWidth;
-  width: 100%;
+  ;
 }
 
 .App-infowindow {
@@ -51,13 +101,15 @@ $drawerWidth: 640px;
 }
 
 .App-Centerbutton {
-  
+  position: absolute;
+  bottom: 110px;
+  right: 0;
+  margin: 7px;
 }
 
 .pieWedge, .pieSector {
   transition: all .4s ease-in;
   // animation: fadeIn 3s ease;
-  animation: shake 0.4s ease-in
 } 
 
 .rowItem {

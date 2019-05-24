@@ -5,6 +5,7 @@ export const STATIONS_API_START = "STATIONS_API_START";
 export const STATIONS_API_RESULT = "STATIONS_API_RESULT";
 
 export const SHOW_INFOWINDOW = "SHOW_INFOWINDOW";
+export const UPDATE_LIST = "UPDATE_LIST;"
 
 export const MAP_LOADED = "MAP_LOADED";
 

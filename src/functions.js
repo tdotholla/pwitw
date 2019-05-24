@@ -41,4 +41,5 @@ export function panToMarker(map,pos) {
 };
 
 
+
 export const GEOCENTER = {'lat':  39.8283, 'lng': -98.5795};

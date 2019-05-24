@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { compose } from "redux";
 import { connect } from "react-redux";
+import Loader from 'react-loader-spinner'
+
 import { MuiThemeProvider, createMuiTheme, withTheme } from "@material-ui/core/styles";
 import purple from '@material-ui/core/colors/purple';
 import blue from '@material-ui/core/colors/blue';
@@ -38,6 +40,12 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <AppHeader />
+          { !stations && <Loader 
+              type="Plane"
+              color="#00BFFF"
+              height="50%"	
+              width="50%"
+            /> }
           {stations && <AppDrawer data={stations} /> }
           {stations && <AppMap data={stations} /> }
         </div>

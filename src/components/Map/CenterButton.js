@@ -15,10 +15,12 @@ class CenterButton extends Component {
 		
 		return (
 			<Tooltip title="Zoom Out" aria-label="Zoom Out">
+			<div className="App-Centerbutton">
 				<Fab 
 				tabIndex="2" 
 				aria-label="Locate"
-				className="App-Centerbutton"
+				style={{backgroundColor:"rgba(55, 186, 214, 1)"}}
+				size="medium"
 				onClick={() => {
 					//if browser position; pan and zoom out
 					if (navigator && navigator.geolocation) {
@@ -43,6 +45,7 @@ class CenterButton extends Component {
 					}}>
 					<MyLocationIcon />
 				</Fab>
+			</div>
 		  </Tooltip>
 		);
 	}

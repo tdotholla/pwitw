@@ -41,7 +41,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: 0,
+    padding: 3,
   },
   warning: {
     color: '#ee3b0e',
