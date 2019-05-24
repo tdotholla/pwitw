@@ -7,30 +7,28 @@ import Tooltip from '@material-ui/core/Tooltip';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 
 import * as ACTIONS from "../../actions/actionConstants";
-import {panToMarker} from "../../functions";
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-  }
-});
+import {GEOCENTER, panToMarker} from "../../functions";
 
 class CenterButton extends Component {
 	render() {
 		const { GMap, browserLoc } = this.props.state.map;
+		
 		return (
-			<Tooltip title="Use Your Location!" aria-label="Center">
+			<Tooltip title="Zoom Out" aria-label="Zoom Out">
 				<Fab 
 				tabIndex="2" 
 				aria-label="Locate"
+				className="App-Centerbutton"
 				onClick={() => {
+					//if browser position; pan and zoom out
 					if (navigator && navigator.geolocation) {
 						navigator.geolocation.getCurrentPosition((pos) => {
 							const coords = pos.coords;
-							// this.props.setBrowserLocation({
-							// 	lat: coords.latitude,
-							// 	lng: coords.longitude
-							// })
+							console.log(this.props)
+							this.props.setBrowserLocation({
+								lat: coords.latitude,
+								lng: coords.longitude
+							})
 							panToMarker(GMap, {
 								lat: coords.latitude,
 								lng: coords.longitude
@@ -38,6 +36,10 @@ class CenterButton extends Component {
 							console.log(GMap, coords)
 						})
 					}
+					//else pan to default center & zoom out
+					// panToMarker(GMap, {GEOCENTER);
+					GMap.setCenter(GEOCENTER)
+					GMap.setZoom(5)
 					}}>
 					<MyLocationIcon />
 				</Fab>
@@ -58,5 +60,5 @@ const mapDispatchToProps = dispatch => ({
 
 export default connect(
   mapStateToProps,
-  null
-)(withStyles(styles)(CenterButton));
+  mapDispatchToProps
+)(CenterButton);

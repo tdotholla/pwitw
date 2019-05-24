@@ -1,5 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
+import { compose } from "redux";
+import { connect } from "react-redux";
 import {distanceInWords} from "date-fns"
 import { Flipper, Flipped } from "react-flip-toolkit";
 
@@ -14,9 +16,9 @@ import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
-
 import { lighten } from '@material-ui/core/styles/colorManipulator'
 
+import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome, getSorting, stableSort, panToMarker} from "../../functions";
 const styles = theme => ({
   root: {
@@ -171,10 +173,12 @@ class StatsTable extends React.Component {
   // };
 
   handleClick = (event, map, data) => {
+    //when row of data is selected, pan to it's marker and show the infowindow
     let loc = data.location.split(',');
     let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
     this.setState(state => ({selected:data.hostname}))
     panToMarker(map, locObj)
+    this.props.showInfoWindow(data)
   };
 
   handleChangePage = (event, page) => {
@@ -245,4 +249,18 @@ class StatsTable extends React.Component {
 	}
 }
 
-export default withStyles(styles, { withTheme: true })(StatsTable);
+//Redux
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+    showInfoWindow: (data) => dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data }),
+    hideInfoWindow: () => dispatch({type: ACTIONS.SHOW_INFOWINDOW, payload: false})
+  };
+}
+export default compose(
+  connect(
+    null,
+    mapDispatchToProps,
+  ),
+  withStyles(styles, { withTheme: true })
+  )(StatsTable);

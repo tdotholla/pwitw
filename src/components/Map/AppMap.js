@@ -3,7 +3,7 @@ import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow, HeatmapLayer } from 
 import { connect } from "react-redux";
 import {distanceInWords} from "date-fns"
 
-import { isHome } from "../../functions";
+import { GEOCENTER, isHome } from "../../functions";
 import m1 from "./images/m1.png";
 import m2 from "./images/m2.png";
 import m3 from "./images/m3.png";
@@ -84,10 +84,7 @@ class AppMap extends Component {
     }
   }
   static defaultProps = {
-    center: {
-      "lat": 38.9065495,
-      "lng": -77.0518192
-    },
+    center: GEOCENTER,
     zoom: 5,
     options: {
       clickableIcons: false,
@@ -99,6 +96,8 @@ class AppMap extends Component {
       streetViewControl: false,
       gestureHandling: "cooperative",
       scrollwheel: true,
+      maxZoom: 14,
+      minZoom: 3,
       // Map styles; snippets from 'Snazzy Maps'.
       styles: [
           {
@@ -286,11 +285,18 @@ class AppMap extends Component {
   render() {
     let { center, zoom, options } = this.props
     let { mapLoaded, markerData, data, browserLoc } = this.props;
-    data = Object.values(data)
-    let locArray = data.map(x => {
-      let locObjs = {"lat": parseFloat(x.location.split(",")[0]), "lng": parseFloat(x.location.split(",")[1]) }
-      return locObjs
-      } )
+    //Render What? A HOC that loads the google-maps-sdk, the Map container and all components within it. 
+    //Render Map
+    //Render WAN Markers (cluster, but change colors...)
+    //Render LAN Markers (Cluster)
+    //Render Info Window(s)
+    let lanData = Object.values(data).filter(x => isHome(x.ip_local));
+    let wanData = Object.values(data).filter(x => !isHome(x.ip_local))
+
+    // let locArray = wanData.map(x => {
+    //   let locObjs = {"lat": parseFloat(x.location.split(",")[0]), "lng": parseFloat(x.location.split(",")[1]) }
+    //   return locObjs
+    //   } )
       // const { handleMouseOverCluster} = this;
     return (
       // Important! Always set the container height explicitly
@@ -313,22 +319,22 @@ class AppMap extends Component {
           center={browserLoc || center}
           zoom={zoom}
           options={options}
-          >{ data && (
-            <div> 
-            
-            
-              <MarkerClusterer 
-              styles={clusterStyles}
-              onClick={(event) =>{console.log(event.getMarkers())}}
-              >{
-                (clusterer) => data.map((ws) => <MyMarker key={ws._id} data={ws} clusterer={clusterer}/>)
-                }
-              </MarkerClusterer> 
-              {
-                markerData && (<StationWindow position={markerData.location} data={markerData}/>)
-              }
-            </div> )
-            }
+          >
+          <MarkerClusterer 
+          styles={clusterStyles}
+          // onClick={(event) =>{console.log(event.getMarkers())}}
+          minimumClusterSize = {5}
+          >
+            { (clusterer) => lanData.map( z => <MyMarker key={z._id} data={z} clusterer={clusterer} />) } 
+          </MarkerClusterer> 
+          <MarkerClusterer 
+          styles={clusterStyles}
+          // onClick={(event) =>{console.log(event.getMarkers())}}
+          minimumClusterSize = {5}
+          >
+            { (clusterer) => wanData.map( z => <MyMarker key={z._id} data={z} clusterer={clusterer} /> ) } 
+          </MarkerClusterer> 
+          { markerData && (<StationWindow position={markerData.location} data={markerData}/>) }
           <CenterButton />
           {/* <HeatmapLayer map={this.state.map && this.state.map} data={data.map(x => {x.location})} /> */}
         </GoogleMap>

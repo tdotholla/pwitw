@@ -6,7 +6,7 @@ import * as ACTIONS from "./../../actions/actionConstants";
 
 function MyMarker(props) {
   const handleMouseOverMarker = (e, data) => {
-    props.getInfoWindow(data)
+    props.showInfoWindow(data)
   }
 
   const handleMouseExitMarker = () => {
@@ -20,7 +20,6 @@ function MyMarker(props) {
   }
 
   return (
-    <div>
     <Marker 
       className="App-marker"
       key={data._id}
@@ -33,7 +32,6 @@ function MyMarker(props) {
       onMouseOver={(m) => handleMouseOverMarker(m,data)}
       onMouseOut={() => handleMouseExitMarker()}
     />
-    </div>
   )
   
 }
@@ -43,7 +41,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     getAllWorkstations: () => dispatch({ type: ACTIONS.STATIONS_API_REQUEST }),
-    getInfoWindow: (data) => dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data }),
+    showInfoWindow: (data) => dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data }),
     hideInfoWindow: () => dispatch({type: ACTIONS.SHOW_INFOWINDOW, payload: false})
   };
 }
