@@ -9,6 +9,11 @@ import m2 from "./images/m2.png";
 import m3 from "./images/m3.png";
 import m4 from "./images/m4.png";
 import m5 from "./images/m5.png";
+import hm1 from "./images/hm1.png";
+import hm2 from "./images/hm2.png";
+import hm3 from "./images/hm3.png";
+import hm4 from "./images/hm4.png";
+import hm5 from "./images/hm5.png";
 import * as ACTIONS from "../../actions/actionConstants";
 
 import MyMarker from './myMarker'
@@ -52,6 +57,44 @@ const clusterStyles= [
     textSize: 11
   }
 ]
+
+const homeClusterStyles = [
+  {
+    url: hm1,
+    height: 53,
+    width: 53,
+    anchor: [26, 26],
+    textColor: '#000',
+    textSize: 11
+  }, {
+    url: hm2,
+    height: 56,
+    width: 56,
+    anchor: [28, 28],
+    textColor: '#000',
+    textSize: 11
+  }, {
+    url: hm3,
+    height: 66,
+    width: 66,
+    anchor: [33, 33],
+    textColor: '#000',
+    textSize: 11
+  }, {
+    url: hm4,
+    height: 78,
+    width: 78,
+    anchor: [39, 39],
+    textColor: '#000',
+    textSize: 11
+  }, {
+    url: hm5,
+    height: 90,
+    width: 90,
+    anchor: [45, 45],
+    textColor: '#000',
+    textSize: 11
+  }];
 
 const StationWindow = (props) => {
   let { data, position } = props;
@@ -321,12 +364,13 @@ class AppMap extends Component {
           options={options}
           >
           <MarkerClusterer 
-          styles={clusterStyles}
+          styles={homeClusterStyles}
           // onClick={(event) =>{console.log(event.getMarkers())}}
-          minimumClusterSize = {5}
+          minimumClusterSize = {3}
           >
             { (clusterer) => lanData.map( z => <MyMarker key={z._id} data={z} clusterer={clusterer} />) } 
           </MarkerClusterer> 
+
           <MarkerClusterer 
           styles={clusterStyles}
           // onClick={(event) =>{console.log(event.getMarkers())}}

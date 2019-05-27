@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Marker} from '@react-google-maps/api'
 import { connect } from "react-redux";
 import * as ACTIONS from "./../../actions/actionConstants";
+import pin from "./images/pin-blu.png";
 
 function MyMarker(props) {
   const handleMouseOverMarker = (e, data) => {
@@ -16,7 +17,7 @@ function MyMarker(props) {
   let loc = data.location.split(',');
   let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
   let image ={
-    url: "https://cdn0.iconfinder.com/data/icons/gloss-basic-icons-by-momentum/32/pin-red.png",
+    url: pin,
   }
 
   return (

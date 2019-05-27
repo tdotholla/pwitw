@@ -1,7 +1,7 @@
 
 
 export const isHome = (ip) => {
-  const home_octets = ["114","117", "123","126", "112", "124", "108", "101", "103", "111", "109", "126", "150"]
+  const home_octets = ["111","114","115","117", "123","126", "112", "124", "108", "101", "103", "109", "126", "150"]
   let base = ip.split('.')[0]
   let octet = ip.split('.')[1]
   if (base === "10" && home_octets.includes(octet)) {return true}

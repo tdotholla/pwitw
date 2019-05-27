@@ -4,6 +4,8 @@ import { ResponsiveContainer, Cell, PieChart, Pie, Legend, LabelList, Tooltip } 
 import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter } from "date-fns";
 import { Flipper, Flipped } from "react-flip-toolkit";
 
+import Typography from '@material-ui/core/Typography';
+
 import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome } from "../../functions";
 
@@ -33,7 +35,7 @@ const PiGraph = props => {
   // let wansById = Object.assign({}, ...wans.map(x=> ({[x.hostname]:x})))
   
   let withinHour = data.filter( x => differenceInMinutes(new Date(), new Date(x._changed)) < 60 )
-  let wasToday = data.filter( x => isToday(new Date(x._changed)) && differenceInMinutes(new Date(), new Date(x._changed)) > 60  )
+  let wasToday = data.filter( x => isToday(new Date(x._changed)) && (differenceInMinutes(new Date(), new Date(x._changed)) >= 60)  )
   let wasYesterday = data.filter( x => isYesterday(new Date(x._changed)) )
   let wasThisWeek = data.filter( x => isThisWeek(new Date(x._changed)) )
   let wasThisMonth = data.filter( x => isThisMonth(new Date(x._changed)) )
@@ -44,23 +46,24 @@ const PiGraph = props => {
   ];
   const data02 = [
     { name: 'Pinged Recently', value: withinHour.length },
-    { name: 'Today', value: wasToday.length - withinHour.length },
+    { name: 'Today', value: wasToday.length},
     { name: 'Yesterday', value: wasYesterday.length },
-    { name: 'This Week', value: wasThisWeek.length - wasYesterday.length - wasToday.length },
-    { name: 'This Month', value: wasThisMonth.length - wasThisWeek.length },
+    { name: 'This Week', value: wasThisWeek.length},
+    { name: 'This Month', value: wasThisMonth.length},
     { name: 'Older...', value: wasThisQuarter.length - wasThisMonth.length },
   ];
 
   const colors01 = ['rgba(238, 59, 14, 0.8)','rgba(55, 186, 214, 0.8)']
-  const colors02 = ['rgba(215, 220, 205, 1)','rgba(132, 187, 181, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)']
+  const colors02 = ['rgba(35, 165, 121, .8)','rgba(52, 153, 81, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)','rgba(255, 27, 27, 0.8)']
 
 
   return (
-
+    <div style={{ backgroundColor: "#eee"}}>
     <ResponsiveContainer height={250} width="100%">
       <PieChart style={{fontSize:"12px"}}>
         <Legend layout="vertical" align="left" verticalAlign="middle" iconSize={10} iconType="diamond"/>
         <Tooltip />
+
         <Pie 
         data={data01} 
         cx="50%" 
@@ -90,13 +93,15 @@ const PiGraph = props => {
         > 
         {
           data02.map( (entry,index) => (
-            <Cell key={`sector-${index}`} fill={colors02[index]} className="pieSector"/>
+            <Cell key={`sector-${index}`} fill={colors02[index]} className={`pieSector-${index}`}/>
           ))
         }
         </Pie>
         <LabelList dataKey="uv" position="top" />
       </PieChart>
     </ResponsiveContainer>
+    <Typography variant="h5" align="center" className="App-fancytext">Total: {data.length} </Typography>
+    </div>
   );
   
 }
