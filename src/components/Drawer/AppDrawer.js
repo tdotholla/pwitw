@@ -1,12 +1,24 @@
 import React, { Component } from 'react'
+// import classNames from 'classnames';
+// import { compose } from 'redux';
 import { connect } from "react-redux";
 
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 
 import PiGraph from './../Graph/PiGraph';
 import StatsList from '../Map/StatsList';
 import AssetSearch from '../Assets/AssetSearch';
+
+
+// const styles = theme => ({
+//     root: {
+//         backgroundColor: 'transparent'
+//     },
+//     docked: {},
+//     paper: {},
+// });
 
 class AppDrawer extends Component {
     constructor(props) {
@@ -48,6 +60,6 @@ function mapStateToProps(state) {
   }
 
 export default connect(
-  mapStateToProps,
-  null,
-)(AppDrawer);
+      mapStateToProps,
+      null,
+    )(AppDrawer);

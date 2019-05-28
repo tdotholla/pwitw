@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { ResponsiveContainer, Cell, PieChart, Pie, Legend, LabelList, Tooltip } from 'recharts';
-import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter } from "date-fns";
+import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter, getMinutes, format } from "date-fns";
 import { Flipper, Flipped } from "react-flip-toolkit";
 
 import Typography from '@material-ui/core/Typography';
@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome } from "../../functions";
 
+  let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
 //
 //want groups of logins (<8 hrs, <24, <1wk 1wk>)
@@ -32,14 +33,24 @@ const PiGraph = props => {
   data = Object.values(data)
   let wans = data.filter( x => !isHome(x.ip_local) )
   let lans = data.filter( x => isHome(x.ip_local) )
+
   // let wansById = Object.assign({}, ...wans.map(x=> ({[x.hostname]:x})))
-  
+  //how often is it lan vs wan count
+  //get array of objects, {wanamt, lanamt, time of day}
+  //every hour, get wan/lan counts and push to array of 24 hours
+  let lwans = wans.length;
+  let llans = lans.length;
+  // (getMinutes(Date.now()) >= 0) && dayArray.push({'wan': lwans, 'lan': llans, 'hour': format(new Date(),'H:mm') })
+  // console.log(dayArray);
+
+
   let withinHour = data.filter( x => differenceInMinutes(new Date(), new Date(x._changed)) < 60 )
   let wasToday = data.filter( x => isToday(new Date(x._changed)) && (differenceInMinutes(new Date(), new Date(x._changed)) >= 60)  )
   let wasYesterday = data.filter( x => isYesterday(new Date(x._changed)) )
   let wasThisWeek = data.filter( x => isThisWeek(new Date(x._changed)) )
   let wasThisMonth = data.filter( x => isThisMonth(new Date(x._changed)) )
   let wasThisQuarter = data.filter( x => isThisQuarter(new Date(x._changed)) )
+
 
   const data01 = [
     { name: 'WAN', value: wans.length }, { name: 'LAN', value: lans.length }
@@ -55,7 +66,7 @@ const PiGraph = props => {
 
   const colors01 = ['rgba(238, 59, 14, 0.8)','rgba(55, 186, 214, 0.8)']
   const colors02 = ['rgba(35, 165, 121, .8)','rgba(52, 153, 81, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)','rgba(255, 27, 27, 0.8)']
-
+  
 
   return (
     <div style={{ backgroundColor: "#eee"}}>

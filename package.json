@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.0.1",
     "@material-ui/icons": "^4.0.1",
+    "@material-ui/styles": "^4.0.1",
     "@react-google-maps/api": "^1.2.3-alpha.11",
     "connected-react-router": "^6.3.2",
     "date-fns": "^1.30.1",

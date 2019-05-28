@@ -23,7 +23,7 @@ import { isHome, getSorting, stableSort, panToMarker} from "../../functions";
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     display: 'flex'
   },
   tableWrapper: {

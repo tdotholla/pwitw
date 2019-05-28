@@ -3,7 +3,8 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import Loader from 'react-loader-spinner'
 
-import { MuiThemeProvider, createMuiTheme, withTheme } from "@material-ui/core/styles";
+import { ThemeProvider, withTheme } from "@material-ui/styles";
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import purple from '@material-ui/core/colors/purple';
 import blue from '@material-ui/core/colors/blue';
 
@@ -15,18 +16,16 @@ import AppHeader from './components/Header/AppHeader.js';
 import AppMap from './components/Map/AppMap.js';
 
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   palette: {
     primary: purple,
     secondary: blue,
   },
   status: {
     danger: 'orange',
-  },
-  typography: {
-    // Tell Material-UI what's the font-size on the html element is.
-  },
+  }
 });
+theme = responsiveFontSizes(theme);
 
 class App extends Component {
   componentDidMount() {
@@ -37,7 +36,7 @@ class App extends Component {
   render() {
     const { stations, state } = this.props;
     return (
-      <MuiThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
         <div className="App">
           <AppHeader />
           { !stations && <Loader 
@@ -49,7 +48,7 @@ class App extends Component {
           {stations && <AppDrawer data={stations} /> }
           {stations && <AppMap data={stations} /> }
         </div>
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
   }
 }
@@ -69,7 +68,5 @@ export default compose(
   connect(
     mapStateToProps,
     mapDispatchToProps
-  ),
-  withTheme(),
-  // withAuthentication()
+  )
 )(App);
