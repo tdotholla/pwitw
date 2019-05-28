@@ -9129,9 +9129,9 @@ react-event-listener@^0.6.2:
     warning "^4.0.1"
 
 react-flip-toolkit@^6.6.2:
-  version "6.6.2"
-  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-6.6.2.tgz#ff8702d9def3cd89db95e52d79528a16aeb3de61"
-  integrity sha512-QYEEoFDzygBVT+qm9Hhc6hFRofe8UtLMta8YNtvd92FJDeiua4SfyLumxIUvJupMT+8vqeJ555vm86ZPZd+CcQ==
+  version "6.6.3"
+  resolved "https://registry.yarnpkg.com/react-flip-toolkit/-/react-flip-toolkit-6.6.3.tgz#5f6304abcfdcb267d7ab7f2a1971919b1526ce34"
+  integrity sha512-CfHjXzRQIdGCVY4p+jBApO5BDCUK9YnlgvB89JYyS4oyiEkB866/qc0RrT3Bo+6H3WctqQvJqDUo873oUxy8hA==
   dependencies:
     rematrix "0.2.2"
 
