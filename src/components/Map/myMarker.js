@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Marker} from '@react-google-maps/api'
 import { connect } from "react-redux";
 import * as ACTIONS from "./../../actions/actionConstants";
@@ -28,7 +27,7 @@ function MyMarker(props) {
       clusterer={clusterer}
       data={data}
       icon={image}
-      title={`${data.hostname}-${data.username}`}
+      title={`${data.hostname}`}
       customData={JSON.stringify(data)}
       onMouseOver={(m) => handleMouseOverMarker(m,data)}
       onMouseOut={() => handleMouseExitMarker()}

@@ -1,22 +1,17 @@
 import React from 'react';
-import classNames from 'classnames';
 import { compose } from "redux";
 import { connect } from "react-redux";
 import {distanceInWords} from "date-fns"
 import { Flipper, Flipped } from "react-flip-toolkit";
 
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
-import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
-import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
-import { lighten } from '@material-ui/core/styles/colorManipulator'
 
 import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome, getSorting, stableSort, panToMarker} from "../../functions";
@@ -53,36 +48,35 @@ const styles = theme => ({
   }
 })
 
-const toolbarStyles = theme => ({
-  root: {
-    padding: 0,
-  },
-  highlight:
-    theme.palette.type === 'light'
-      ? {
-          color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.55),
-        }
-      : {
-          color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
-        },
-  spacer: {
-    flex: '1 1 100%',
-  },
-  actions: {
-    color: theme.palette.text.secondary,
-  },
-  title: {
-    flex: '0 0 auto',
-  },
-});
+// const toolbarStyles = theme => ({
+//   root: {
+//     padding: 0,
+//   },
+//   highlight:
+//     theme.palette.type === 'light'
+//       ? {
+//           color: theme.palette.secondary.main,
+//           backgroundColor: lighten(theme.palette.secondary.light, 0.55),
+//         }
+//       : {
+//           color: theme.palette.text.primary,
+//           backgroundColor: theme.palette.secondary.dark,
+//         },
+//   spacer: {
+//     flex: '1 1 100%',
+//   },
+//   actions: {
+//     color: theme.palette.text.secondary,
+//   },
+//   title: {
+//     flex: '0 0 auto',
+//   },
+// });
 
 const rows = [
   { id: '_changed', numeric: false, disablePadding: true, label: 'Last Logon (approx.)' },
   { id: 'hostname', numeric: false, disablePadding: true, label: 'Hostname' },
-  { id: 'ip_local', numeric: false, disablePadding: true, label: 'Location (approx.)' },
-  // { id: 'username', numeric: false, disablePadding: true, label: 'UserName' },
+  { id: 'ip_local', numeric: false, disablePadding: true, label: 'Location (approx.)' }
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -126,21 +120,21 @@ class EnhancedTableHead extends React.Component {
   }
 }
 
-let EnhancedTableToolbar = props => {
-  const { numSelected, classes } = props;
+// let EnhancedTableToolbar = props => {
+//   const { numSelected, classes } = props;
 
-  return (
-    <Toolbar
-      className={classNames(classes.root)}
-    >
-      <Typography variant="h6" id="tableTitle">
-        Asset Tracking
-      </Typography>
-    </Toolbar>
-  );
-};
+//   return (
+//     <Toolbar
+//       className={classNames(classes.root)}
+//     >
+//       <Typography variant="h6" id="tableTitle">
+//         Asset Tracking
+//       </Typography>
+//     </Toolbar>
+//   );
+// };
 
-EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
+// EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 class StatsTable extends React.Component {
 	constructor(props) {
@@ -193,17 +187,16 @@ class StatsTable extends React.Component {
 
 	render() {
     let { classes, data, map} = this.props;
-    const {order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.keys(data).length - page * rowsPerPage);
+    const {order, orderBy, selected} = this.state;
+    // const emptyRows = rowsPerPage - Math.min(rowsPerPage, Object.keys(data).length - page * rowsPerPage);
     // data = Object.values(data)
-    let sortable_by_logon = Object.values(data).map((ws) => [ws.hostname, new Date(ws._changed), ws.ip_local] ).sort((a,b) => b[1]- a[1])
+    // let sortable_by_logon = Object.values(data).map((ws) => [ws.hostname, new Date(ws._changed), ws.ip_local] ).sort((a,b) => b[1]- a[1])
    
-    const headers = ["Last Logon", "Hostname", "Location"]
     const sortableData = stableSort(Object.values(data), getSorting(order, orderBy))
     // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
     // const findByHost = (data, name) => {data.find(x=>(x.hostName == name)) }
-    const hosts = sortableData.map(x => x.hostname);
+    // const hosts = sortableData.map(x => x.hostname);
     //  console.log( sortableData.map(x => x.hostname).join(" "))
 		return (
         <div id="StatsListWrapper" className={classes.tableWrapper}>
@@ -220,7 +213,6 @@ class StatsTable extends React.Component {
               <TableBody>
                 {sortableData
                   .map(n => {
-                    {/* console.log(Object.keys(n)) */}
                     const isSelected = this.isSelected(n.hostname);
                     return (
                       <Flipped key={n._id} flipId={n._id} spring="stiff" >
@@ -238,7 +230,7 @@ class StatsTable extends React.Component {
                           <TableCell align="center">{n.hostname}</TableCell>
                           <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>{n.region ? n.region : "WAN"}</span>}</TableCell>
                         </TableRow>
-                      </Flipped>
+                      </Flipped> 
                     );
                   })}
               </TableBody>

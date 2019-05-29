@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow, HeatmapLayer } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow } from '@react-google-maps/api'
 import { connect } from "react-redux";
 import {distanceInWords} from "date-fns"
 

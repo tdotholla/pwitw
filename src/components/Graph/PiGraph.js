@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { ResponsiveContainer, Cell, PieChart, Pie, Legend, LabelList, Tooltip } from 'recharts';
-import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter, getMinutes, format } from "date-fns";
-import { Flipper, Flipped } from "react-flip-toolkit";
+import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
+// import { Flipper, Flipped } from "react-flip-toolkit";
 
 import Typography from '@material-ui/core/Typography';
 
 import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome } from "../../functions";
 
-  let dayArray = []
+  // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
 //
 //want groups of logins (<8 hrs, <24, <1wk 1wk>)
@@ -29,7 +29,7 @@ const renderCustomizedLabel = ({
 };
 
 const PiGraph = props => {
-  let {updateList, data} = props;
+  let {data} = props;
   data = Object.values(data)
   let wans = data.filter( x => !isHome(x.ip_local) )
   let lans = data.filter( x => isHome(x.ip_local) )
@@ -38,8 +38,8 @@ const PiGraph = props => {
   //how often is it lan vs wan count
   //get array of objects, {wanamt, lanamt, time of day}
   //every hour, get wan/lan counts and push to array of 24 hours
-  let lwans = wans.length;
-  let llans = lans.length;
+  // let lwans = wans.length;
+  // let llans = lans.length;
   // (getMinutes(Date.now()) >= 0) && dayArray.push({'wan': lwans, 'lan': llans, 'hour': format(new Date(),'H:mm') })
   // console.log(dayArray);
 
@@ -57,10 +57,10 @@ const PiGraph = props => {
   ];
   const data02 = [
     { name: 'Pinged Recently', value: withinHour.length },
-    { name: 'Today', value: wasToday.length},
+    { name: 'Today', value: wasToday.length - withinHour.length},
     { name: 'Yesterday', value: wasYesterday.length },
-    { name: 'This Week', value: wasThisWeek.length},
-    { name: 'This Month', value: wasThisMonth.length},
+    { name: 'This Week', value: wasThisWeek.length - wasYesterday.length - wasToday.length - withinHour.length},
+    { name: 'This Month', value: wasThisMonth.length - wasThisWeek.length},
     { name: 'Older...', value: wasThisQuarter.length - wasThisMonth.length },
   ];
 

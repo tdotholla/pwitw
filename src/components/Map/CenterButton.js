@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 
-import { withStyles } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
@@ -11,7 +10,7 @@ import {GEOCENTER, panToMarker} from "../../functions";
 
 class CenterButton extends Component {
 	render() {
-		const { GMap, browserLoc } = this.props.state.map;
+		const { GMap } = this.props.state.map;
 		
 		return (
 			<Tooltip title="Zoom Out" aria-label="Zoom Out">
