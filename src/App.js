@@ -30,11 +30,11 @@ theme = responsiveFontSizes(theme);
 class App extends Component {
   componentDidMount() {
 
-    window.setInterval(this.props.getAllWorkstations, 15000); //gets stations every 15 seconds
+    window.setInterval(this.props.getAllWorkstations, 60000); //gets stations every 60 seconds (API limit is 50k requests/month = 1.2/hour for 31 days)
     this.props.getAllWorkstations();     //calls from db and stores in state.stations
   }
   render() {
-    const { stations, state } = this.props;
+    const { stations } = this.props;
     return (
       <ThemeProvider theme={theme}>
         <div className="App">

@@ -1,7 +1,7 @@
 
 
 export const isHome = (ip) => {
-  const home_octets = ["106","108","111","114","115","116","117","118", "123","125","126", "112", "124", "100","101", "103","105", "109", "126", "150","254"]
+  const home_octets = ["106","108","111","114","115","116","117","118", "123","125","126", "129", "112", "124", "100","101","102", "103","105", "109", "126", "150","254"]
   let base = ip.split('.')[0]
   let octet = ip.split('.')[1]
   if (base === "10" && home_octets.includes(octet)) {return true}
@@ -35,7 +35,7 @@ export function getSorting(order, orderBy) {
 export function panToMarker(map,pos) {
   // SET CENTER, 
   // ZOOM TO CERTAIN LEVEL
-  console.log(pos)
+    map.setCenter(pos);
     map.panTo(pos);
     map.setZoom(11);
 };

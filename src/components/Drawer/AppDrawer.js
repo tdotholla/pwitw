@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import classNames from 'classnames';
 // import { compose } from 'redux';
 import { connect } from "react-redux";
 
@@ -7,18 +6,16 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 
 import PiGraph from './../Graph/PiGraph';
-import StatsList from '../Map/StatsList';
 import StatsTable from '../Map/StatsTable';
 import AssetSearch from '../Assets/AssetSearch';
 
-
-const styles = theme => ({
+const styles = {
     root: {
         backgroundColor: 'transparent'
     },
     docked: {},
     paper: {},
-});
+};
 
 class AppDrawer extends Component {
     constructor(props) {
@@ -37,7 +34,7 @@ class AppDrawer extends Component {
     };
 
     render() {
-        const { classes, data, GMap} = this.props;
+        const { data, GMap} = this.props;
         return (
             <Drawer 
                 variant="permanent"

@@ -107,8 +107,9 @@ const StationWindow = (props) => {
       options={{
         pixelOffset: {height:-30,width:0},
       }}
+      className="App-infowindow"
       >
-      <div className="App-infowindow">
+      <div >
         <h3>{data.hostname}</h3>
         <p><strong>{isHome(data.ip_local) ? data.region : data.ip_public} </strong><br />
         Last Connection: {distanceInWords(new Date(data._changed), new Date())}</p>

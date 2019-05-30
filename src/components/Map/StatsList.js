@@ -246,7 +246,7 @@ function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     showInfoWindow: (data) => dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data }),
-    hideInfoWindow: () => dispatch({type: ACTIONS.SHOW_INFOWINDOW, payload: false})
+    // hideInfoWindow: () => dispatch({type: ACTIONS.SHOW_INFOWINDOW, payload: false})
   };
 }
 export default compose(

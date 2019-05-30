@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import {distanceInWords} from "date-fns"
 import MaterialTable from "material-table";
+import { useDispatch } from 'react-redux'
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowUpward from '@material-ui/icons/ArrowUpward';
@@ -18,6 +19,7 @@ import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 
+import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome, panToMarker} from "../../functions";
 const styles = {
   warning: {
@@ -28,8 +30,7 @@ const styles = {
     color: '#37bad6',
     fontWeight: 'bold'
   }
-}
-
+};
 
 const tableIcons = {
   Add: AddBox,
@@ -51,27 +52,43 @@ const tableIcons = {
   ViewColumn: ViewColumn
 };
 
-class StatsTable extends Component {
-
-  render() {
-    const columns = [
-        { field: '_changed', title: 'Last Logon (approx.)', render: r => <span>{ distanceInWords(new Date(r._changed), new Date()) }</span> },
-        { field: 'hostname', title: 'Hostname'},
-        { field: 'ip_local', title: 'Location (approx.)', render: r => isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}>{r.region ? r.region : "WAN"}</span> } 
-      ];
-      
-    let { data } = this.props;
-    return (
-      <div style={{ maxWidth: "100%" }}>
-        <MaterialTable
-          columns={columns}
-          icons={tableIcons}
-          data={Object.values(data)}
-          title="Asset Tracking"
-        />
-      </div>
-    );
+const tableOptions = {
+  // paginationType: "stepped",
+  pageSize: 10,
+  pageSizeOptions: [10,50,100],
+  grouping: false
+};
+const StatsTable = ({data, map}) => {
+  
+  const dispatch = useDispatch();
+  const columns = [
+      { field: '_changed', title: 'Last Logon (approx.)', render: r => <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> },
+      { field: 'hostname', title: 'Hostname'},
+      { field: 'ip_local', title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}>{r.region ? r.region : "WAN"}</span>) } 
+    ];
+  
+  const rowClickHandler = (data) => {
+    let loc = data.location.split(',');
+    let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
+    // this.setState(state => ({selected:data.hostname}))
+    panToMarker(map, locObj)
+    dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data })
   }
+
+  return (
+    <div style={{ maxWidth: "100%" }}>
+      <MaterialTable
+        columns={columns}
+        icons={tableIcons}
+        data={Object.values(data)}
+        title="Asset Tracking"
+        options={tableOptions}
+        // detailPanel={(d) => d.ip_public}
+        onRowClick={(e, data) => rowClickHandler(data) }
+      />
+    </div>
+  );
+  
 }
 
 export default StatsTable;
