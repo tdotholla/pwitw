@@ -1,7 +1,7 @@
 const request = require("request");
 const dbOptions = { 
   method: 'GET',
-  url: 'https://pdubdb-705a.restdb.io/rest/workstations?metafields=true',
+  url: 'https://pdubdb-705a.restdb.io/rest/workstations?metafields=true&max=2000&sort=_changed',
   headers: 
    { 
     'cache-control': 'no-cache',

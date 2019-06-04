@@ -1,5 +1,5 @@
 import React from "react";
-import {distanceInWords} from "date-fns"
+import {distanceInWords, parse} from "date-fns"
 import MaterialTable from "material-table";
 import { useDispatch } from 'react-redux'
 
@@ -56,15 +56,22 @@ const tableOptions = {
   // paginationType: "stepped",
   pageSize: 10,
   pageSizeOptions: [10,50,100],
-  grouping: false
+  grouping: false,
+  headerStyle: {padding:"3px 3px"},
+  columnsButton: true,
+  exportButton: true,
+  // rowStyle: {padding: 0} 
 };
 const StatsTable = ({data, map}) => {
   
   const dispatch = useDispatch();
   const columns = [
-      { field: '_changed', title: 'Last Logon (approx.)', render: r => <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> },
-      { field: 'hostname', title: 'Hostname'},
-      { field: 'ip_local', title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}>{r.region ? r.region : "WAN"}</span>) } 
+      { field: 'hostname', cellStyle: {padding: "0 3px"}, title: 'Name'},
+      { field: '_changed', cellStyle: {padding: "0 3px"},title: 'Last Logon', render: r => <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> },
+      { field: 'uptime', cellStyle: {padding: "0 3px"},title: 'UpTime', render: r => <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> },
+      { field: 'os_build', cellStyle: {padding: "0 3px"},title: 'Build'},
+      { field: 'top_process', cellStyle: {padding: "0 3px"}, title: 'Top Process'},
+      { field: 'ip_local', cellStyle: {padding: "0 3px"}, title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}> <img height="11px" src={r.flag} /> {r.region ? r.region : "WAN"} </span>) } 
     ];
   
   const rowClickHandler = (data) => {
@@ -76,8 +83,8 @@ const StatsTable = ({data, map}) => {
   }
 
   return (
-    <div style={{ maxWidth: "100%" }}>
       <MaterialTable
+        style={{"width":'100%'}}
         columns={columns}
         icons={tableIcons}
         data={Object.values(data)}
@@ -86,7 +93,6 @@ const StatsTable = ({data, map}) => {
         // detailPanel={(d) => d.ip_public}
         onRowClick={(e, data) => rowClickHandler(data) }
       />
-    </div>
   );
   
 }
