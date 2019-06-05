@@ -4,9 +4,7 @@ import { ResponsiveContainer, Cell, PieChart, Pie, Legend, LabelList, Tooltip } 
 import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
 // import { Flipper, Flipped } from "react-flip-toolkit";
 
-import Typography from '@material-ui/core/Typography';
-
-import * as ACTIONS from "./../../actions/actionConstants";
+import * as ACTIONS from "../../actions/actionConstants";
 import { isHome } from "../../functions";
 
   // let dayArray = []
@@ -28,7 +26,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-const PiGraph = props => {
+const NetworkGraph = props => {
   let {data} = props;
   data = Object.values(data)
   let wans = data.filter( x => !isHome(x.ip_local) )
@@ -111,7 +109,6 @@ const PiGraph = props => {
         <LabelList dataKey="uv" position="top" />
       </PieChart>
     </ResponsiveContainer>
-    <Typography variant="h5" align="center" className="App-fancytext">Total: {data.length} </Typography>
     </div>
   );
   
@@ -131,4 +128,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-  )(PiGraph);
+  )(NetworkGraph);

@@ -4,8 +4,10 @@ import { connect } from "react-redux";
 
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 
-import PiGraph from './../Graph/PiGraph';
+import NetworkGraph from './../Graph/NetworkGraph';
+import BuildGraph from './../Graph/BuildGraph';
 import StatsTable from '../Map/StatsTable';
 import AssetSearch from '../Assets/AssetSearch';
 
@@ -39,7 +41,9 @@ class AppDrawer extends Component {
             <Drawer 
                 variant="permanent"
             ><div className="App-drawer">
-                <PiGraph data={data}/>
+                <NetworkGraph data={data}/>
+                <BuildGraph data={data}/>
+                <Typography variant="h5" align="center" className="App-fancytext">Total: {Object.values(data).length} </Typography>
                 <Divider />
                 <AssetSearch data={data}/>
                 <StatsTable data={data} map={GMap}/>

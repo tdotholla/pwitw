@@ -1,72 +1,30 @@
-<<<<<<< HEAD
-# pwitw
-=======
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+PWITW by Kiel H. Byrne
 
-## Available Scripts
+#P+WITW (Where In The World?)
 
-In the project directory, you can run:
+##INTRO:
+This is intended as an asset management dashboard, with a location-centric focus. 
 
-### `npm start`
+When a computer signs onto any network and obtains an IP address, the public IP address is obtained, a geolocation calculated, and stored along with other machine information in a database.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+###How The Script Works:
+-The script is written in Powershell, this does the heavy lifting.
+-A Scheduled task will run the script when a network change is detected on the host.
+-An accompanying bash script ("installTask.bat) copies the necessary files to local folder ["C:\Temp\PWITW"](C:\Temp\PWITW) and installs a scheduled task (an accompanying 'SubmitPCInfo.xml' file).
+-When a network change is detected, the local copy of the PS script is ran. A copy of the information (formatted in JSON) is saved in the same folder before sending to the database. [PCInfo.json](C:\temp\pwitw\pcinfo.json). 
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+###How The Application Works:
+-The application repository is stored on [github.com](https://github.com/tdotholla/pwitw).
+```clone https://github.com/tdotholla/pwitw```
+-A node.js server can build and serve website using Yarn/NPM to install necessary packages.
+```yarn | yarn start ```
+-A DC Server is currently hosting the application here: ["WDCWK1700:3000"](http://WDCWK1700:3000)
 
-### `npm test`
+###Features:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+####CAVEATS:
+-At this time, to preserve database size, we only want the last known location instead of a set of locations over time (can form a story of when/where a machine has been). 
+-We do not store usernames as per GDPR Compliance.
+-Written in Powershell; for the windows environment. 
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
->>>>>>> acd5b171887bb2707a63f86d04971311e6037759

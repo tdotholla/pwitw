@@ -4,7 +4,8 @@ export const isHome = (ip) => {
   const home_octets = ["106","108","111","114","115","116","117","118", "123","125","126", "129", "112", "124", "100","101","102", "103","105", "109", "126", "150","254"]
   let base = ip.split('.')[0]
   let octet = ip.split('.')[1]
-  if (base === "10" && home_octets.includes(octet)) {return true}
+  // if (base === "10" && home_octets.includes(octet)) {return true}
+  if (base === "10" && octet >= 100 && octet < 255 ) {return true}
   return false
 }
 
@@ -40,6 +41,19 @@ export function panToMarker(map,pos) {
     map.setZoom(11);
 };
 
+export function getUnique(arr, comp) {
+  //get unique keys from array,
+  
+  const unique = arr
+    .map(e => e[comp])
+     // store the keys of the unique objects
+    // .map((e, i, final) => e)
+    // eliminate the dead keys & store unique objects
+    .filter((v, i, self) => self.indexOf(v) === i).sort()
+    .map(e => arr.filter(x => x[comp] === e ) )
+    
+    return unique.map((e,i) => e[i] && ({"name": e[i][comp], "value": e.length}) )
+}
 
 
 export const GEOCENTER = {'lat':  39.8283, 'lng': -98.5795};
