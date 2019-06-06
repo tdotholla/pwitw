@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Legend, Tooltip } from 'recharts';
+import { 
+  ResponsiveContainer, Cell, Legend, Tooltip, 
+  BarChart, Bar, XAxis, YAxis, 
+  PieChart, Pie, LabelList
+} from 'recharts';
 import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
 // import { Flipper, Flipped } from "react-flip-toolkit";
 
@@ -28,28 +32,53 @@ const renderCustomizedLabel = ({
 
 const BuildGraph = props => {
   let {data} = props;
-  data = Object.values(data)
+  let mapType = "Bar";
+  data = Object.values(data);
   let uptimeData = getUnique(data,"os_build")
-  const colors01 = ['rgba(238, 59, 14, 0.8)','rgba(55, 186, 214, 0.8)']
-  const colors02 = ['rgba(35, 165, 121, .8)','rgba(52, 153, 81, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)','rgba(255, 27, 27, 0.8)']
+  const colors = ['rgba(35, 165, 121, .8)','rgba(52, 153, 81, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)','rgba(255, 27, 27, 0.8)','rgba(55, 186, 214, 0.8)']
    
   if (uptimeData) { 
   return (
     <div style={{ backgroundColor: "#eee"}}>
-    <ResponsiveContainer height={250} width="100%">
-      <BarChart style={{fontSize:"12px"}} data={uptimeData} startAngle={180} endAngle={0}>
-        <XAxis dataKey="name" />
-        <YAxis />
+      <ResponsiveContainer height={250} width="100%">
+      { (mapType === "Bar") ? (
+        <BarChart style={{fontSize:"12px"}} data={uptimeData} startAngle={180} endAngle={0}>
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Bar dataKey="value" isAnimationActive={false}>
+          { 
+            uptimeData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={colors[index]}  strokeWidth={index === 2 ? 4 : 1}/>
+            ))
+          }
+          </Bar>
+        </BarChart>
+      ) : (mapType === "Pie") ? (
+        <PieChart style={{fontSize:"12px"}}>
+        <Legend layout="vertical" align="left" verticalAlign="middle" iconSize={10} iconType="diamond"/>
         <Tooltip />
-        <Bar dataKey="value" isAnimationActive={false}>
-        { 
-          uptimeData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors02[index]}  strokeWidth={index === 2 ? 4 : 1}/>
-          ))
-        }
-        </Bar>
-      </BarChart>
-    </ResponsiveContainer>
+
+        <Pie 
+        data={uptimeData} 
+        cx="50%" 
+        cy="50%" 
+        dataKey="value" 
+        labelLine={false}
+        label={renderCustomizedLabel}
+        isAnimationActive={false} //should be able to remove this prop, I think there is a bug in Pie stopping labels from rendering. This is a temp fix.  
+        >
+          {
+            uptimeData.map( (entry,index) => (
+              <Cell key={`wedge-${index}`} fill={colors[index]} className="pieWedge"/> 
+            ))
+          }
+        </Pie>
+        <LabelList dataKey="uv" position="top" />
+      </PieChart>
+      ) : (<div> Please Select Chart Type </div>)
+      }
+      </ResponsiveContainer>
     </div>
   );
   } else {return <div />}
