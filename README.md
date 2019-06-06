@@ -2,10 +2,8 @@ PWITW by Kiel H. Byrne
 
 # P+WITW (Where In The World?)
 
-## INTRO:
-This is intended as an asset management dashboard, with a location-centric focus. 
-
-When a computer signs onto any network and obtains an IP address, the public IP address is obtained, a geolocation calculated, and stored along with other machine information in a database.
+###### This is intended as an asset management dashboard, with a location-centric focus. 
+###### When a computer signs onto any network and obtains an IP address, the public IP address is obtained, a geolocation calculated, and stored along with other machine information in a database.
 
 ### How The Script Works:
 - The script is written in Powershell, this does the heavy lifting.
@@ -15,16 +13,35 @@ When a computer signs onto any network and obtains an IP address, the public IP 
 
 ### How The Application Works:
 - The application repository is stored on [github.com](https://github.com/tdotholla/pwitw).
-```clone https://github.com/tdotholla/pwitw```
-- A node.js server can build and serve website using Yarn/NPM to install necessary packages.
-```yarn | yarn start ```
-- A DC Server is currently hosting the application here: ["WDCWK1700:3000"](http://WDCWK1700:3000)
+    - `clone https://github.com/tdotholla/pwitw`
+- The codebase is written primarily in Javascript/JSX (React) and Node.js with multiple useful NPM packages.
+    - A node.js server can build and serve website using Yarn/NPM to install necessary packages. T
+    - `yarn | yarn start `
+- A DC Server is currently hosting the application: ["WDCWK1700:3000"](http://WDCWK1700:3000)
+- The database is hosted on [restdb.io](restdb.io)
+- The IP Geolocation API uses ipstack.io (it was ipinfo.io but ran into rate limits)
+- The Maps API is Google Maps (would like to use Mapbox in future)
 
-### Features:
+
+### FEATURES:
+- A Map of Markers, grouped into clusters of two types:
+    - LAN Clusters: Those workstations whose local IPs are within the PW Subnet of 10.[100-254].X.X
+    - WAN Clusters: Those workstations whose local IPs are outside of the above scope, and known public subnets. (192.168.X.X, 10.10.X.X, etc.)
+- A Section of charts:
+    - Network Graph - [Inner Pie] Percentage of devices within LAN. [Outer Pie] Counts grouped by network activity.
+    - Build Graph - Count of devices on each build version.
+- A Table: Searchable pivot table
+
+#### In Development:
+- Uptime Graph - Counts grouped by uptime duration. (undeveloped)
 
 #### CAVEATS:
-- At this time, to preserve database size, we only want the last known location instead of a set of locations over time (can form a story of when/where a machine has been). 
+- At this time, to preserve database size, we only want the last known location instead of a set of locations over time (can form a story of when/where a machine has been).
+    - Information is pulled once per minute, so as not to go over rate limits.
 - We do not store usernames as per GDPR Compliance.
 - Written in Powershell; for the windows environment. 
+
+
+
 
 
