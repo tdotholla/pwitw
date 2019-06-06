@@ -5,11 +5,10 @@ import {
   BarChart, Bar, XAxis, YAxis, 
   PieChart, Pie, LabelList
 } from 'recharts';
-import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
 // import { Flipper, Flipped } from "react-flip-toolkit";
 
 import * as ACTIONS from "../../actions/actionConstants";
-import { isHome, getUnique } from "../../functions";
+import { getUnique } from "../../functions";
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)

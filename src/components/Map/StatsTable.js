@@ -1,5 +1,5 @@
 import React from "react";
-import {distanceInWords, parse} from "date-fns"
+import {distanceInWords} from "date-fns"
 import MaterialTable from "material-table";
 import { useDispatch } from 'react-redux'
 
@@ -71,7 +71,7 @@ const StatsTable = ({data, map}) => {
       { field: 'uptime', cellStyle: {padding: "0 3px"},title: 'UpTime', render: r => <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> },
       { field: 'os_build', cellStyle: {padding: "0 3px"},title: 'Build'},
       { field: 'top_process', cellStyle: {padding: "0 3px"}, title: 'Top Process'},
-      { field: 'ip_local', cellStyle: {padding: "0 3px"}, title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}> <img height="11px" src={r.flag} /> {r.region ? r.region : "WAN"} </span>) } 
+      { field: 'ip_local', cellStyle: {padding: "0 3px"}, title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}> <img height="11px" src={r.flag} alt={` ${r.region} Flag`} /> {r.region ? r.region : "WAN"} </span>) } 
     ];
   
   const rowClickHandler = (data) => {

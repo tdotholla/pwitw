@@ -11,14 +11,6 @@ import BuildGraph from './../Graph/BuildGraph';
 import StatsTable from '../Map/StatsTable';
 import AssetSearch from '../Assets/AssetSearch';
 
-const styles = {
-    root: {
-        backgroundColor: 'transparent'
-    },
-    docked: {},
-    paper: {},
-};
-
 class AppDrawer extends Component {
     constructor(props) {
         super(props);
