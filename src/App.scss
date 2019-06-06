@@ -12,8 +12,9 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 10s linear;
-  height: 20px;
+  animation: App-logo-spin infinite 10s ease-in-out;
+  height: 50px;
+  margin: 0 1em;
   pointer-events: none;
 }
 
