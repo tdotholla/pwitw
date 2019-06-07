@@ -8,12 +8,16 @@
 
 
 .App {
+  display:flex;
+  flex-direction: row;
+  flex-flow: row wrap;
   text-align: center;
+  flex: 1 100%;
 }
 
 .App-logo {
   animation: App-logo-spin infinite 10s ease-in-out;
-  height: 50px;
+  height: 48px;
   margin: 0 1em;
   pointer-events: none;
 }
@@ -27,6 +31,9 @@
   justify-content: center;
   font-size: calc(110%);
   color: white;
+  z-index: 1;
+  width: calc(100% - 555px);
+  margin-left: 555px;
 }
 
 .App-link {
@@ -50,21 +57,24 @@
   @include breakpoint(mobileonly) {
     width: 240px;
   }
-  padding: 0 3px;
-  width: $drawerWidth;
+  padding: 0 0px;
+  // width: $drawerWidth;
+  order: 1;
 }
 
 .App-map {
   @include breakpoint(mobileonly) {
-    width: calc(100% - 240px);  
+    width: calc(100% - 230px);  
   }
-  width: calc(100% - 440px);
+  flex-grow: 1;
+  height: 100%;
+  width: calc(100% - 565px);
   background-color: #61dafb;
   position: fixed !important;
   right: 0;
   bottom: 0;
-  height: 95vh;
-  ;
+  z-index: -1;
+  order: 2;
 }
 
 .App-infowindow {

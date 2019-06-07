@@ -25,16 +25,17 @@ class CenterButton extends Component {
 					if (navigator && navigator.geolocation) {
 						navigator.geolocation.getCurrentPosition((pos) => {
 							const coords = pos.coords;
-							console.log(this.props)
 							this.props.setBrowserLocation({
 								lat: coords.latitude,
 								lng: coords.longitude
-							})
+							});
+
 							panToMarker(GMap, {
 								lat: coords.latitude,
 								lng: coords.longitude
 							});
-							console.log(GMap, coords)
+							GMap.setZoom(5);
+							// console.log(GMap, coords)
 						})
 					}
 					//else pan to default center & zoom out

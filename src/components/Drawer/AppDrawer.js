@@ -30,10 +30,11 @@ class AppDrawer extends Component {
     render() {
         const { data, GMap} = this.props;
         return (
-            <Drawer 
+            <Drawer className="App-drawer"
                 variant="permanent"
-            ><div className="App-drawer">
+            ><div >
                 <NetworkGraph data={data}/>
+                <Divider />
                 <BuildGraph data={data}/>
                 <Typography variant="h5" align="center" className="App-fancytext">Total: {Object.values(data).length} </Typography>
                 <Divider />

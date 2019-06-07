@@ -29,6 +29,9 @@ const styles = {
   safe: {
     color: '#37bad6',
     fontWeight: 'bold'
+  },
+  cell: {
+    padding: "3px 3px"
   }
 };
 
@@ -60,18 +63,17 @@ const tableOptions = {
   headerStyle: {padding:"3px 3px"},
   columnsButton: true,
   exportButton: true,
-  // rowStyle: {padding: 0} 
 };
 const StatsTable = ({data, map}) => {
   
   const dispatch = useDispatch();
   const columns = [
-      { field: 'hostname', cellStyle: {padding: "0 3px"}, title: 'Name'},
-      { field: '_changed', cellStyle: {padding: "0 3px"},title: 'Last Logon', render: r => <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> },
-      { field: 'uptime', cellStyle: {padding: "0 3px"},title: 'UpTime', render: r => <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> },
-      { field: 'os_build', cellStyle: {padding: "0 3px"},title: 'Build'},
-      { field: 'top_process', cellStyle: {padding: "0 3px"}, title: 'Top Process'},
-      { field: 'ip_local', cellStyle: {padding: "0 3px"}, title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}> <img height="11px" src={r.flag} alt={` ${r.region} Flag`} /> {r.region ? r.region : "WAN"} </span>) } 
+      { field: 'hostname', cellStyle: styles.cell, title: 'Name'},
+      { field: '_changed', cellStyle: styles.cell ,title: 'Last Logon', render: r => <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> },
+      { field: 'uptime', cellStyle: styles.cell ,title: 'UpTime', render: r => <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> },
+      { field: 'os_build', cellStyle: styles.cell ,title: 'Build'},
+      { field: 'top_process', cellStyle: styles.cell , title: 'Top Process'},
+      { field: 'ip_local', cellStyle: styles.cell , title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}> <img height="11px" src={r.flag} alt={` ${r.region} Flag`} /> {r.region ? r.region : "WAN"} </span>) } 
     ];
   
   const rowClickHandler = (data) => {
@@ -84,7 +86,7 @@ const StatsTable = ({data, map}) => {
 
   return (
       <MaterialTable
-        style={{"width":'100%'}}
+        style={{"width":'100%', "padding": "0 3px", "bottom": 0}}
         columns={columns}
         icons={tableIcons}
         data={Object.values(data)}
