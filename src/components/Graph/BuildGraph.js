@@ -12,7 +12,6 @@ import { getUnique } from "../../functions";
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
-//
 //want groups of logins (<8 hrs, <24, <1wk 1wk>)
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -34,7 +33,7 @@ const BuildGraph = props => {
   let mapType = "Bar";
   data = Object.values(data);
   let uptimeData = getUnique(data,"os_build")
-  const colors = ['rgba(35, 165, 121, .8)','rgba(52, 153, 81, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)','rgba(255, 27, 27, 0.8)','rgba(55, 186, 214, 0.8)']
+  const colors = ['rgba(255, 27, 27, 0.8)','rgba(179, 27, 27, 0.8)','rgba(193, 131, 54, 0.8)','rgba(81, 129, 115, 0.8)','rgba(52, 153, 81, 0.8)','rgba(35, 165, 121, .8)','rgba(55, 186, 214, 0.8)']
    
   if (uptimeData) { 
   return (
@@ -43,7 +42,7 @@ const BuildGraph = props => {
       { (mapType === "Bar") ? (
         <BarChart style={{fontSize:"12px"}} data={uptimeData} startAngle={180} endAngle={0}>
           <XAxis dataKey="name" />
-          <YAxis />
+          <YAxis scale="sqrt"/>
           <Tooltip />
           <Bar dataKey="value" isAnimationActive={false}>
           { 

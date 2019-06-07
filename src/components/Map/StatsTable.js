@@ -23,15 +23,17 @@ import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome, panToMarker} from "../../functions";
 const styles = {
   warning: {
-    color: '#ee3b0e',
-    fontWeight: 'bold'
+    color: '#aa3b0e',
+    fontSize: 10,
+    fontWeight: 'bold',
+    verticalAlign: "middle"
   },
   safe: {
     color: '#37bad6',
     fontWeight: 'bold'
   },
   cell: {
-    padding: "3px 3px"
+    padding: "3px 3px",
   }
 };
 
@@ -69,11 +71,26 @@ const StatsTable = ({data, map}) => {
   const dispatch = useDispatch();
   const columns = [
       { field: 'hostname', cellStyle: styles.cell, title: 'Name'},
-      { field: '_changed', cellStyle: styles.cell ,title: 'Last Logon', render: r => <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> },
-      { field: 'uptime', cellStyle: styles.cell ,title: 'UpTime', render: r => <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> },
+      { field: '_changed', cellStyle: styles.cell ,title: 'Last Logon', 
+      render: r => ( 
+        <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> 
+      )},
+      { field: 'uptime', cellStyle: styles.cell ,title: 'UpTime', 
+      render: r => ( 
+        <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> 
+      )},
       { field: 'os_build', cellStyle: styles.cell ,title: 'Build'},
       { field: 'top_process', cellStyle: styles.cell , title: 'Top Process'},
-      { field: 'ip_local', cellStyle: styles.cell , title: 'Location (approx.)', render: r => r.ip_local && (isHome(r.ip_local) ? <span style={styles.safe}>LAN</span> : <span style={styles.warning}> <img height="11px" src={r.flag} alt={` ${r.region} Flag`} /> {r.region ? r.region : "WAN"} </span>) } 
+      { field: 'ip_local', cellStyle: styles.cell , title: 'Location (approx.)', 
+      render: r => ( r.ip_local && (isHome(r.ip_local)) ? (
+        <span style={styles.safe}>LAN</span> 
+        ) : (
+        <div >
+          <img height="14px" src={r.flag} alt={` ${r.region} Flag`} /> 
+          <span style={styles.warning}> {r.region ? r.region : "WAN"} </span> 
+        </div>
+        )
+      )} 
     ];
   
   const rowClickHandler = (data) => {

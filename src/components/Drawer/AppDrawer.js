@@ -10,6 +10,7 @@ import NetworkGraph from './../Graph/NetworkGraph';
 import BuildGraph from './../Graph/BuildGraph';
 import StatsTable from '../Map/StatsTable';
 import AssetSearch from '../Assets/AssetSearch';
+import UptimeGraph from '../Graph/UptimeGraph';
 
 class AppDrawer extends Component {
     constructor(props) {
@@ -36,6 +37,7 @@ class AppDrawer extends Component {
                 <NetworkGraph data={data}/>
                 <Divider />
                 <BuildGraph data={data}/>
+                <UptimeGraph data={data} />
                 <Typography variant="h5" align="center" className="App-fancytext">Total: {Object.values(data).length} </Typography>
                 <Divider />
                 <AssetSearch data={data}/>
