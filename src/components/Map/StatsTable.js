@@ -18,15 +18,18 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome, panToMarker} from "../../functions";
 const styles = {
   warning: {
-    color: '#aa3b0e',
-    fontSize: 10,
+    color: '#dd6666',
+    fontSize: 8,
     fontWeight: 'bold',
-    verticalAlign: "middle"
+    verticalAlign: "middle",
+    textAlign: "center",
+    margin:"0 auto"
   },
   safe: {
     color: '#37bad6',
@@ -71,7 +74,7 @@ const StatsTable = ({data, map}) => {
   const dispatch = useDispatch();
   const columns = [
       { field: 'hostname', cellStyle: styles.cell, title: 'Name'},
-      { field: '_changed', cellStyle: styles.cell ,title: 'Last Logon', 
+      { field: '_changed', cellStyle: styles.cell ,title: 'Logon', 
       render: r => ( 
         <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> 
       )},
@@ -80,15 +83,17 @@ const StatsTable = ({data, map}) => {
         <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> 
       )},
       { field: 'os_build', cellStyle: styles.cell ,title: 'Build'},
-      { field: 'top_process', cellStyle: styles.cell , title: 'Top Process'},
-      { field: 'ip_local', cellStyle: styles.cell , title: 'Location (approx.)', 
+      { field: 'top_process', cellStyle: styles.cell , title: 'Top Process',
+      render: r=> (
+        <span> {r.top_process.slice(0,-4)} </span>
+      )},
+      { field: 'ip_local', cellStyle: styles.cell , title: 'Region', 
       render: r => ( r.ip_local && (isHome(r.ip_local)) ? (
         <span style={styles.safe}>LAN</span> 
         ) : (
-        <div >
-          <img height="14px" src={r.flag} alt={` ${r.region} Flag`} /> 
-          <span style={styles.warning}> {r.region ? r.region : "WAN"} </span> 
-        </div>
+          <Tooltip className="howdy" title={r.region ? r.region : "WAN"} aria-label={r.region ? r.region : "WAN"}>
+            <img height="14px" src={r.flag} alt={` ${r.region} Flag`} />
+          </Tooltip>
         )
       )} 
     ];
