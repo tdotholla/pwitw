@@ -4,7 +4,9 @@ import {
   ResponsiveContainer, Legend, Tooltip, 
   PieChart, Pie, Cell, LabelList 
 } from 'recharts';
-import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
+import { differenceInMinutes, differenceInHours, differenceInDays} from "date-fns";
+import chroma from 'chroma-js';
+
 // import { Flipper, Flipped } from "react-flip-toolkit";
 import Typography from '@material-ui/core/Typography';
 
@@ -40,27 +42,26 @@ const UptimeGraph = props => {
     // let llans = lans.length;
     // (getMinutes(Date.now()) >= 0) && dayArray.push({'wan': lwans, 'lan': llans, 'hour': format(new Date(),'H:mm') })
     // console.log(dayArray);
-  
-  
-    let withinHour = data.filter( x => differenceInMinutes(new Date(), new Date(x.uptime)) < 60 )
-    let wasToday = data.filter( x => isToday(new Date(x.uptime)) && (differenceInMinutes(new Date(), new Date(x.uptime)) >= 60)  )
-    let wasYesterday = data.filter( x => isYesterday(new Date(x.uptime)) )
-    let wasThisWeek = data.filter( x => isThisWeek(new Date(x.uptime)) )
-    let wasThisMonth = data.filter( x => isThisMonth(new Date(x.uptime)) )
-    let wasThisQuarter = data.filter( x => isThisQuarter(new Date(x.uptime)) )
-  
+ 
+    let withinHour = data.filter( x => differenceInMinutes(new Date(), new Date(x._changed)) <= 60 )
+    let within8Hours = data.filter( x => differenceInHours(new Date(), new Date(x._changed)) <= 8)
+    let within40Hours = data.filter( x => differenceInHours(new Date(), new Date(x._changed)) <= 40)
+    let under7Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) <= 7 )
+    let under30Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) <= 30 )
+    let over30Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) > 30 )
+
     const graphData = [
-        { name: 'Older...', value: wasThisQuarter.length - wasThisMonth.length },
-        { name: 'This Month', value: wasThisMonth.length - wasThisWeek.length},
-        { name: 'This Week', value: wasThisWeek.length - wasYesterday.length - wasToday.length - withinHour.length},
-        { name: 'Yesterday', value: wasYesterday.length },
-        { name: 'Today', value: wasToday.length - withinHour.length},
-        { name: 'Restarted Recently', value: withinHour.length },
+        { name: 'Under 1h', value: withinHour.length },
+        { name: 'Under 8h', value: (within8Hours.length - withinHour.length)},
+        { name: 'Under 40h', value: (within40Hours.length - within8Hours.length) },
+        { name: 'This Week', value: (under7Days.length - within40Hours.length) },
+        { name: 'This Month', value: (under30Days.length - under7Days.length) },
+        { name: 'Older...', value: over30Days.length },
       
     ];
   
-    const colors = ['rgba(255, 27, 27, 0.8)','rgba(179, 27, 27, 0.8)','rgba(193, 131, 54, 0.8)','rgba(81, 129, 115, 0.8)','rgba(52, 153, 81, 0.8)','rgba(35, 165, 121, .8)','rgba(55, 186, 214, 0.8)']
-   
+    // const colors = ['rgba(255, 27, 27, 0.8)','rgba(179, 27, 27, 0.8)','rgba(193, 131, 54, 0.8)','rgba(81, 129, 115, 0.8)','rgba(52, 153, 81, 0.8)','rgba(35, 165, 121, .8)','rgba(55, 186, 214, 0.8)']
+    let colors = chroma.scale(['red','#61aaab']).mode('lrgb').colors(graphData.length)
     return (
       <div style={{ backgroundColor: "#eee"}}>
       <ResponsiveContainer height={250} width="100%">
@@ -68,7 +69,7 @@ const UptimeGraph = props => {
           <Legend layout="vertical" align="left" verticalAlign="middle" iconSize={10} iconType="diamond"/>
           <Tooltip />
           <Pie 
-          data={graphData} 
+          data={graphData.sort((a,b) => a.value - b.value)} 
           cx="50%" 
           cy="50%" 
           dataKey="value" 
