@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 
 import * as ACTIONS from "../../actions/actionConstants";
 import { isHome } from "../../functions";
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
