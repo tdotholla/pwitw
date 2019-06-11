@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { ResponsiveContainer, Cell, PieChart, Pie, Legend, LabelList, Tooltip } from 'recharts';
-import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
+import { differenceInMinutes, differenceInHours, differenceInDays, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
+import chroma from 'chroma-js';
+
 // import { Flipper, Flipped } from "react-flip-toolkit";
 import Typography from '@material-ui/core/Typography';
 
 import * as ACTIONS from "../../actions/actionConstants";
 import { isHome } from "../../functions";
+import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript';
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
@@ -33,39 +36,27 @@ const NetworkGraph = props => {
   let wans = data.filter( x => !isHome(x.ip_local) )
   let lans = data.filter( x => isHome(x.ip_local) )
 
-  // let wansById = Object.assign({}, ...wans.map(x=> ({[x.hostname]:x})))
-  //how often is it lan vs wan count
-  //get array of objects, {wanamt, lanamt, time of day}
-  //every hour, get wan/lan counts and push to array of 24 hours
-  // let lwans = wans.length;
-  // let llans = lans.length;
-  // (getMinutes(Date.now()) >= 0) && dayArray.push({'wan': lwans, 'lan': llans, 'hour': format(new Date(),'H:mm') })
-  // console.log(dayArray);
-
-
-  let withinHour = data.filter( x => differenceInMinutes(new Date(), new Date(x._changed)) < 60 )
-  let wasToday = data.filter( x => isToday(new Date(x._changed)) && (differenceInMinutes(new Date(), new Date(x._changed)) >= 60)  )
-  let wasYesterday = data.filter( x => isYesterday(new Date(x._changed)) )
-  let wasThisWeek = data.filter( x => isThisWeek(new Date(x._changed)) )
-  let wasThisMonth = data.filter( x => isThisMonth(new Date(x._changed)) )
-  let wasThisQuarter = data.filter( x => isThisQuarter(new Date(x._changed)) )
-
-
-  const data01 = [
+  let withinHour = data.filter( x => differenceInMinutes(new Date(), new Date(x._changed)) <= 60 )
+  let within24Hours = data.filter( x => differenceInHours(new Date(), new Date(x._changed)) <= 24)
+  let within48Hours = data.filter( x => differenceInHours(new Date(), new Date(x._changed)) <= 48)
+  let under7Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) <= 7 )
+  let under30Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) <= 30 )
+  let over30Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) > 30 )
+  
+  const locationData = [
     { name: 'WAN', value: wans.length }, { name: 'LAN', value: lans.length }
   ];
-  const data02 = [
-    { name: 'Pinged Recently', value: withinHour.length },
-    { name: 'Today', value: wasToday.length - withinHour.length},
-    { name: 'Yesterday', value: wasYesterday.length },
-    { name: 'This Week', value: wasThisWeek.length - wasYesterday.length - wasToday.length - withinHour.length},
-    { name: 'This Month', value: wasThisMonth.length - wasThisWeek.length},
-    { name: 'Older...', value: wasThisQuarter.length - wasThisMonth.length },
+  const pingData = [
+    { name: 'Under 1h', value: withinHour.length },
+    { name: 'Under 24h', value: (within24Hours.length - withinHour.length)},
+    { name: 'Under 48h', value: (within48Hours.length - within24Hours.length) },
+    { name: 'This Week', value: (under7Days.length - within48Hours.length) },
+    { name: 'This Month', value: (under30Days.length - under7Days.length) },
+    { name: 'Older...', value: over30Days.length },
   ];
-
-  const colors01 = ['rgba(238, 59, 14, 0.8)','rgba(55, 186, 214, 0.8)']
-  const colors02 = ['rgba(35, 165, 121, .8)','rgba(52, 153, 81, 0.8)','rgba(81, 129, 115, 0.8)','rgba(193, 131, 54, 0.8)','rgba(179, 27, 27, 0.8)','rgba(255, 27, 27, 0.8)']
-  
+  console.log(under7Days.length, (under7Days.length - within48Hours.length - within24Hours.length - withinHour.length) , (under30Days.length - under7Days.length - within48Hours.length - within24Hours.length - withinHour.length))
+  const colors01 = chroma.scale(['#d4af37','#61dafb']).colors(2)
+  let colors02 = chroma.scale(['#a44f47','#a4d3f2']).colors(pingData.length)
 
   return (
     <div style={{ backgroundColor: "#eee"}}>
@@ -75,7 +66,7 @@ const NetworkGraph = props => {
         <Tooltip />
 
         <Pie 
-        data={data01} 
+        data={locationData} 
         cx="50%" 
         cy="50%" 
         dataKey="value" 
@@ -86,13 +77,13 @@ const NetworkGraph = props => {
         isAnimationActive={false} //should be able to remove this prop, I think there is a bug in Pie stopping labels from rendering. This is a temp fix.  
         >
           {
-            data01.map( (entry,index) => (
+            locationData.map( (entry,index) => (
               <Cell key={`wedge-${index}`} fill={colors01[index]} className="pieWedge"/> 
             ))
           }
         </Pie>
         <Pie 
-        data={data02} 
+        data={pingData.sort((a,b) => a.value - b.value)} 
         cx="50%" 
         cy="50%" 
         dataKey="value" 
@@ -102,7 +93,7 @@ const NetworkGraph = props => {
         isAnimationActive={false} //should be able to remove this prop, I think there is a bug in Pie stopping labels from rendering. This is a temp fix.
         > 
         {
-          data02.map( (entry,index) => (
+          pingData.map( (entry,index) => (
             <Cell key={`sector-${index}`} fill={colors02[index]} className={`pieSector-${index}`}/>
           ))
         }

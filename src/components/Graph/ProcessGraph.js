@@ -5,6 +5,7 @@ import {
   BarChart, Bar, XAxis, YAxis, 
 
 } from 'recharts';
+import chroma from 'chroma-js';
 import Loader from 'react-loader-spinner';
 // import { Flipper, Flipped } from "react-flip-toolkit";
 import Typography from '@material-ui/core/Typography';
@@ -37,15 +38,13 @@ const renderCustomizedLabel = ({
   );
 };
 
-
-const colors = ['rgba(255, 27, 27, 0.8)','rgba(179, 27, 27, 0.8)','rgba(193, 131, 54, 0.8)','rgba(81, 129, 115, 0.8)','rgba(52, 153, 81, 0.8)','rgba(35, 165, 121, .8)','rgba(55, 186, 214, 0.8)','rgba(155, 146, 234, 0.8)'];
-
 const ProcessGraph = props => {
   let { data } = props;
 
   data = Object.values(data);
   let processData = getUnique(data,"top_process").sort((a,b) => b.value - a.value);
-   
+
+  let colors = chroma.scale(['maroon','teal']).mode('lch').colors(processData.length)
   return (
   processData ? (
    <div style={{ backgroundColor: "#eee"}}>

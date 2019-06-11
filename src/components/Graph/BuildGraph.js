@@ -6,6 +6,8 @@ import {
   PieChart, Pie, LabelList
 } from 'recharts';
 import Loader from 'react-loader-spinner';
+import chroma from 'chroma-js';
+
 // import { Flipper, Flipped } from "react-flip-toolkit";
 
 import Select from '@material-ui/core/Select';
@@ -38,7 +40,7 @@ const renderCustomizedLabel = ({
 };
 
 
-const colors = ['rgba(255, 27, 27, 0.8)','rgba(179, 27, 27, 0.8)','rgba(193, 131, 54, 0.8)','rgba(81, 129, 115, 0.8)','rgba(52, 153, 81, 0.8)','rgba(35, 165, 121, .8)','rgba(55, 186, 214, 0.8)','rgba(155, 146, 234, 0.8)'];
+// const colors = ['rgba(255, 27, 27, 0.8)','rgba(179, 27, 27, 0.8)','rgba(193, 131, 54, 0.8)','rgba(81, 129, 115, 0.8)','rgba(52, 153, 81, 0.8)','rgba(35, 165, 121, .8)','rgba(55, 186, 214, 0.8)','rgba(155, 146, 234, 0.8)'];
 
 const BuildGraph = props => {
   let { data } = props;
@@ -46,7 +48,7 @@ const BuildGraph = props => {
 
   data = Object.values(data);
   let uptimeData = getUnique(data,"os_build");
-   
+  let colors = chroma.scale(['red','teal']).mode('lch').colors(uptimeData.length)
   return (
   uptimeData ? (
    <div style={{ backgroundColor: "#eee"}}>
