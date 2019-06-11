@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
 
 import NetworkGraph from './../Graph/NetworkGraph';
 import BuildGraph from './../Graph/BuildGraph';
@@ -12,6 +14,7 @@ import StatsTable from '../Map/StatsTable';
 import AssetSearch from '../Assets/AssetSearch';
 import UptimeGraph from '../Graph/UptimeGraph';
 import ProcessGraph from '../Graph/ProcessGraph';
+
 
 class AppDrawer extends Component {
     constructor(props) {
@@ -34,21 +37,35 @@ class AppDrawer extends Component {
         return (
             <Drawer className="App-drawer"
                 variant="permanent"
-            ><div >
-                <NetworkGraph data={data}/>
-                <Divider />
-                <BuildGraph data={data}/>
-                <Divider/>
-                <UptimeGraph data={data} />
-                <Divider />
-                <ProcessGraph data={data} />
-                <Divider />
-                
+            >
                 <Typography variant="h5" align="center" className="App-fancytext">Total: {Object.values(data).length} </Typography>
                 <Divider />
-                <AssetSearch data={data}/>
-                <StatsTable data={data} map={GMap}/>
-            </div>
+                <GridList cellHeight="auto" cols={1} className="App-drawer--grid">
+                    <GridListTile className="App-drawer--grid_tile">
+                        <GridList cols={2}>
+                            <GridListTile>
+                                <NetworkGraph data={data}/>
+                                <Divider />
+                            </GridListTile>
+                            <GridListTile >
+                                <BuildGraph data={data}/>
+                                <Divider/>
+                            </GridListTile>
+                            <GridListTile>
+                                <UptimeGraph data={data} />
+                                <Divider />
+                            </GridListTile>
+                            <GridListTile>
+                                <ProcessGraph data={data} />
+                                <Divider />
+                            </GridListTile>
+                        </GridList>
+                    </GridListTile>
+                    <GridListTile>
+                        <AssetSearch data={data}/>
+                        <StatsTable data={data} map={GMap}/>
+                    </GridListTile>    
+                </GridList>
             </Drawer>
         )
     }

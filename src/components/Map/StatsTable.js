@@ -85,7 +85,7 @@ const StatsTable = ({data, map}) => {
       { field: 'os_build', cellStyle: styles.cell ,title: 'Build'},
       { field: 'top_process', cellStyle: styles.cell , title: 'Top Process',
       render: r=> (
-        <span> {r.top_process.slice(0,-4)} </span>
+        <span> {r.top_process && r.top_process.slice(0,-4)} </span>
       )},
       { field: 'ip_local', cellStyle: styles.cell , title: 'Region', 
       render: r => ( r.ip_local && (isHome(r.ip_local)) ? (

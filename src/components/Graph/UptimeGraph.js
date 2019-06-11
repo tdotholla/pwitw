@@ -6,6 +6,8 @@ import {
 } from 'recharts';
 import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
 // import { Flipper, Flipped } from "react-flip-toolkit";
+import Typography from '@material-ui/core/Typography';
+
 
 import * as ACTIONS from "../../actions/actionConstants";
 
@@ -83,6 +85,7 @@ const UptimeGraph = props => {
           <LabelList dataKey="uv" position="top" />
         </PieChart>
       </ResponsiveContainer>
+      <Typography variant="subtitle2"> Uptime </Typography>
       </div>
     );
     

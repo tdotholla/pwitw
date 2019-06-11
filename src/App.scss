@@ -57,9 +57,20 @@
   @include breakpoint(mobileonly) {
     width: 240px;
   }
+  // display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   padding: 0 0px;
-  // width: $drawerWidth;
-  order: 1;
+  overflow: hidden;
+}
+
+.App-drawer--grid {
+  width: $drawerWidth;
+  height: 100%;
+  
+  .App-drawer--grid_tile {
+    // height: 50%;
+  }
 }
 
 .App-map {

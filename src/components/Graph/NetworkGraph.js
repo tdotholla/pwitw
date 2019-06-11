@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { ResponsiveContainer, Cell, PieChart, Pie, Legend, LabelList, Tooltip } from 'recharts';
 import { differenceInMinutes, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
 // import { Flipper, Flipped } from "react-flip-toolkit";
+import Typography from '@material-ui/core/Typography';
 
 import * as ACTIONS from "../../actions/actionConstants";
 import { isHome } from "../../functions";
@@ -109,6 +110,7 @@ const NetworkGraph = props => {
         <LabelList dataKey="uv" position="top" />
       </PieChart>
     </ResponsiveContainer>
+    <Typography variant="subtitle2"> Network Data </Typography>
     </div>
   );
   
