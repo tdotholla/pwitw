@@ -91,9 +91,14 @@ const StatsTable = ({data, map}) => {
       render: r => ( r.ip_local && (isHome(r.ip_local)) ? (
         <span className="tableRow_LAN">LAN</span> 
         ) : (
-          <Tooltip className="tableRow_WAN" title={r.region ? r.region : "WAN"} aria-label={r.region ? r.region : "WAN"}>
-            <img height="14px" src={r.flag} alt={`${r.region}`} />
-          </Tooltip>
+          r.flag !== "none" ? (
+            <Tooltip className="tableRow_WAN" title={r.region ? r.region : "WAN"} aria-label={r.region ? r.region : "WAN"}>
+              <img height="14px" src={r.flag} alt={`${r.region}`} />
+            </Tooltip>
+          ) : (
+            <span className="tableRow_WAN">{r.region}</span>
+          )
+          
         )
       )} 
     ];
