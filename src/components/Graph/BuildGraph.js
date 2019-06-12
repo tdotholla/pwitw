@@ -7,7 +7,6 @@ import {
 } from 'recharts';
 import Loader from 'react-loader-spinner';
 import chroma from 'chroma-js';
-
 // import { Flipper, Flipped } from "react-flip-toolkit";
 
 import Select from '@material-ui/core/Select';
@@ -48,7 +47,7 @@ const BuildGraph = props => {
 
   data = Object.values(data);
   let uptimeData = getUnique(data,"os_build");
-  let colors = chroma.scale(['red','teal']).mode('lch').colors(uptimeData.length)
+  let colors = chroma.scale(['#ff8675','#f7cd00','#639b76']).mode('lch').colors(uptimeData.length)
   return (
   uptimeData ? (
    <div style={{ backgroundColor: "#eee"}}>
@@ -95,7 +94,7 @@ const BuildGraph = props => {
             ))
           }
           </Pie>
-          <LabelList dataKey="uv" position="top" />
+          <LabelList dataKey="value" position="top" />
         </PieChart>
       ) : (<div />)
       }

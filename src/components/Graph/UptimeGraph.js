@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { 
   ResponsiveContainer, Legend, Tooltip, 
-  PieChart, Pie, Cell, LabelList 
+  PieChart, Pie, Cell, LabelList,
+  BarChart, Bar, XAxis, YAxis
 } from 'recharts';
 import { differenceInMinutes, differenceInHours, differenceInDays} from "date-fns";
 import chroma from 'chroma-js';
 
 // import { Flipper, Flipped } from "react-flip-toolkit";
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from'@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Typography from '@material-ui/core/Typography';
 
 
@@ -33,7 +40,8 @@ const renderCustomizedLabel = ({
 const UptimeGraph = props => {
     let {data} = props;
     data = Object.values(data)
-  
+    const [mapType, setMapType] = useState("Pie");
+
     // let wansById = Object.assign({}, ...wans.map(x=> ({[x.hostname]:x})))
     //how often is it lan vs wan count
     //get array of objects, {wanamt, lanamt, time of day}
@@ -43,33 +51,42 @@ const UptimeGraph = props => {
     // (getMinutes(Date.now()) >= 0) && dayArray.push({'wan': lwans, 'lan': llans, 'hour': format(new Date(),'H:mm') })
     // console.log(dayArray);
  
-    let withinHour = data.filter( x => differenceInMinutes(new Date(), new Date(x._changed)) <= 60 )
-    let within8Hours = data.filter( x => differenceInHours(new Date(), new Date(x._changed)) <= 8)
-    let within40Hours = data.filter( x => differenceInHours(new Date(), new Date(x._changed)) <= 40)
-    let under7Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) <= 7 )
-    let under30Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) <= 30 )
-    let over30Days = data.filter( x => differenceInDays(new Date(), new Date(x._changed)) > 30 )
+    
+    let within8Hours = data.filter( x => differenceInHours(new Date(), new Date(x.uptime)) <= 8)
+    let within24Hours = data.filter( x => differenceInHours(new Date(), new Date(x.uptime)) <= 24 )
+    let under7Days = data.filter( x => differenceInDays(new Date(), new Date(x.uptime)) <= 7 )
+    let under30Days = data.filter( x => differenceInDays(new Date(), new Date(x.uptime)) <= 29 )
+    let over30Days = data.filter( x => differenceInDays(new Date(), new Date(x.uptime)) > 29 )
 
     const graphData = [
-        { name: 'Under 1h', value: withinHour.length },
-        { name: 'Under 8h', value: (within8Hours.length - withinHour.length)},
-        { name: 'Under 40h', value: (within40Hours.length - within8Hours.length) },
-        { name: 'This Week', value: (under7Days.length - within40Hours.length) },
+        { name: 'Under 8h', value: (within8Hours.length)},
+        { name: 'Under 24h', value: (within24Hours.length - within8Hours.length) },
+        { name: 'This Week', value: (under7Days.length - within24Hours.length) },
         { name: 'This Month', value: (under30Days.length - under7Days.length) },
         { name: 'Older...', value: over30Days.length },
       
     ];
   
     // const colors = ['rgba(255, 27, 27, 0.8)','rgba(179, 27, 27, 0.8)','rgba(193, 131, 54, 0.8)','rgba(81, 129, 115, 0.8)','rgba(52, 153, 81, 0.8)','rgba(35, 165, 121, .8)','rgba(55, 186, 214, 0.8)']
-    let colors = chroma.scale(['red','#61aaab']).mode('lrgb').colors(graphData.length)
+    let colors = chroma.scale(['#639b76','#ff8675']).mode('lrgb').colors(graphData.length)
     return (
       <div style={{ backgroundColor: "#eee"}}>
+      <FormControl>
+        <Select onChange={(e) => setMapType(e.target.value)} input={<Input name="map-type" id="map-type-helper" value={mapType}/>} >
+          <MenuItem value="Bar">Bar</MenuItem>
+          <MenuItem value="Pie">Pie</MenuItem>
+        </Select>
+        <FormHelperText>Select Chart Type </FormHelperText>
+      </FormControl>
+
       <ResponsiveContainer height={250} width="100%">
+      { ( 
+        mapType === "Pie" ) ? (
         <PieChart style={{fontSize:"12px"}}>
           <Legend layout="vertical" align="left" verticalAlign="middle" iconSize={10} iconType="diamond"/>
           <Tooltip />
           <Pie 
-          data={graphData.sort((a,b) => a.value - b.value)} 
+          data={graphData} 
           cx="50%" 
           cy="50%" 
           dataKey="value" 
@@ -83,8 +100,27 @@ const UptimeGraph = props => {
               ))
             }
           </Pie>
-          <LabelList dataKey="uv" position="top" />
+          <LabelList dataKey="value" position="top" />
         </PieChart>
+        ) : ( mapType === "Bar" ) ? (
+          <BarChart 
+          style={{fontSize:"12px"}} 
+          data={graphData} 
+          startAngle={180} 
+          endAngle={0}>
+            <XAxis dataKey="name" />
+            <YAxis scale="sqrt"/>
+            <Tooltip />
+            <Bar dataKey="value" isAnimationActive={false}>
+            { 
+              graphData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={colors[index]}/>
+              ))
+            }
+            </Bar>
+          </BarChart>
+        ) : (<div />)
+        }
       </ResponsiveContainer>
       <Typography variant="subtitle2"> Uptime </Typography>
       </div>

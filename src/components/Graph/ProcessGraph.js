@@ -44,7 +44,7 @@ const ProcessGraph = props => {
   data = Object.values(data);
   let processData = getUnique(data,"top_process").sort((a,b) => b.value - a.value);
 
-  let colors = chroma.scale(['maroon','teal']).mode('lch').colors(processData.length)
+  let colors = chroma.scale(['#ff8675','#f7cd00','#639b76']).mode('lch').colors(processData.length)
   return (
   processData ? (
    <div style={{ backgroundColor: "#eee"}}>

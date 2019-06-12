@@ -1,6 +1,7 @@
 @import 'style/variables';
 @import 'style/mixins';
 @import 'style/frames';
+@import 'style/colors';
 
 @include breakpoint(phablet) {
   // $drawerWidth: 640px;
@@ -37,11 +38,15 @@
 }
 
 .App-link {
-  color: #61dafb;
+  color: $pw_blue;
+  
+  &:visited {
+    color: $pw_yellow;
+  }
 }
 
 .App-marker {
-  color: #61dafb;
+  color: $pw_blue;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -80,7 +85,7 @@
   flex-grow: 1;
   height: 100%;
   width: calc(100% - 565px);
-  background-color: #61dafb;
+  background-color: $pw_blue;
   position: fixed !important;
   right: 0;
   bottom: 0;
@@ -90,7 +95,7 @@
 
 .App-infowindow {
   /*height: 150px;*/
-  background-color: #61dafb;
+  background-color: $pw_blue;
   width: 150px;
   color: #000;
   padding: 0;
@@ -107,6 +112,14 @@
   animation: fadeIn 2s ease-in; 
 }
 
+.tableRow_LAN {
+  color: $pw_blue;
+  font-weight: bold;
+}
+.tableRow_WAN {
+  color: $pw_coral;
+  font-weight: bold;
+}
 
 .pieWedge, .pieSector {
   // transition: all .4s ease-in;

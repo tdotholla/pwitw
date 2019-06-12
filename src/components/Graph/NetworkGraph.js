@@ -54,8 +54,8 @@ const NetworkGraph = props => {
     { name: 'Older...', value: over30Days.length },
   ];
   console.log(under7Days.length, (under7Days.length - within48Hours.length - within24Hours.length - withinHour.length) , (under30Days.length - under7Days.length - within48Hours.length - within24Hours.length - withinHour.length))
-  const colors01 = chroma.scale(['#d4af37','#61dafb']).colors(2)
-  let colors02 = chroma.scale(['#a44f47','#a4d3f2']).colors(pingData.length)
+  const locationColors = chroma.scale(['#f7cd00','#5577d1']).colors(2)
+  let pingColors = chroma.scale(['#ff8675','#639b76']).colors(pingData.length)
 
   return (
     <div style={{ backgroundColor: "#eee"}}>
@@ -77,7 +77,7 @@ const NetworkGraph = props => {
         >
           {
             locationData.map( (entry,index) => (
-              <Cell key={`wedge-${index}`} fill={colors01[index]} className="pieWedge"/> 
+              <Cell key={`wedge-${index}`} fill={locationColors[index]} className="pieWedge"/> 
             ))
           }
         </Pie>
@@ -93,7 +93,7 @@ const NetworkGraph = props => {
         > 
         {
           pingData.map( (entry,index) => (
-            <Cell key={`sector-${index}`} fill={colors02[index]} className={`pieSector-${index}`}/>
+            <Cell key={`sector-${index}`} fill={pingColors[index]} className={`pieSector-${index}`}/>
           ))
         }
         </Pie>
