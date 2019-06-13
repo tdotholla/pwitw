@@ -22,6 +22,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import * as ACTIONS from "./../../actions/actionConstants";
 import { isHome, panToMarker} from "../../functions";
+import { Typography } from "@material-ui/core";
 const styles = {
   warning: {
     color: '#dd6666',
@@ -89,7 +90,9 @@ const StatsTable = ({data, map}) => {
       )},
       { field: 'ip_local', cellStyle: styles.cell , title: 'Region', 
       render: r => ( r.ip_local && (isHome(r.ip_local)) ? (
-        <span className="tableRow_LAN">LAN</span> 
+        <Tooltip className="tableRow_LAN" title={r.region ? r.region : "LAN"} aria-label={r.region ? r.region : "LAN"}>
+          <Typography variant="button" className="tableRow_LAN"> LAN </Typography> 
+        </Tooltip>
         ) : (
           r.flag !== "none" ? (
             <Tooltip className="tableRow_WAN" title={r.region ? r.region : "WAN"} aria-label={r.region ? r.region : "WAN"}>
