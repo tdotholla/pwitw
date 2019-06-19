@@ -106,12 +106,13 @@ const StatsTable = ({data, map}) => {
       )} 
     ];
   
-  const rowClickHandler = (data) => {
+  const rowClickHandler = (e, data) => {
     let loc = data.location.split(',');
     let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
     // this.setState(state => ({selected:data.hostname}))
     panToMarker(map, locObj)
     dispatch({ type: ACTIONS.SHOW_INFOWINDOW, payload: data })
+    
   }
 
   return (
@@ -123,7 +124,8 @@ const StatsTable = ({data, map}) => {
         title="Asset Tracking"
         options={tableOptions}
         // detailPanel={(d) => d.ip_public}
-        onRowClick={(e, data) => rowClickHandler(data) }
+        onRowClick={(e, data) => rowClickHandler(e, data) }
+        onSelectionChange = {(e, data) => console.log(e,data) }
       />
   );
   

@@ -53,7 +53,6 @@ const NetworkGraph = props => {
     { name: 'This Month', value: (under30Days.length - under7Days.length) },
     { name: 'Older...', value: over30Days.length },
   ];
-  console.log(under7Days.length, (under7Days.length - within48Hours.length - within24Hours.length - withinHour.length) , (under30Days.length - under7Days.length - within48Hours.length - within24Hours.length - withinHour.length))
   const locationColors = chroma.scale(['#f7cd00','#5577d1']).colors(2)
   let pingColors = chroma.scale(['#ff8675','#639b76']).colors(pingData.length)
 
