@@ -20,6 +20,8 @@ function* stationsFetchSaga() {
   // console.log('running stations saga...')
   try {
     const stations = yield call(stationsFetchAll);
+    const sqlstuff = yield call(dbFetch);
+    console.log(sqlstuff)
     yield put({ type: ACTIONS.STATIONS_API_RESULT, payload: stations });
   } catch (error) {
     console.warn("ERROR:", error);

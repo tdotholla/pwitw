@@ -1,10 +1,25 @@
-import { Connection, Request, TYPES } from "tedious";
+import Sequelize from 'sequelize';
 import store from "../store";
 import * as ACTIONS from "./../actions/actionConstants";
 
-export const dbFetch = () => {
-
-
+const config = {
+    userName: 'PW_DataCollect',
+    password: '!data!',
+    hostName: 'PW10inf-SQL.perkinswill.net',
+    dbName: 'PWAssetsPush'
 }
 
-dbFetch();
+const PWAssetDb =  new Sequelize(config.dbName, config.userName, config.password, {
+    dialect: 'mssql',
+    host: config.hostName,
+    port: 1433,
+    logging: false,
+    dialectOptions: {
+        requestTimeout: 30000
+    }
+});
+
+export const dbFetch = () => {
+
+PWAssetDb.findAll().then(ws =>console.log(ws))
+}
