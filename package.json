@@ -31,6 +31,7 @@
     "redux-devtools": "^3.5.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.2",
+    "tedious": "^6.2.0",
     "typescript": "^3.4.1"
   },
   "scripts": {
