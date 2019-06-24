@@ -1,7 +1,7 @@
 import React from 'react';
 import { compose } from "redux";
 import { connect } from "react-redux";
-import {distanceInWords} from "date-fns"
+import {formatDistance} from "date-fns"
 import { Flipper, Flipped } from "react-flip-toolkit";
 
 import { withStyles } from '@material-ui/core/styles';
@@ -226,7 +226,7 @@ class StatsTable extends React.Component {
                           key={n.hostname}
                           selected={isSelected}
                         >
-                          <TableCell align="center" component="th" scope="row" padding="none">{distanceInWords(new Date(n._changed), new Date())}</TableCell>
+                          <TableCell align="center" component="th" scope="row" padding="none">{formatDistance(new Date(n._changed), new Date())}</TableCell>
                           <TableCell align="center">{n.hostname}</TableCell>
                           <TableCell align="center">{isHome(n.ip_local) ? <span className={classes.safe}>LAN</span> : <span className={classes.warning}>{n.region ? n.region : "WAN"}</span>}</TableCell>
                         </TableRow>

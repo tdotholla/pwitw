@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow } from '@react-google-maps/api'
 import { connect } from "react-redux";
-import {distanceInWords} from "date-fns"
+import {formatDistance} from "date-fns"
 
 import { GEOCENTER, isHome } from "../../functions";
 import m1 from "./images/m1.png";
@@ -112,7 +112,7 @@ const StationWindow = (props) => {
       <div >
         <h3>{data.hostname}</h3>
         <p><strong>{isHome(data.ip_local) ? data.region : data.ip_public} </strong><br />
-        Last Connection: {distanceInWords(new Date(data._changed), new Date())}</p>
+        Last Connection: {formatDistance(new Date(data._changed), new Date())}</p>
       </div>
     </InfoWindow>
   )

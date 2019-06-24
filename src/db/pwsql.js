@@ -1,6 +1,4 @@
 import Sequelize from 'sequelize';
-import store from "../store";
-import * as ACTIONS from "./../actions/actionConstants";
 
 const config = {
     userName: 'PW_DataCollect',

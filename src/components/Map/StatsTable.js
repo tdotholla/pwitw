@@ -1,5 +1,5 @@
 import React from "react";
-import {distanceInWords} from "date-fns"
+import {formatDistance} from "date-fns"
 import MaterialTable from "material-table";
 import { useDispatch } from 'react-redux'
 
@@ -77,11 +77,11 @@ const StatsTable = ({data, map}) => {
       { field: 'hostname', cellStyle: styles.cell, title: 'Name'},
       { field: '_changed', cellStyle: styles.cell ,title: 'Logon', 
       render: r => ( 
-        <span >{ distanceInWords(new Date(r._changed), new Date()) }</span> 
+        <span >{ formatDistance(new Date(r._changed), new Date()) }</span> 
       )},
       { field: 'uptime', cellStyle: styles.cell ,title: 'UpTime', 
       render: r => ( 
-        <span >{ r.uptime && distanceInWords(new Date(r.uptime), new Date()) }</span> 
+        <span >{ r.uptime && formatDistance(new Date(r.uptime), new Date()) }</span> 
       )},
       { field: 'os_build', cellStyle: styles.cell ,title: 'Build'},
       { field: 'top_process', cellStyle: styles.cell , title: 'Top Process',

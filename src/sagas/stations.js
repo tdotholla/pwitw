@@ -9,7 +9,7 @@ import {
 import * as ACTIONS from "../actions/actionConstants";
 
 import { stationsFetchAll } from "../db/restdb";
-import { dbFetch } from "../db/pwsql";
+// import { dbFetch } from "../db/pwsql";
 
 function* stationsFetchWatcherSaga() {
   yield takeLatest(ACTIONS.STATIONS_API_REQUEST, stationsFetchSaga);
@@ -20,8 +20,8 @@ function* stationsFetchSaga() {
   // console.log('running stations saga...')
   try {
     const stations = yield call(stationsFetchAll);
-    const sqlstuff = yield call(dbFetch);
-    console.log(sqlstuff)
+    // const sqlstuff = yield call(dbFetch);
+    // console.log(sqlstuff)
     yield put({ type: ACTIONS.STATIONS_API_RESULT, payload: stations });
   } catch (error) {
     console.warn("ERROR:", error);
