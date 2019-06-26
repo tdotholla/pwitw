@@ -8744,7 +8744,7 @@ function () {
           var scriptRoute = route === '/' ? '/index.js' : "".concat(route, ".js");
           var script = document.createElement('script');
           var url = "".concat(_this4.assetPrefix, "/_next/static/").concat(encodeURIComponent(_this4.buildId), "/pages").concat(scriptRoute);
-          script.crossOrigin = undefined;
+          script.crossOrigin = "anonymous";
           script.src = url;
 
           script.onerror = function () {
@@ -8865,7 +8865,7 @@ function () {
             return _promise.default.resolve(_this7.promisedBuildId).then(function () {
               var link = document.createElement('link');
               link.rel = 'preload';
-              link.crossOrigin = undefined;
+              link.crossOrigin = "anonymous";
               link.href = "".concat(_this7.assetPrefix, "/_next/static/").concat(encodeURIComponent(_this7.buildId), "/pages").concat(scriptRoute);
               link.as = 'script';
               document.head.appendChild(link);

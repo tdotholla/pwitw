@@ -12,7 +12,7 @@ app.prepare()
         const server = express()
         if(slog){
             server.use(function (req,res,next) {
-                console.log(`${req.method}, ${req.path}`)
+                console.log(`[EXPRESS][${req.method}] ${req.path}`)
                 next()
             })
         }

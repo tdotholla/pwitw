@@ -7,6 +7,7 @@ const router = express.Router()
 const sql = require('mssql');
 
 router.get('/test', function (req,res) {
+    console.log(res)
     res.json()
 })
 
