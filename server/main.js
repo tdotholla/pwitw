@@ -7,6 +7,7 @@ const dev = process.env.NODE_ENV !== 'production'
 const app = next({dev})
 const handle = app.getRequestHandler()
 
+// need to connect to sql database, spin up server to listen on a port just to handle sql queries, and also a separate server for client.
 app.prepare()
     .then( () => {
         const server = express()
@@ -18,6 +19,7 @@ app.prepare()
         }
 
         var apis = require('./api/index');
+        // console.log(apis)
         server.use('/api', apis)
 
         server.get('*', (req,res) => {
