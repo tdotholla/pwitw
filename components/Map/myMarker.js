@@ -1,8 +1,7 @@
 import React from 'react';
 import { Marker} from '@react-google-maps/api'
 import { connect } from "react-redux";
-import * as ACTIONS from "./../../actions/actionConstants";
-import pin from "./images/pin-blu.png";
+import * as ACTIONS from "./../../client/actions/actionConstants";
 
 function MyMarker(props) {
   const handleMouseOverMarker = (e, data) => {
@@ -16,7 +15,7 @@ function MyMarker(props) {
   let loc = data.location.split(',');
   let locObj = {lat: parseFloat(loc[0]), lng: parseFloat(loc[1])}
   let image ={
-    url: pin,
+    url: "./static/images/pin-blu.png",
   }
 
   return (

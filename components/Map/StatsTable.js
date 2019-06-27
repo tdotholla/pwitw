@@ -20,8 +20,8 @@ import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import * as ACTIONS from "./../../actions/actionConstants";
-import { isHome, panToMarker} from "../../functions";
+import * as ACTIONS from "./../../client/actions/actionConstants";
+import { isHome, panToMarker} from "./../../client/functions";
 import { Typography } from "@material-ui/core";
 const styles = {
   warning: {

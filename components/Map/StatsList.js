@@ -13,7 +13,7 @@ import TableRow from '@material-ui/core/TableRow'
 import TableSortLabel from '@material-ui/core/TableSortLabel'
 import Tooltip from '@material-ui/core/Tooltip';
 
-import * as ACTIONS from "./../../actions/actionConstants";
+import * as ACTIONS from "./../../client/actions/actionConstants";
 import { isHome, getSorting, stableSort, panToMarker} from "../../functions";
 const styles = theme => ({
   root: {

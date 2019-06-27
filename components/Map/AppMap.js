@@ -3,53 +3,43 @@ import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow } from '@react-google
 import { connect } from "react-redux";
 import {formatDistance} from "date-fns"
 
-import { GEOCENTER, isHome } from "../../functions";
-import m1 from "./images/m1.png";
-import m2 from "./images/m2.png";
-import m3 from "./images/m3.png";
-import m4 from "./images/m4.png";
-import m5 from "./images/m5.png";
-import hm1 from "./images/hm1.png";
-import hm2 from "./images/hm2.png";
-import hm3 from "./images/hm3.png";
-import hm4 from "./images/hm4.png";
-import hm5 from "./images/hm5.png";
-import * as ACTIONS from "../../actions/actionConstants";
+import { GEOCENTER, isHome } from "./../../client/functions";
+import * as ACTIONS from "./../../client/actions/actionConstants";
 
 import MyMarker from './myMarker'
 import CenterButton from './CenterButton'
 
 const clusterStyles= [
   {
-    url: m1,
+    url: './static/images/m1.png',
     height: 53,
     width: 53,
     anchor: [26, 26],
     textColor: '#000',
     textSize: 11
   }, {
-    url: m2,
+    url: './static/images/m2.png',
     height: 56,
     width: 56,
     anchor: [28, 28],
     textColor: '#000',
     textSize: 11
   }, {
-    url: m3,
+    url: './static/images/m3.png',
     height: 66,
     width: 66,
     anchor: [33, 33],
     textColor: '#000',
     textSize: 11
   }, {
-    url: m4,
+    url: './static/images/m4.png',
     height: 78,
     width: 78,
     anchor: [39, 39],
     textColor: '#000',
     textSize: 11
   }, {
-    url: m5,
+    url: './static/images/m5.png',
     height: 90,
     width: 90,
     anchor: [45, 45],
@@ -60,35 +50,35 @@ const clusterStyles= [
 
 const homeClusterStyles = [
   {
-    url: hm1,
+    url: './static/images/hm1.png',
     height: 53,
     width: 53,
     anchor: [26, 26],
     textColor: '#000',
     textSize: 11
   }, {
-    url: hm2,
+    url: './static/images/hm2.png',
     height: 56,
     width: 56,
     anchor: [28, 28],
     textColor: '#000',
     textSize: 11
   }, {
-    url: hm3,
+    url: './static/images/hm3.png',
     height: 66,
     width: 66,
     anchor: [33, 33],
     textColor: '#000',
     textSize: 11
   }, {
-    url: hm4,
+    url: './static/images/hm4.png',
     height: 78,
     width: 78,
     anchor: [39, 39],
     textColor: '#000',
     textSize: 11
   }, {
-    url: hm5,
+    url: './static/images/hm5.png',
     height: 90,
     width: 90,
     anchor: [45, 45],

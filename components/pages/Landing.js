@@ -5,7 +5,7 @@ import Loader from 'react-loader-spinner';
 import AppDrawer from './../../components/Drawer/AppDrawer.js';
 import AppMap from './../../components/Map/AppMap.js';
 
-import * as ACTIONS from "./../../actions/actionConstants";
+import * as ACTIONS from "./../../client/actions/actionConstants";
 
 
 class LandingPage extends Component {

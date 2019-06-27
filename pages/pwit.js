@@ -16,9 +16,8 @@ const Pwit = (props) => (
 )
 
 Pwit.getInitialProps = async function ( {req}) {
-    // const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
-    // const res = await fetch(baseUrl + '/api/test')
-    const res = await fetch('http://localhost:7000/api/sql')
+    const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
+    const res = await fetch(baseUrl + '/api/sql')
         .then(response => response.json())
         .then(json => json)
 

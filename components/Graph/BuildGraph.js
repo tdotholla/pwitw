@@ -17,8 +17,8 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Typography from '@material-ui/core/Typography';
 
-import * as ACTIONS from "../../actions/actionConstants";
-import { getUnique } from "../../functions";
+import * as ACTIONS from "../../client/actions/actionConstants";
+import { getUnique } from "../../client/functions";
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
