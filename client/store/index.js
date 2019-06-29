@@ -31,6 +31,7 @@ const INITIAL_STATE = {
 
 //Create Store
 const store =
+
   process.env.NODE_ENV === "production"
     ? createStore(
         createRootReducer(history),
@@ -52,3 +53,11 @@ const store =
 sagaMiddleware.run(rootSaga);
 
 export default store;
+
+export function initializeStore() {
+  return createStore(
+    createRootReducer(history),
+    INITIAL_STATE,
+    applyMiddleware()
+  )
+}

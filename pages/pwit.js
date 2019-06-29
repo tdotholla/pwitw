@@ -1,31 +1,36 @@
 import Link from 'next/Link'
 import fetch from 'isomorphic-unfetch'
-
-const Pwit = (props) => (
+import StatsTable from '../client/components/Map/StatsTable'
+import BuildGraph from '../client/components/Graph/BuildGraph'
+  
+const Pwit = ({data}) => (
 <div>
-    <ul>
     {
-        props.result.map( (row) => (
-            <li key={`${row.date_created}-${row.computer_name}`}>
-            <div>{row.computer_name} {row.console_user} {row.ipv4_address}
-            </div></li>
-        ))
+    data ? (
+        <div>
+    <BuildGraph data ={data} />
+    <StatsTable data={data} />
+    </div>
+    ) : (
+       <div> LOADING...</div>
+    )
     }
-    </ul>
 </div>
 )
 
 Pwit.getInitialProps = async function ( {req}) {
     const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
-    const res = await fetch(baseUrl + '/api/sql')
+    const fetchUrl = `${baseUrl}/api/sql`
+
+    const res = await fetch(fetchUrl)
         .then(response => response.json())
         .then(json => json)
 
     const data = await res;
 
-    console.log(`+++ FETCHED ${data.length} ITEMS`)
+    console.log(`+++ FETCHED ${data.length} ITEMS +++`)
     return {
-        result: data
+        data: data
     }
 }
 

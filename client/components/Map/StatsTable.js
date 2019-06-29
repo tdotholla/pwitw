@@ -1,5 +1,5 @@
 import React from "react";
-import {formatDistance} from "date-fns"
+import {format, formatDistance} from "date-fns"
 import MaterialTable from "material-table";
 import { useDispatch } from 'react-redux'
 
@@ -62,10 +62,10 @@ const tableIcons = {
 };
 
 const tableOptions = {
-  // paginationType: "stepped",
-  pageSize: 10,
-  pageSizeOptions: [10,50,100],
-  grouping: false,
+  paginationType: "stepped",
+  pageSize: 20,
+  pageSizeOptions: [20,50,100],
+  grouping: true,
   headerStyle: {padding:"3px 3px"},
   columnsButton: true,
   exportButton: true,
@@ -74,37 +74,34 @@ const StatsTable = ({data, map}) => {
   
   const dispatch = useDispatch();
   const columns = [
-      { field: 'hostname', cellStyle: styles.cell, title: 'Name'},
-      { field: '_changed', cellStyle: styles.cell ,title: 'Logon', 
-      render: r => ( 
-        <span >{ formatDistance(new Date(r._changed), new Date()) }</span> 
-      )},
-      { field: 'uptime', cellStyle: styles.cell ,title: 'UpTime', 
-      render: r => ( 
-        <span >{ r.uptime && formatDistance(new Date(r.uptime), new Date()) }</span> 
-      )},
-      { field: 'os_build', cellStyle: styles.cell ,title: 'Build'},
-      { field: 'top_process', cellStyle: styles.cell , title: 'Top Process',
-      render: r=> (
-        <span> {r.top_process && r.top_process.slice(0,-4)} </span>
-      )},
-      { field: 'ip_local', cellStyle: styles.cell , title: 'Region', 
-      render: r => ( r.ip_local && (isHome(r.ip_local)) ? (
-        <Tooltip className="tableRow_LAN" title={r.region ? r.region : "LAN"} aria-label={r.region ? r.region : "LAN"}>
-          <Typography variant="button" className="tableRow_LAN"> LAN </Typography> 
-        </Tooltip>
-        ) : (
-          r.flag !== "none" ? (
-            <Tooltip className="tableRow_WAN" title={r.region ? r.region : "WAN"} aria-label={r.region ? r.region : "WAN"}>
-              <img height="14px" src={r.flag} alt={`${r.region}`} />
-            </Tooltip>
-          ) : (
-            <span className="tableRow_WAN">{r.region}</span>
-          )
-          
-        )
-      )} 
-    ];
+    { field: 'date_created', cellStyle: styles.cell, title: 'Date', 
+    render: r => ( 
+      <span >{ format(new Date(new Date(r.date_created)), "M.d.yy-hh:mm a") }</span> 
+    )},
+    { field: 'site', cellStyle: styles.cell ,title: 'Site'},
+    { field: 'serial', cellStyle: styles.cell , title: 'Serial'},
+    { field: 'computer_name', cellStyle: styles.cell , title: 'Name'},
+    { field: 'console_user', cellStyle: styles.cell , title: 'User'},
+    { field: 'UPN', cellStyle: styles.cell , title: 'UPN'},
+    { field: 'logon_time_UTC', cellStyle: styles.cell , title: 'Logon', 
+    render: r => ( 
+      <span >{ format(new Date(new Date(r.logon_time_UTC)), "M.d.yy-hh:mm a") }</span> 
+    )},
+    { field: 'model_number', cellStyle: styles.cell , title: 'Model'},
+    { field: 'ipv4_address', cellStyle: styles.cell , title: 'IP'},
+    { field: 'manufacturer', cellStyle: styles.cell , title: 'Make'},
+    { field: 'model_name', cellStyle: styles.cell , title: 'Model'},
+    { field: 'current_os_install_date', cellStyle: styles.cell , title: 'Current OS Date', 
+    render: r => ( 
+      <span >{ format(new Date(new Date(r.current_os_install_date)), "M.d.yy-hh:mm a") }</span> 
+    )},
+    { field: 'original_os_install_date', cellStyle: styles.cell , title: 'OG OS Date', 
+    render: r => ( 
+      <span >{ format(new Date(new Date(r.original_os_install_date)), "M.d.yy-hh:mm a") }</span> 
+    )},
+    { field: 'os_build_number', cellStyle: styles.cell , title: 'Current Build'},
+    { field: 'original_os_build_number', cellStyle: styles.cell , title: 'Orig Build'},
+  ];
   
   const rowClickHandler = (data) => {
     let loc = data.location.split(',');
@@ -115,16 +112,16 @@ const StatsTable = ({data, map}) => {
   }
 
   return (
-      <MaterialTable
-        style={{"width":'100%', "padding": "0 3px", "bottom": 0}}
-        columns={columns}
-        icons={tableIcons}
-        data={Object.values(data)}
-        title="Asset Tracking"
-        options={tableOptions}
-        // detailPanel={(d) => d.ip_public}
-        onRowClick={(e, data) => rowClickHandler(data) }
-      />
+    <MaterialTable
+      style={{"width":'100%', "padding": "0 3px", "bottom": 0}}
+      columns={columns}
+      icons={tableIcons}
+      data={Object.values(data)}
+      title="Asset Tracking"
+      options={tableOptions}
+      // detailPanel={(d) => d.ip_public}
+      onRowClick={(e, data) => rowClickHandler(data) }
+    />
   );
   
 }

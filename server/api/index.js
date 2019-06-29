@@ -2,34 +2,20 @@ const express = require('express')
 const router = express.Router()
 const Sequelize = require('sequelize');
 
-const configServer = require('../config').configServer;
-
 const Connection = require('tedious').Connection;
 const Request = require('tedious').Request;
 const TYPES = require('tedious').TYPES;
 const async = require('async');
+require('dotenv')
 
-const config = {
-    server: 'PW10inf-SQL.perkinswill.net',
-    authentication: {
-        type: 'default',
-        options: {
-            userName: 'PW_DataCollect',
-            password: '!data!'
-        }
-    },
-    options: {
-        database: 'PWAssetsPush'
-    }
-}
-const config2 = {
+console.log(process.env)
+
+const dbConfig = {
     userName: 'PW_DataCollect',
     password: '!data!',
     hostName: 'PW10inf-SQL.perkinswill.net',
     dbName: 'PWAssetsPush'
 }
-
-const connection = new Connection(config);
     
 function Start(callback) {
     console.log('Starting...');
@@ -174,30 +160,56 @@ router.get('/assets', (req,res) => {
 })
 
 router.get('/sql', (req,res) => {
-    const sqlz =  new Sequelize(config2.dbName, config2.userName, config2.password, {
+    const sqlz =  new Sequelize(dbConfig.dbName, dbConfig.userName, dbConfig.password, {
         dialect: 'mssql',
-        host: config2.hostName,
-        port: 1433
+        host: dbConfig.hostName,
+        port: 1433,
+        dialectOptions: {
+            requestTimeout: 30000
+        },
+        // paranoid: true,
+        sync: { force: true },
+        pool: {
+            max: 5,
+            idle: 30000,
+            acquire: 60000,
+        }
     });
+    
+    sqlz
+    .authenticate()
+    .then( () => {
+        console.log(`Connection to ${dbConfig.dbName} is successful.` )
+    })
+    .catch( err => {
+        console.error(`Unable to connect to ${dbConfig.dbName}...`)
+    });
+
+    // const makeQuery = (attr,query) => {
+    //     attr: query
+    // }
     const CollectedData = sqlz.define('CollectedData', {
         date_created: {
             type: Sequelize.DATE
         },
         computer_name: {
-            type: Sequelize.STRING,
-            primaryKey: true
+            type: Sequelize.STRING
         },
         site: {
             type: Sequelize.STRING
         },
         serial: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            primaryKey: true,
+            unique: true
         },
         console_user: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            unique: true
         },
         UPN: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            unique: true
         },
         logon_time_UTC: {
             type: Sequelize.TIME
@@ -215,7 +227,8 @@ router.get('/sql', (req,res) => {
             type: Sequelize.STRING
         },
         os_build_number: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            unique: true
         },
         current_os_install_date: {
             type: Sequelize.STRING
@@ -224,15 +237,21 @@ router.get('/sql', (req,res) => {
             type: Sequelize.STRING
         },
         original_os_build_number: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            unique: true
         }
     },
     {timestamps: false});
     
     CollectedData.findAll({
-        limit: 1000,
-        attributes: ["date_created", "site", "computer_name", "console_user", "UPN", "ipv4_address", "manufacturer","model_name","os_build_number","original_os_build_number"]
-    }).then(ws => res.json(ws))
+        where: {UPN: "kiel.byrne@perkinswill.com"},
+        limit: 50000,
+        attributes: ["date_created", "site", "serial", "computer_name", "console_user", "UPN", "logon_time_UTC", "model_number", "ipv4_address", "manufacturer","model_name", "current_os_install_date", "original_os_install_date", "os_build_number","original_os_build_number"]
+    })
+    .then(ws => res.json(ws))
+
+    // sqlz.close()
+
 });
 
 module.exports = router

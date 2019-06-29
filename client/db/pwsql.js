@@ -17,6 +17,15 @@ const PWAssetDb =  new Sequelize(config.dbName, config.userName, config.password
     }
 });
 
+PWAssetDb
+    .authenticate()
+    .then( () => {
+        console.log(`Connection to ${config.dbName} is successful.` )
+    })
+    .catch( err => {
+        console.error(`Unable to connect to ${config.dbName}...`)
+    })
+
 const CollectedData = PWAssetDb.define('CollectedData', {
     date_created: {
         type: Sequelize.DATE

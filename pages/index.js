@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import withRedux from "next-redux-wrapper"
+import { connect } from "react-redux";
 
 import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
-import makeStore from '../client/store/makeStore'
 import NetworkGraph from './../client/components/Graph/NetworkGraph';
 import BuildGraph from './../client/components/Graph/BuildGraph';
 import StatsTable from '../client/components/Map/StatsTable';
@@ -17,20 +16,37 @@ import '../client/App.scss';
 import '../client/index.css';
 
 import AppDrawer from './../client/components/Drawer/AppDrawer.js'
+import Link from 'next/link';
 // import * as serviceWorker from '../client/serviceWorker';
-let Page = ({foo, custom}) => (
-	<div className="test2"> 
-	<h2>Hi There, Brayden Byrne </h2>
-	<p>{foo}-{custom}</p>
-	</div>
-)
 
-Page.getInitialProps = ({store, isserver, pathname, query}) => {
-	store.dispatch({type: 'FOO', payload: 'foooobbaaar'});
-	// console.log({ custom:'custom'})
-	return {custom: 'custom'}
-}
+class Index extends React.Component {
+    static getInitialProps ({ reduxStore, req }) {
+      const isServer = !!req
+      // DISPATCH ACTIONS HERE ONLY WITH `reduxStore.dispatch`
+      //reduxStore.dispatch(serverRenderClock(isServer))
+  
+      return {}
+    }
+  
+    componentDidMount () {
+      // DISPATCH ACTIONS HERE FROM `mapDispatchToProps`
+      // TO TICK THE CLOCK
+     // this.timer = setInterval(() => this.props.startClock(), 1000)
+    }
+  
+    componentWillUnmount () {
+      //
+    }
+  
+    render () {
+      return <div>Welcome to the page
+        <Link href="/pwit">PWIT</Link> 
+      </div>
 
-Page = withRedux(makeStore, (state) => ({foo: state.foo}))(Page);
-
-export default Page;
+    }
+  }
+  const mapDispatchToProps = null
+  export default connect(
+    null,
+    mapDispatchToProps
+  )(Index)

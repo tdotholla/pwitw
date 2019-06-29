@@ -46,7 +46,7 @@ const BuildGraph = props => {
   const [mapType, setMapType] = useState("Bar");
 
   data = Object.values(data);
-  let uptimeData = getUnique(data,"os_build");
+  let uptimeData = getUnique(data,"os_build_number");
   let colors = chroma.scale(['#ff8675','#f7cd00','#639b76']).mode('lch').colors(uptimeData.length)
   return (
   uptimeData ? (
