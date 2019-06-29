@@ -5,13 +5,13 @@ import Loader from 'react-loader-spinner';
 import AppDrawer from './../../components/Drawer/AppDrawer.js';
 import AppMap from './../../components/Map/AppMap.js';
 
-import * as ACTIONS from "./../../client/actions/actionConstants";
+import * as ACTIONS from "../../../client/actions/actionConstants";
 
 
 class LandingPage extends Component {
     componentDidMount() {
-      window.setInterval(this.props.getAllWorkstations, 60000); //gets stations every 60 seconds (API limit is 50k requests/month = 1.2/hour for 31 days)
-      this.props.getAllWorkstations();     //calls from db and stores in state.stations
+      // window.setInterval(this.props.getAllWorkstations, 60000); //gets stations every 60 seconds (API limit is 50k requests/month = 1.2/hour for 31 days)
+      // this.props.getAllWorkstations();     //calls from db and stores in state.stations
     }
     render() {
       const { stations } = this.props;

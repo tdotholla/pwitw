@@ -8,7 +8,8 @@ import {
 //Actions
 import * as ACTIONS from "../actions/actionConstants";
 
-import { stationsFetchAll } from "../db/restdb";
+// import { stationsFetchAll } from "../db/restdb";
+const stationsFetchAll = () => true;
 // import { dbFetch } from "../db/pwsql";
 
 function* stationsFetchWatcherSaga() {

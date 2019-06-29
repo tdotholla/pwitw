@@ -3,8 +3,8 @@ import { GoogleMap, LoadScript, MarkerClusterer,InfoWindow } from '@react-google
 import { connect } from "react-redux";
 import {formatDistance} from "date-fns"
 
-import { GEOCENTER, isHome } from "./../../client/functions";
-import * as ACTIONS from "./../../client/actions/actionConstants";
+import { GEOCENTER, isHome } from "../../../client/functions";
+import * as ACTIONS from "../../../client/actions/actionConstants";
 
 import MyMarker from './myMarker'
 import CenterButton from './CenterButton'

@@ -5,8 +5,8 @@ import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 
-import * as ACTIONS from "../../client/actions/actionConstants";
-import {GEOCENTER, panToMarker} from "../../client/functions";
+import * as ACTIONS from "../../../client/actions/actionConstants";
+import {GEOCENTER, panToMarker} from "../../../client/functions";
 
 class CenterButton extends Component {
 	render() {

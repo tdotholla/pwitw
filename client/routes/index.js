@@ -1,14 +1,14 @@
 import React from "react";
 
 //Routes
-import { Route, Switch } from "react-router";
+import { Route, Switch } from "react-router-dom";
 
 //Code Splitting
 // import { asyncComponent } from "../hocs/asyncComponent";
 
 //Components
-import ReadMePage from "../components/pages/Readme";
-import AppMap from "../components/pages/Landing";
+import ReadMePage from "./../components/pages/Readme";
+import AppMap from "./../components/pages/Landing";
 
 //Auth
 export const LANDING = "/";

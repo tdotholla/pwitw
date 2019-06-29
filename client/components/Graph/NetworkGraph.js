@@ -7,8 +7,8 @@ import chroma from 'chroma-js';
 // import { Flipper, Flipped } from "react-flip-toolkit";
 import Typography from '@material-ui/core/Typography';
 
-import * as ACTIONS from "./../../client/actions/actionConstants";
-import { isHome } from "../../client/functions";
+import * as ACTIONS from "../../../client/actions/actionConstants";
+import { isHome } from "../../../client/functions";
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)

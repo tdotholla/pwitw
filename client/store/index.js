@@ -1,14 +1,13 @@
 //Redux
 import { applyMiddleware, compose, createStore } from "redux";
 import createRootReducer from "../reducers";
-
 //Middleware
 //Logger
 import logger from "redux-logger";
 
 //Router
 import { routerMiddleware } from "connected-react-router";
-import { createBrowserHistory } from "history";
+import { createBrowserHistory, createMemoryHistory } from "history";
 
 //Sagas
 import createSagaMiddleware from "redux-saga";
@@ -17,10 +16,12 @@ import rootSaga from "./../sagas";
 // import Schemas from "./../api/schemas";
 
 //Create Logger
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
+const composeEnhancers = compose;
 //Create Middleware
-export const history = createBrowserHistory();
+export const history = !process.browser
+? createMemoryHistory() 
+: createBrowserHistory();
+
 const sagaMiddleware = createSagaMiddleware();
 
 // eslint-disable-next-line

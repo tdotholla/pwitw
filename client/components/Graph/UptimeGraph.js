@@ -18,7 +18,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Typography from '@material-ui/core/Typography';
 
 
-import * as ACTIONS from "./../../client/actions/actionConstants";
+import * as ACTIONS from "../../../client/actions/actionConstants";
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({

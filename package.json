@@ -7,15 +7,19 @@
     "@material-ui/icons": "^4.0.1",
     "@material-ui/styles": "^4.0.1",
     "@react-google-maps/api": "^1.2.3-alpha.11",
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
     "chroma-js": "^2.0.3",
     "connected-react-router": "^6.3.2",
-    "date-fns": "next",
+    "date-fns": "^2.0.0-beta.2",
     "express": "^4.17.1",
     "history": "^4.9.0",
     "isomorphic-unfetch": "^3.0.0",
     "material-table": "^1.38.0",
     "mssql": "^5.1.0",
-    "next": "^8.1.0",
+    "next": "latest",
+    "next-redux-saga": "^4.0.2",
+    "next-redux-wrapper": "^3.0.0-alpha.3",
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.4",
@@ -25,14 +29,15 @@
     "react-loader-spinner": "^2.3.0",
     "react-markdown": "^4.0.8",
     "react-redux": "^7.1.0-rc.1",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
     "react-router-redux": "^4.0.8",
     "recharts": "^1.5.0",
     "redux": "^4.0.1",
     "redux-devtools": "^3.5.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^1.0.2",
-    "sequelize": "^5.8.12",
-    "tedious": "^6.2.0"
+    "sequelize": "^5.8.12"
   },
   "scripts": {
     "dev": "node server/main.js",
@@ -47,5 +52,9 @@
   "browser": {
     "sequelize": false,
     "child_process": false
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
+    "postcss-css-variables": "^0.13.0"
   }
 }

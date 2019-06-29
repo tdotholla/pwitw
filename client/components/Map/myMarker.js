@@ -1,7 +1,7 @@
 import React from 'react';
 import { Marker} from '@react-google-maps/api'
 import { connect } from "react-redux";
-import * as ACTIONS from "./../../client/actions/actionConstants";
+import * as ACTIONS from "../../../client/actions/actionConstants";
 
 function MyMarker(props) {
   const handleMouseOverMarker = (e, data) => {

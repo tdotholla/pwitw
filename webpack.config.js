@@ -1,5 +1,10 @@
-{
-    test: /\.css$/,  
-    include: /node_modules/,  
-    loaders: ['style-loader', 'css-loader'],
+module.exports = {
+    externals: ['tls', 'net', 'fs'],
+    node: {
+      console: 'empty',
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty'
+    }
+
 }
