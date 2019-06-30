@@ -165,7 +165,7 @@ router.get('/sql', ({query, params},res) => {
         dialectOptions: {
             requestTimeout: 30000
         },
-        // paranoid: true,
+        paranoid: true,
         sync: { force: true },
         pool: {
             max: 5,
@@ -240,17 +240,29 @@ router.get('/sql', ({query, params},res) => {
         }
     },
     {timestamps: false});
-    // query = {computer_name: "WDCLT6010"}
-    console.log(query)
-    CollectedData.findAll({
-        where: query,
-        limit: 50000,
-        attributes: ["date_created", "site", "serial", "computer_name", "console_user", "UPN", "logon_time_UTC", "model_number", "ipv4_address", "manufacturer","model_name", "current_os_install_date", "original_os_install_date", "os_build_number","original_os_build_number"]
-    })
-    .then(ws => res.json(ws))
+    
+    // CollectedData.findAll({
+    //     where: query,
+    //     limit: 50000,
+    //     attributes: ["date_created", "site", "serial", "computer_name", "console_user", "UPN", "logon_time_UTC", "model_number", "ipv4_address", "manufacturer","model_name", "current_os_install_date", "original_os_install_date", "os_build_number","original_os_build_number"]
+    // })
+    // .then(result => res.json(result))
 
-    // sqlz.close()
+    sqlz.query(`SELECT tt.*
+    FROM [PWAssetsPush].[dbo].[CollectedData] tt
+    INNER JOIN
+        (SELECT computer_name, MAX(logon_time_UTC) AS MaxDateTime
+        FROM [PWAssetsPush].[dbo].[CollectedData]
+        GROUP BY computer_name) groupedtt 
+    ON tt.computer_name = groupedtt.computer_name 
+    AND tt.logon_time_UTC = groupedtt.MaxDateTime`, {
+        type: sqlz.QueryTypes.SELECT
+    }).then(result => {
+        res.json(result)
+    })
 
 });
 
 module.exports = router
+
+//unique hostnames with most recent logon date
