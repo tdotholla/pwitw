@@ -8,8 +8,6 @@ const TYPES = require('tedious').TYPES;
 const async = require('async');
 require('dotenv')
 
-console.log(process.env)
-
 const dbConfig = {
     userName: 'PW_DataCollect',
     password: '!data!',
@@ -159,7 +157,7 @@ router.get('/assets', (req,res) => {
     return res.json({return: "hi"})
 })
 
-router.get('/sql', (req,res) => {
+router.get('/sql', ({query, params},res) => {
     const sqlz =  new Sequelize(dbConfig.dbName, dbConfig.userName, dbConfig.password, {
         dialect: 'mssql',
         host: dbConfig.hostName,
@@ -242,9 +240,10 @@ router.get('/sql', (req,res) => {
         }
     },
     {timestamps: false});
-    
+    // query = {computer_name: "WDCLT6010"}
+    console.log(query)
     CollectedData.findAll({
-        where: {UPN: "kiel.byrne@perkinswill.com"},
+        where: query,
         limit: 50000,
         attributes: ["date_created", "site", "serial", "computer_name", "console_user", "UPN", "logon_time_UTC", "model_number", "ipv4_address", "manufacturer","model_name", "current_os_install_date", "original_os_install_date", "os_build_number","original_os_build_number"]
     })

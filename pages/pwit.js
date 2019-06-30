@@ -2,7 +2,7 @@ import Link from 'next/Link'
 import fetch from 'isomorphic-unfetch'
 import StatsTable from '../client/components/Map/StatsTable'
 import BuildGraph from '../client/components/Graph/BuildGraph'
-  
+import url from 'url';
 const Pwit = ({data}) => (
 <div>
     {
@@ -18,9 +18,11 @@ const Pwit = ({data}) => (
 </div>
 )
 
-Pwit.getInitialProps = async function ( {req}) {
+Pwit.getInitialProps = async function ( {req, path}) {
+    
+    let search = url.parse(req.url, true).search || ''
     const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
-    const fetchUrl = `${baseUrl}/api/sql`
+    const fetchUrl = `${baseUrl}/api/sql${search}`
 
     const res = await fetch(fetchUrl)
         .then(response => response.json())
