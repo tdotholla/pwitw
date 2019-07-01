@@ -18,7 +18,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Typography from '@material-ui/core/Typography';
 
 import * as ACTIONS from "../../../client/actions/actionConstants";
-import { getUnique } from "../../../client/functions";
+import { getUniqueSum } from "../../../client/functions";
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
@@ -45,8 +45,8 @@ const BuildGraph = props => {
   let { data } = props;
   const [mapType, setMapType] = useState("Bar");
 
-  data = Object.values(data);
-  let uptimeData = getUnique(data,"os_build_number");
+  // data = Object.values(data);
+  let uptimeData = getUniqueSum(data,"os_build_number");
   let colors = chroma.scale(['#ff8675','#f7cd00','#639b76']).mode('lch').colors(uptimeData.length)
   return (
   uptimeData ? (
@@ -105,18 +105,4 @@ const BuildGraph = props => {
   )
 }
 
-//Connect
-const mapStateToProps = state => ({
-  state,
-  stations: state.stations.byId
-});
-
-const mapDispatchToProps = dispatch => ({
-  dispatch,
-  updateList: (data) => dispatch({ type: ACTIONS.UPDATE_LIST, payload: data })
-});
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(BuildGraph);
+export default BuildGraph;

@@ -18,7 +18,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 import * as ACTIONS from "../../../client/actions/actionConstants";
-import { getUnique } from "../../../client/functions";
+import { getUniqueSum} from "../../../client/functions";
 
   // let dayArray = []
 //want amount of ppl out vs ppl in (inside chart)
@@ -42,7 +42,7 @@ const ProcessGraph = props => {
   let { data } = props;
 
   data = Object.values(data);
-  let processData = getUnique(data,"top_process").sort((a,b) => b.value - a.value);
+  let processData = getUniqueSum(data,"top_process").sort((a,b) => b.value - a.value);
 
   let colors = chroma.scale(['#ff8675','#f7cd00','#639b76']).mode('lch').colors(processData.length)
   return (

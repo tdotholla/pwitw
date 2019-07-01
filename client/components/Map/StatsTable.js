@@ -116,7 +116,7 @@ const StatsTable = ({data, map}) => {
       style={{"width":'100%', "padding": "0 3px", "bottom": 0}}
       columns={columns}
       icons={tableIcons}
-      data={Object.values(data)}
+      data={data}
       title="Asset Tracking"
       options={tableOptions}
       // detailPanel={(d) => d.ip_public}

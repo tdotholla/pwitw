@@ -41,7 +41,7 @@ export function panToMarker(map,pos) {
     map.setZoom(11);
 };
 
-export function getUnique(arr, comp) {
+export function getUniqueSum(arr, comp) {
   //get unique keys from array,
   const unique = arr
     .map(e => e[comp])

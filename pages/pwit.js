@@ -2,6 +2,9 @@ import Link from 'next/Link'
 import fetch from 'isomorphic-unfetch'
 import StatsTable from '../client/components/Map/StatsTable'
 import BuildGraph from '../client/components/Graph/BuildGraph'
+import UptimeGraph from '../client/components/Graph/UptimeGraph'
+import SiteGraph from '../client/components/Graph/SiteGraph'
+
 import url from 'url';
 const Pwit = ({data}) => (
 <div>
@@ -9,6 +12,8 @@ const Pwit = ({data}) => (
     data ? (
         <div>
     <BuildGraph data ={data} />
+    <UptimeGraph data ={data} />
+    <SiteGraph data ={data} />
     <StatsTable data={data} />
     </div>
     ) : (

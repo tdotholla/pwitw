@@ -5,12 +5,6 @@ import Drawer from '@material-ui/core/Drawer';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 
-import NetworkGraph from './../client/components/Graph/NetworkGraph';
-import BuildGraph from './../client/components/Graph/BuildGraph';
-import StatsTable from '../client/components/Map/StatsTable';
-import AssetSearch from '../client/components/Assets/AssetSearch';
-import UptimeGraph from '../client/components/Graph/UptimeGraph';
-import ProcessGraph from '../client/components/Graph/ProcessGraph';
 
 import '../client/App.scss';
 import '../client/index.css';
