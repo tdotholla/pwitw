@@ -39,7 +39,7 @@ const renderCustomizedLabel = ({
 
 const UptimeGraph = props => {
     let {data} = props;
-    data = Object.values(data)
+    // data = Object.values(data)
     const [mapType, setMapType] = useState("Pie");
 
     // let wansById = Object.assign({}, ...wans.map(x=> ({[x.hostname]:x})))

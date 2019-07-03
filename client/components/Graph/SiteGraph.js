@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { ResponsiveContainer, Cell, PieChart, Pie, Legend, LabelList, Tooltip } from 'recharts';
+import { ResponsiveContainer, Cell, PieChart, Pie, BarChart, Bar, Legend, LabelList, Tooltip } from 'recharts';
 import { differenceInMinutes, differenceInHours, differenceInDays, isToday, isYesterday, isThisWeek, isThisMonth, isThisQuarter,} from "date-fns";
 import chroma from 'chroma-js';
 
@@ -57,14 +57,14 @@ const SiteGraph = props => {
   const pingColors = chroma.scale(['#ff8675','#639b76']).colors(pingData.length)
 
   const officeData = getUniqueSum(data,"site");
-  const dataColors = chroma.scale(['#ff8675','#639b76']).colors(officeData.length)
+  const officeColors = chroma.scale(['#ff8675','#639b76']).colors(officeData.length)
 
   return (
     <div style={{ backgroundColor: "#eee"}}>
     <ResponsiveContainer height={250} width="50%">
       <PieChart style={{fontSize:"12px"}}>
         <Legend layout="vertical" align="left" verticalAlign="middle" iconSize={10} iconType="diamond"/>
-        <Tooltip />
+        <Tooltip />S
 
         <Pie 
         data={locationData} 
@@ -103,8 +103,8 @@ const SiteGraph = props => {
       </PieChart>
     </ResponsiveContainer>
     <ResponsiveContainer height={250} width="50%">
-    <PieChart>
-        <Pie 
+    <BarChart>
+        <Bar 
           data={officeData} 
           cx="50%" 
           cy="50%" 
@@ -117,13 +117,13 @@ const SiteGraph = props => {
           >
             {
             officeData.map( (entry,index) => (
-              <Cell key={`sector-${index}`} fill={pingColors[index]} className={`pieSector-${index}`}/>
+              <Cell key={`sector-${index}`} fill={officeColors[index]} className={`pieSector-${index}`}/>
             ))
           }
-          </Pie>
-      </PieChart>
+          </Bar>
+      </BarChart>
     </ResponsiveContainer>
-    <Typography variant="subtitle2"> Network Data </Typography>
+    <Typography variant="subtitle2"> Site & Network Data </Typography>
     </div>
   );
   
