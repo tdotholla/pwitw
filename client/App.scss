@@ -1,7 +1,7 @@
-@import 'style/variables';
-@import 'style/mixins';
-@import 'style/frames';
-@import 'style/colors';
+@import './style/variables';
+@import './style/mixins';
+@import './style/frames';
+@import './style/colors';
 
 @include breakpoint(phablet) {
   // $drawerWidth: 640px;
